@@ -21,9 +21,8 @@ struct GameController
 
 	// control buttons
 	bool START_BUTTON;
-	bool PAUSE_BUTTON;
+	bool BACK_BUTTON;
 	bool GUIDE_BUTTON;
-
 
 	// shoulder buttons
 	bool LEFT_SHOULDER;
