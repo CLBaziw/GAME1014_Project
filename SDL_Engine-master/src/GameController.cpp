@@ -2,7 +2,7 @@
 
 GameController::GameController(SDL_GameController* controller):
 	handle(controller), DPAD_UP(false), DPAD_DOWN(false), DPAD_LEFT(false), DPAD_RIGHT(false),
-	START_BUTTON(false), PAUSE_BUTTON(false), LEFT_SHOULDER(false), RIGHT_SHOULDER(false),
+	START_BUTTON(false), BACK_BUTTON(false), LEFT_SHOULDER(false), RIGHT_SHOULDER(false),
 	A_BUTTON(false), B_BUTTON(false), X_BUTTON(false), Y_BUTTON(false),
 	LEFT_STICK_X(false), LEFT_STICK_Y(false), RIGHT_STICK_X(false), RIGHT_STICK_Y(false)
 {}
@@ -20,7 +20,7 @@ void GameController::update()
 
     // control buttons
     START_BUTTON = SDL_GameControllerGetButton(handle, SDL_CONTROLLER_BUTTON_START);
-    PAUSE_BUTTON = SDL_GameControllerGetButton(handle, SDL_CONTROLLER_BUTTON_BACK);
+    BACK_BUTTON = SDL_GameControllerGetButton(handle, SDL_CONTROLLER_BUTTON_BACK);
     GUIDE_BUTTON = SDL_GameControllerGetButton(handle, SDL_CONTROLLER_BUTTON_GUIDE);
 
     // shoulders

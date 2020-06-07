@@ -30,8 +30,7 @@ private:
 	Player* m_pPlayer;
 	bool m_playerFacingRight;
 
-	Button* m_pPauseButton;
-	Button* m_pContinueButton;
+	Button* m_pBackButton;
 	Button* m_pNextButton;
 
 	// movement for character
