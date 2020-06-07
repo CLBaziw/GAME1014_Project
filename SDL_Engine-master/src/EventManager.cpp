@@ -118,6 +118,7 @@ bool EventManager::isKeyUp(const SDL_Scancode key) const
     return false;
 }
 
+
 void EventManager::onKeyDown()
 {
     m_keyStates = SDL_GetKeyboardState(nullptr);
@@ -228,3 +229,4 @@ EventManager::EventManager():
 
 EventManager::~EventManager()
 = default;
+
