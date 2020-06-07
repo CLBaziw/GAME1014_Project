@@ -22,8 +22,8 @@ void PlayScene::update()
 
 void PlayScene::clean()
 {
-	delete m_pBackButton;
-	m_pBackButton = nullptr;
+	delete m_pPauseButton;
+	m_pPauseButton = nullptr;
 
 	delete m_pNextButton;
 	m_pNextButton = nullptr;
@@ -121,44 +121,66 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
-	// Back Button
-	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
-	m_pBackButton->addEventListener(CLICK, [&]()-> void
+	// Pause Button
+	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN.png", "pauseButton", PAUSE_BUTTON);
+	m_pPauseButton->getTransform()->position = glm::vec2(200.0f, 300.0f);
+	m_pPauseButton->addEventListener(CLICK, [&]()-> void
 	{
-		m_pBackButton->setActive(false);
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		m_pPauseButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
-	m_pBackButton->addEventListener(MOUSE_OVER, [&]()->void
+	m_pPauseButton->addEventListener(MOUSE_OVER, [&]()->void
 	{
-		m_pBackButton->setAlpha(128);
+		m_pPauseButton->setAlpha(128);
 	});
 
-	m_pBackButton->addEventListener(MOUSE_OUT, [&]()->void
+	m_pPauseButton->addEventListener(MOUSE_OUT, [&]()->void
 	{
-		m_pBackButton->setAlpha(255);
+		m_pPauseButton->setAlpha(255);
 	});
-	addChild(m_pBackButton);
+	addChild(m_pPauseButton);
 
-	// Next Button
-	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(500.0f, 400.0f);
-	m_pNextButton->addEventListener(CLICK, [&]()-> void
+	// Continue Button
+	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN.png", "continueButton", CONTINUE_BUTTON);
+	m_pContinueButton->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	m_pContinueButton->addEventListener(CLICK, [&]()-> void
 	{
-		m_pNextButton->setActive(false);
-		TheGame::Instance()->changeSceneState(END_SCENE);
-	});
-
-	m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pNextButton->setAlpha(128);
+		m_pContinueButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
-	m_pNextButton->addEventListener(MOUSE_OUT, [&]()->void
+	m_pContinueButton->addEventListener(MOUSE_OVER, [&]()->void
 	{
-		m_pNextButton->setAlpha(255);
+		m_pContinueButton->setAlpha(128);
 	});
 
-	addChild(m_pNextButton);
-}
+	m_pContinueButton->addEventListener(MOUSE_OUT, [&]()->void
+	{
+		m_pContinueButton->setAlpha(255);
+	});
+
+	addChild(m_pContinueButton);
+
+
+// Next Button
+    m_pNextButton = new Button("../Assets/Menu Asset/Next_1.png", "nextButton", NEXT_BUTTON);
+    m_pNextButton ->getTransform()->position = glm::vec2(600.0f, 500.0f);
+    m_pNextButton->addEventListener(CLICK, [&]()-> void
+    {
+    	m_pNextButton->setActive(false);
+    	TheGame::Instance()->changeSceneState(END_SCENE);
+    });
+    
+    m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
+    {
+    	m_pNextButton->setAlpha(128);
+    });
+    
+    m_pNextButton->addEventListener(MOUSE_OUT, [&]()->void
+    {
+    	m_pNextButton->setAlpha(255);
+    });
+    
+    addChild(m_pNextButton);
+    }

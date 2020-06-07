@@ -26,7 +26,8 @@ private:
 	Player* m_pPlayer;
 	bool m_playerFacingRight;
 
-	Button* m_pBackButton;
+	Button* m_pPauseButton;
+	Button* m_pContinueButton;
 	Button* m_pNextButton;
 };
 
