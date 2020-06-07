@@ -24,7 +24,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 
 	m_jumping = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
-	m_maxVelX = 200.0;
+	m_maxVelX = 300.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
