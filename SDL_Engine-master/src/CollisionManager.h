@@ -32,5 +32,5 @@ private:
 	CollisionManager();
 	~CollisionManager();
 };
-
+typedef CollisionManager COMA;
 #endif /* defined (__COLLISION_MANAGER__) */
