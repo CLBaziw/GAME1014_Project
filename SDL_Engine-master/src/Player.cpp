@@ -5,11 +5,11 @@
 Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/atlas.txt",
-		"../Assets/sprites/atlas.png", 
-		"spritesheet");
+		"../Assets/sprites/idle.txt",
+		"../Assets/sprites/idle.png",
+		"astro");
 
-	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
+	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("astro"));
 	
 	// set frame width
 	setWidth(53);
@@ -48,19 +48,19 @@ void Player::draw()
 	switch(m_currentAnimationState)
 	{
 	case PLAYER_IDLE_RIGHT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
+		TextureManager::Instance()->playAnimation("astro", getAnimation("idle"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case PLAYER_IDLE_LEFT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
+		TextureManager::Instance()->playAnimation("astro", getAnimation("idle"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case PLAYER_RUN_RIGHT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
+		TextureManager::Instance()->playAnimation("astro", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true);
 		break;
 	case PLAYER_RUN_LEFT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
+		TextureManager::Instance()->playAnimation("astro", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	default:
@@ -124,20 +124,21 @@ void Player::m_buildAnimations()
 	Animation idleAnimation = Animation();
 
 	idleAnimation.name = "idle";
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-0"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-1"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-2"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-3"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-0"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-1"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-2"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-3"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-4"));
 
 	setAnimation(idleAnimation);
 
 	Animation runAnimation = Animation();
 
 	runAnimation.name = "run";
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-0"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-1"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-2"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-3"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-0"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-1"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-2"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-3"));
 
 	setAnimation(runAnimation);
 }

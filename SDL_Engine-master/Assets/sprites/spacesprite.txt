@@ -1,0 +1,20 @@
+lazer 7 11 41 61 
+alien-bullet 229 317 16 22
+astro-run-0 4 96 50 55
+astro-run-1 64 95 50 55
+astro-run-2 129 95 50 55
+astro-run-3 194 95 50 55
+astro-idle-0 6 406 59 48
+astro-idle-1 3 498 59 48
+astro-idle-2 53 498 59 48
+astro-idle-3 117 498 59 48
+astro-idle-4 190 498 59 48
+alien-run-0 3 293 53 61
+alien-run-1 65 293 53 61
+alien-run-2 121 293 53 61
+alien-run-3 181 293 35 61
+alien-dead-0 6 198 53 52
+alien-dead-1 59 198 57 52
+alien-dead-2 123 198 57 47
+alien-dead-3 183 198 58 48
+
