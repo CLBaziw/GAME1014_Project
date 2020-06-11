@@ -23,13 +23,12 @@ void PlayScene::update()
 
 void PlayScene::clean()
 {
-	delete m_pBackButton;
-	m_pBackButton = nullptr;
+	delete m_pPauseButton;
+	m_pPauseButton = nullptr;
 
 	delete m_pNextButton;
 	m_pNextButton = nullptr;
 
-	
 	removeAllChildren();
 }
 
@@ -103,6 +102,7 @@ void PlayScene::handleEvents()
 			m_pPlayer->SetJumping(false);
 		}
 	}
+
 	m_pPlayer->update();
 	checkCollision();
 
@@ -132,29 +132,52 @@ void PlayScene::start()
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
-	// Back Button
-	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(80.0f, 50.0f);
-	m_pBackButton->addEventListener(CLICK, [&]()-> void
+
+	// Pause Button
+	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
+	m_pPauseButton->getTransform()->position = glm::vec2(60.0f, 50.0f);
+	m_pPauseButton->addEventListener(CLICK, [&]()-> void
 	{
-		m_pBackButton->setActive(false);
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		m_pPauseButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
-	m_pBackButton->addEventListener(MOUSE_OVER, [&]()->void
+	m_pPauseButton->addEventListener(MOUSE_OVER, [&]()->void
 	{
-		m_pBackButton->setAlpha(128);
+		m_pPauseButton->setAlpha(128);
 	});
 
-	m_pBackButton->addEventListener(MOUSE_OUT, [&]()->void
+	m_pPauseButton->addEventListener(MOUSE_OUT, [&]()->void
 	{
-		m_pBackButton->setAlpha(255);
+		m_pPauseButton->setAlpha(255);
 	});
-	addChild(m_pBackButton);
+	addChild(m_pPauseButton);
+
+	// Continue Button
+	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
+	m_pContinueButton->getTransform()->position = glm::vec2(150.0f, 50.0f);
+	m_pContinueButton->addEventListener(CLICK, [&]()-> void
+	{
+		m_pContinueButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+	});
+
+	m_pContinueButton->addEventListener(MOUSE_OVER, [&]()->void
+	{
+		m_pContinueButton->setAlpha(128);
+	});
+
+	m_pContinueButton->addEventListener(MOUSE_OUT, [&]()->void
+	{
+		m_pContinueButton->setAlpha(255);
+	});
+
+	addChild(m_pContinueButton);
+
 
 	// Next Button
-	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(240.0f, 50.0f);
+	m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
+	m_pNextButton->getTransform()->position = glm::vec2(640, 50.0f);
 	m_pNextButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pNextButton->setActive(false);
@@ -177,9 +200,9 @@ void PlayScene::start()
 void PlayScene::CheckBounds()
 {
 	// check left
-	if (m_pPlayer->getTransform()->position.x > 800 - m_pPlayer->getWidth() *0.5)
+	if (m_pPlayer->getTransform()->position.x > 800 - m_pPlayer->getWidth() * 0.5)
 	{
-		m_pPlayer->setPosition(800 - m_pPlayer->getWidth()*0.5, m_pPlayer->getTransform()->position.y);
+		m_pPlayer->setPosition(800 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
 	}
 
 	// check right
@@ -188,7 +211,7 @@ void PlayScene::CheckBounds()
 		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
 	}
 	// check up
-	if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight()*0.5)
+	if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
 	{
 		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
 	}
@@ -220,7 +243,7 @@ void PlayScene::checkCollision()
 		{ // Collision from top side of obstacle.
 			m_pPlayer->SetJumping(true);
 			m_pPlayer->StopY();
-			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x,m_pPlaneSprite->getTransform()->position.y - m_pPlayer->getHeight() -1);
+			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y - m_pPlayer->getHeight() - 1);
 		}
 		else if (m_pPlayer->getTransform()->position.y - (float)m_pPlayer->GetVelY() >= m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight())
 		{ // Collision from bottom side of obstacle.
@@ -229,5 +252,3 @@ void PlayScene::checkCollision()
 		}
 	}
 }
-
-

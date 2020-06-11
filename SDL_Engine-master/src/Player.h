@@ -2,8 +2,8 @@
 #ifndef __PLAYER__
 #define __PLAYER__
 
-#define GRAV 2.0
-#define JUMPFORCE 35.0
+#define GRAV 1.6
+#define JUMPFORCE 24.0
 
 #include "PlayerAnimationState.h"
 #include "Sprite.h"

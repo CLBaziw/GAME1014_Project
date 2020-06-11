@@ -25,10 +25,10 @@ void StartScene::update()
 void StartScene::clean()
 {
 	std::cout << "Clean called on StartScene" << std::endl;
-	
+
 	delete m_pStartLabel;
 	m_pStartLabel = nullptr;
-	
+
 	delete m_pInstructionsLabel;
 	m_pInstructionsLabel = nullptr;
 
@@ -46,12 +46,12 @@ void StartScene::handleEvents()
 	EventManager::Instance().update();
 
 	// Keyboard Events
-	if(EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		TheGame::Instance()->quit();
 	}
 
-	if(EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	}
@@ -60,11 +60,11 @@ void StartScene::handleEvents()
 void StartScene::start()
 {
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pStartLabel = new Label("START SCENE", "Consolas", 80, blue, glm::vec2(400.0f, 40.0f));
+	m_pStartLabel = new Label("START SCENE", "Dock51", 80, blue, glm::vec2(400.0f, 40.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, blue, glm::vec2(400.0f, 120.0f));
+	m_pInstructionsLabel = new Label("Press 1 to Play", "Dock51", 40, blue, glm::vec2(400.0f, 120.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
@@ -81,7 +81,7 @@ void StartScene::start()
 		m_pStartButton->setActive(false);
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
-	
+
 	m_pStartButton->addEventListener(MOUSE_OVER, [&]()->void
 	{
 		m_pStartButton->setAlpha(128);
@@ -93,6 +93,5 @@ void StartScene::start()
 	});
 	addChild(m_pStartButton);
 
-	
-}
 
+}

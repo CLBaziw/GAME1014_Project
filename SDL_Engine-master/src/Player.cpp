@@ -2,15 +2,15 @@
 #include "TextureManager.h"
 #include <algorithm>
 
-Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
+Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/idle.txt",
-		"../Assets/sprites/idle.png",
-		"astro");
+		"../Assets/sprites/atlas.txt",
+		"../Assets/sprites/atlas.png",
+		"spritesheet");
 
-	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("astro"));
-	
+	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
+
 	// set frame width
 	setWidth(53);
 
@@ -24,7 +24,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 
 	m_jumping = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
-	m_maxVelX = 200.0;
+	m_maxVelX = 300.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
@@ -45,28 +45,28 @@ void Player::draw()
 
 
 	// draw the player according to animation state
-	switch(m_currentAnimationState)
+	switch (m_currentAnimationState)
 	{
 	case PLAYER_IDLE_RIGHT:
-		TextureManager::Instance()->playAnimation("astro", getAnimation("idle"),
+		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case PLAYER_IDLE_LEFT:
-		TextureManager::Instance()->playAnimation("astro", getAnimation("idle"),
+		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case PLAYER_RUN_RIGHT:
-		TextureManager::Instance()->playAnimation("astro", getAnimation("run"),
+		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true);
 		break;
 	case PLAYER_RUN_LEFT:
-		TextureManager::Instance()->playAnimation("astro", getAnimation("run"),
+		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	default:
 		break;
 	}
-	
+
 }
 
 void Player::update()
@@ -124,21 +124,20 @@ void Player::m_buildAnimations()
 	Animation idleAnimation = Animation();
 
 	idleAnimation.name = "idle";
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-0"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-1"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-2"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-3"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-4"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-0"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-1"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-2"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-3"));
 
 	setAnimation(idleAnimation);
 
 	Animation runAnimation = Animation();
 
 	runAnimation.name = "run";
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-0"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-1"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-2"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("idle-3"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-0"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-1"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-2"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-3"));
 
 	setAnimation(runAnimation);
 }
