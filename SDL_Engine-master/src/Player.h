@@ -34,13 +34,16 @@ public:
 	double GetVelX();
 	double GetVelY();
 
-
+	void checkLife(int currentHp);
+	int getHit(int damage);
 private:
 	void m_buildAnimations();
 	PlayerAnimationState m_currentAnimationState;
 
 	bool m_jumping;
 	double m_accelX, m_accelY, m_velX, m_maxVelX, m_velY, m_maxVelY, m_drag, m_grav;
+	int maxHp = 300; // set hero hit point
+	int currentHp = 300;
 };
 
 #endif /* defined (__PLAYER__) */

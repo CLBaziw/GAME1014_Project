@@ -223,4 +223,9 @@
     </ClInclude>
     <ClInclude Include="..\src\EnemyAnimationState.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\sprites\gamesprite.png">
+      <Filter>Components</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

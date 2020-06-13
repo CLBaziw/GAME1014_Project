@@ -28,7 +28,7 @@ void EndScene::clean()
 
 	delete m_pRestartButton;
 	m_pRestartButton = nullptr;
-	
+
 	removeAllChildren();
 }
 

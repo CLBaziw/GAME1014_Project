@@ -1,3 +1,4 @@
+
 #pragma once
 #ifndef __GAME__
 #define __GAME__
@@ -23,7 +24,7 @@
 class Game
 {
 public:
-	
+
 	static Game* Instance()
 	{
 		if (s_pInstance == nullptr)
@@ -51,7 +52,7 @@ public:
 	Uint32 getFrames() const;
 	bool isRunning() const;
 	void changeSceneState(SceneState new_state);
-	
+
 private:
 	Game();
 	~Game();
@@ -73,4 +74,3 @@ private:
 typedef Game TheGame;
 
 #endif /* defined (__GAME__) */
-
