@@ -117,8 +117,6 @@ void Player::SetJumping(bool j) { m_jumping = j; }
 double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 
-
-
 void Player::m_buildAnimations()
 {
 	Animation idleAnimation = Animation();
@@ -141,5 +139,3 @@ void Player::m_buildAnimations()
 
 	setAnimation(runAnimation);
 }
-
-
