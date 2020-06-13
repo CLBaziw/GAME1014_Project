@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "RigidBody.h"
 #include <string>
+#include "SDL.h"
 
 // enums
 #include "GameObjectType.h"
@@ -48,6 +49,7 @@ private:
 	// size variables
 	int m_width;
 	int m_height;
+
 	GameObjectType m_type;
 };
 

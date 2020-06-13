@@ -19,6 +19,10 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
+
+	void CheckBounds();
+	void checkCollision();
+
 private:
 	glm::vec2 m_mousePosition;
 
@@ -29,6 +33,12 @@ private:
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
 	Button* m_pNextButton;
+
+	// movement for character
+	int moveX = 0;
+	int moveY = 0;
+	int moveSpeed = 5;
+
 };
 
 #endif /* defined (__PLAY_SCENE__) */
