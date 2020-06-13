@@ -23,7 +23,7 @@ public:
 	void setAnimationState(PlayerAnimationState new_state);
 	void setPosition(int x, int y);
 
-	// jumping
+	// Movement
 	void Stop();
 	void StopX();
 	void StopY();
