@@ -1,8 +1,8 @@
 bullet 1 1 16 16
 cloud 19 1 226 178
 island 161 235 62 62
-megaman-idle-0 1 299 45 58
-megaman-idle-1 48 299 46 58
+megaman-idle-0 1 299 45 58 
+megaman-idle-1 48 299 46 58 
 megaman-idle-2 96 299 46 58
 megaman-idle-3 144 299 43 58
 megaman-run-0 189 299 53 55

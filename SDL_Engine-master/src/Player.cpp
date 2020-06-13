@@ -5,11 +5,11 @@
 Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/atlas.txt",
-		"../Assets/sprites/atlas.png",
-		"spritesheet");
+		"../Assets/sprites/resources.txt",
+		"../Assets/sprites/resources.png",
+		"resources");
 
-	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
+	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("resources"));
 
 	// set frame width
 	setWidth(53);
@@ -17,7 +17,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	// set frame height
 	setHeight(58);
 
-	getTransform()->position = glm::vec2(400.0f, 600.0f);
+	getTransform()->position = glm::vec2(200.0f, 600.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
@@ -48,19 +48,19 @@ void Player::draw()
 	switch (m_currentAnimationState)
 	{
 	case PLAYER_IDLE_RIGHT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
+		TextureManager::Instance()->playAnimation("resources", getAnimation("idle"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case PLAYER_IDLE_LEFT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
+		TextureManager::Instance()->playAnimation("resources", getAnimation("idle"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case PLAYER_RUN_RIGHT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
+		TextureManager::Instance()->playAnimation("resources", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true);
 		break;
 	case PLAYER_RUN_LEFT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
+		TextureManager::Instance()->playAnimation("resources", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	default:
@@ -117,6 +117,31 @@ void Player::SetJumping(bool j) { m_jumping = j; }
 double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 
+void Player::checkLife(int remainedHp)
+{
+	const auto x = getTransform()->position.x;
+	const auto y = getTransform()->position.y;
+
+	if (remainedHp < maxHp)
+	{
+		TextureManager::Instance()->playAnimation("resources", getAnimation("exhaust"),
+			x, y, 0.12f, 0, 255, true);
+	}
+
+	if (remainedHp <= 0)
+	{
+		TextureManager::Instance()->playAnimation("resources", getAnimation("death"),
+			x, y, 0.12f, 0, 255, true);
+	}
+}
+
+int Player::getHit(int damage)
+{
+	currentHp -= damage;
+	return currentHp;
+}
+
+
 
 
 void Player::m_buildAnimations()
@@ -124,22 +149,32 @@ void Player::m_buildAnimations()
 	Animation idleAnimation = Animation();
 
 	idleAnimation.name = "idle";
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-0"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-1"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-2"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-3"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-stand-0"));
 
 	setAnimation(idleAnimation);
 
 	Animation runAnimation = Animation();
 
 	runAnimation.name = "run";
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-0"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-1"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-2"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-3"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-run-0"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-run-1"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-run-2"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-run-3"));
 
 	setAnimation(runAnimation);
+
+	Animation exhaustAnimation = Animation();
+
+	exhaustAnimation.name = "exhaust";
+	exhaustAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-idle-1"));
+	exhaustAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-idle-2"));
+	setAnimation(exhaustAnimation);
+
+	Animation deathAnimation = Animation();
+
+	deathAnimation.name = "death";
+	deathAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-idle-3"));
+	setAnimation(deathAnimation);
 }
 
 

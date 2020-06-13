@@ -106,6 +106,7 @@ void PlayScene::handleEvents()
 	m_pPlayer->update();
 	checkCollision();
 
+
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		TheGame::Instance()->quit();
@@ -132,6 +133,10 @@ void PlayScene::start()
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
+
+	// Enemy
+	m_pAlien = new Enemy();
+	addChild(m_pAlien);
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
@@ -252,3 +257,5 @@ void PlayScene::checkCollision()
 		}
 	}
 }
+
+

@@ -1,14 +1,14 @@
 #pragma once
-#ifndef __PLANE__
-#define __PLANE__
-
 #include "Sprite.h"
 
-class Plane final : public Sprite
+#ifndef __ALIEN__
+#define __ALIEN__
+
+class Enemy final : public Sprite 
 {
 public:
-	Plane();
-	~Plane();
+	Enemy();
+	~Enemy();
 
 	// Life Cycle Functions
 	virtual void draw() override;
@@ -21,4 +21,4 @@ private:
 	int damage = 50;
 };
 
-#endif /* defined (__PLANE__) */
+#endif /* defined (__ALIEN__) */

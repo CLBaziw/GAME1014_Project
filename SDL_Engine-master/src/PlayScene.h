@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "Plane.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Button.h"
 
 class PlayScene : public Scene
@@ -28,6 +29,8 @@ private:
 
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
+	Enemy* m_pAlien;
+
 	bool m_playerFacingRight;
 
 	Button* m_pPauseButton;

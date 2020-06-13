@@ -1,4 +1,0 @@
-character-0 1 1 81 58
-character-1 80 1 81 58
-character-2 160 1 81 58
-character-3 240 1 81 58
