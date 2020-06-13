@@ -135,7 +135,7 @@ void PlayScene::start()
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
-	m_pPauseButton->getTransform()->position = glm::vec2(60.0f, 50.0f);
+	m_pPauseButton->getTransform()->position = glm::vec2(80.0f, 80.0f);
 	m_pPauseButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pPauseButton->setActive(false);
@@ -155,7 +155,7 @@ void PlayScene::start()
 
 	// Continue Button
 	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
-	m_pContinueButton->getTransform()->position = glm::vec2(150.0f, 50.0f);
+	m_pContinueButton->getTransform()->position = glm::vec2(170.0f, 80.0f);
 	m_pContinueButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pContinueButton->setActive(false);
@@ -177,7 +177,7 @@ void PlayScene::start()
 
 // Next Button
     m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
-    m_pNextButton ->getTransform()->position = glm::vec2(640, 50.0f);
+    m_pNextButton ->getTransform()->position = glm::vec2(830, 80.0f);
     m_pNextButton->addEventListener(CLICK, [&]()-> void
     {
     	m_pNextButton->setActive(false);
@@ -200,9 +200,9 @@ void PlayScene::start()
 void PlayScene::CheckBounds()
 {
 	// check left
-	if (m_pPlayer->getTransform()->position.x > 800 - m_pPlayer->getWidth() * 0.5)
+	if (m_pPlayer->getTransform()->position.x > 1000 - m_pPlayer->getWidth() * 0.5)
 	{
-		m_pPlayer->setPosition(800 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+		m_pPlayer->setPosition(1000 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
 	}
 	// check right
 	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
