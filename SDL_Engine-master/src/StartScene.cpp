@@ -60,7 +60,7 @@ void StartScene::handleEvents()
 void StartScene::start()
 {
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pStartLabel = new Label("START SCENE", "Playbill", 100, blue, glm::vec2(500, 120.0f));
+	m_pStartLabel = new Label("START SCENE", "Playbill", 100, blue, glm::vec2(500.0f, 120.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
