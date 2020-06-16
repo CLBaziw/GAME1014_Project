@@ -108,6 +108,7 @@
     <ClCompile Include="..\src\Bullet.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Background.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -230,6 +231,11 @@
     <ClInclude Include="..\src\EnemyAnimationState.h">
       <Filter>Enums</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BulletAnimationState.h" />
+    <ClInclude Include="..\src\Background.h">
+      <Filter>UI Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BulletAnimationState.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

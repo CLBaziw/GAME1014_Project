@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "TextureManager.h"
 
 PlayScene::PlayScene()
 {
@@ -134,6 +135,9 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
+	addChild(m_pBackground);
+
 	// Player Sprite
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);

@@ -8,6 +8,7 @@
 #include "Button.h"
 #include "Enemy.h"
 #include "Bullet.h"
+#include "Background.h"
 
 class PlayScene : public Scene
 {
@@ -33,6 +34,7 @@ private:
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
+	Background* m_pBackground;
 	bool m_playerFacingRight;
 
 	std::vector<Bullet*> m_pPlayerBulletVec;
