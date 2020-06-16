@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "TextureManager.h"
+#include "BulletAnimationState.h"
 #include <algorithm>
 
 Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
@@ -22,6 +23,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 
+	m_shooting = false;
 	m_jumping = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
 	m_maxVelX = 300.0;
@@ -116,6 +118,9 @@ bool Player::isJumping() { return m_jumping; }
 void Player::SetJumping(bool j) { m_jumping = j; }
 double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
+
+bool Player::isShooting() { return m_shooting; }
+void Player::SetShooting(bool s) { m_shooting = s; }
 
 void Player::m_buildAnimations()
 {
