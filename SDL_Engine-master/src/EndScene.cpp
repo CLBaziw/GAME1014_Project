@@ -53,6 +53,9 @@ void EndScene::handleEvents()
 
 void EndScene::start()
 {
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "startscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	addChild(m_pBackground);
+
 	const SDL_Color blue = { 0, 0, 255, 255 };
 	m_label = new Label("END SCENE", "Playbill", 100, blue, glm::vec2(500.0f, 120.0f));
 	m_label->setParent(this);

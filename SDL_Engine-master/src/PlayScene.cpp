@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "TextureManager.h"
 
 PlayScene::PlayScene()
 {
@@ -101,6 +102,16 @@ void PlayScene::handleEvents()
 			m_pPlayer->SetAccelY(-JUMPFORCE);
 			m_pPlayer->SetJumping(false);
 		}
+
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_LSHIFT) && !m_pPlayer->isShooting())
+		{
+			m_pPlayer->SetShooting(true);
+			PlayerShoot(); 
+		}
+		else if (EventManager::Instance().isKeyUp(SDL_SCANCODE_LSHIFT) && m_pPlayer->isShooting())
+		{
+			m_pPlayer->SetShooting(false);
+		}
 	}
 	
 	m_pPlayer->update();
@@ -124,6 +135,9 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
+	addChild(m_pBackground);
+
 	// Player Sprite
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
@@ -132,6 +146,9 @@ void PlayScene::start()
 	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
 	m_pEnemy = new Enemy();
 	addChild(m_pEnemy);
+
+	// Bullets
+	m_pPlayerBulletVec.reserve(10);
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
@@ -251,10 +268,48 @@ void PlayScene::checkCollision()
 	//	}
 	//}
 
+	// Player runs into enemy
 	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
 	{
 		std::cout << "Player and enemy collide" << std::endl;
 		// Kill player
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
+
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		if (COMA::squaredRadiusCheck(m_pEnemy, m_pPlayerBulletVec[i]))
+		{
+			std::cout << "Player killed enemy" << std::endl;
+			
+			/*delete m_pEnemy;
+			m_pEnemy = nullptr;*/
+			
+
+			/*delete m_pPlayerBulletVec[i];
+			m_pPlayerBulletVec[i] = nullptr;*/
+		}
+	}
+}
+
+void PlayScene::PlayerShoot()
+{
+	float x;
+	float y = m_pPlayer->getTransform()->position.y;
+
+	BulletAnimationState bState;
+
+	if (m_playerFacingRight)
+	{
+		bState = BULLET_MOVE_RIGHT;
+		x = m_pPlayer->getTransform()->position.x + 40;
+	}
+	else
+	{
+		bState = BULLET_MOVE_LEFT;
+		x = m_pPlayer->getTransform()->position.x - 40;
+	}
+
+	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
+	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 }

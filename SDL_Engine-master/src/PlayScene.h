@@ -8,6 +8,8 @@
 #include "Enemy.h"
 #include "Button.h"
 #include "Enemy.h"
+#include "Bullet.h"
+#include "Background.h"
 
 class PlayScene : public Scene
 {
@@ -25,17 +27,25 @@ public:
 	void CheckBounds();
 	void checkCollision();
 
+	void PlayerShoot();
+
 private:
 	glm::vec2 m_mousePosition;
 
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
+	Background* m_pBackground;
 	bool m_playerFacingRight;
+
+	std::vector<Bullet*> m_pPlayerBulletVec;
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
 	Button* m_pNextButton;
+
+	float m_shootTime;
+	float m_currentTime;
 
 	// movement for character
 	int moveX = 0;
