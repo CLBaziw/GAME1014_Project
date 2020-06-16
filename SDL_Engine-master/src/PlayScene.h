@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "Plane.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Button.h"
 #include "Enemy.h"
 #include "Bullet.h"
