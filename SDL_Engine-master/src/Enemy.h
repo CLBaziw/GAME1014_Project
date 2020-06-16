@@ -1,24 +1,28 @@
 #pragma once
+#ifndef __ENEMY__
+#define __ENEMY__
+
+#include "EnemyAnimationState.h"
 #include "Sprite.h"
 
-#ifndef __ALIEN__
-#define __ALIEN__
-
-class Enemy final : public Sprite 
+class Enemy final : public Sprite
 {
 public:
 	Enemy();
 	~Enemy();
 
-	// Life Cycle Functions
+	// Life Cycle Methods
 	virtual void draw() override;
 	virtual void update() override;
 	virtual void clean() override;
-	int getDamage() { return damage; }
 
+	// Setters
+	void setAnimationState(EnemyAnimationState new_state);
+	void setPosition(int x, int y);
+	
 private:
 	void m_buildAnimations();
-	int damage = 50;
+	EnemyAnimationState m_currentAnimationState;
 };
 
-#endif /* defined (__ALIEN__) */
+#endif /* defined (__ENEMY__) */

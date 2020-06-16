@@ -2,11 +2,13 @@
 #ifndef __PLAYER__
 #define __PLAYER__
 
-#define GRAV 1.6
-#define JUMPFORCE 24.0
-
 #include "PlayerAnimationState.h"
 #include "Sprite.h"
+#include "Bullet.h"
+#include <vector>
+
+#define GRAV 1.6
+#define JUMPFORCE 24.0
 
 class Player final : public Sprite
 {
@@ -23,7 +25,7 @@ public:
 	void setAnimationState(PlayerAnimationState new_state);
 	void setPosition(int x, int y);
 
-	// jumping
+	// Movement
 	void Stop();
 	void StopX();
 	void StopY();
@@ -33,16 +35,17 @@ public:
 	void SetJumping(bool j);
 	double GetVelX();
 	double GetVelY();
-	void checkLife(int currentHp);
-	int getHit(int damage);
 
-
+	// Shooting
+	bool isShooting();
+	void SetShooting(bool s);
 
 private:
 	void m_buildAnimations();
 	PlayerAnimationState m_currentAnimationState;
 
 	bool m_jumping;
+	bool m_shooting;
 	double m_accelX, m_accelY, m_velX, m_maxVelX, m_velY, m_maxVelY, m_drag, m_grav;
 	int maxHp = 300; // set hero hit point
 	int currentHp = 300;

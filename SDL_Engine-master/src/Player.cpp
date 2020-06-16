@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "TextureManager.h"
+#include "BulletAnimationState.h"
 #include <algorithm>
 
 Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
@@ -17,11 +18,12 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	// set frame height
 	setHeight(58);
 
-	getTransform()->position = glm::vec2(200.0f, 600.0f);
+	getTransform()->position = glm::vec2(500.0f, 600.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 
+	m_shooting = false;
 	m_jumping = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
 	m_maxVelX = 300.0;
@@ -117,32 +119,8 @@ void Player::SetJumping(bool j) { m_jumping = j; }
 double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 
-void Player::checkLife(int remainedHp)
-{
-	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;
-
-	if (remainedHp < maxHp)
-	{
-		TextureManager::Instance()->playAnimation("resources", getAnimation("exhaust"),
-			x, y, 0.12f, 0, 255, true);
-	}
-
-	if (remainedHp <= 0)
-	{
-		TextureManager::Instance()->playAnimation("resources", getAnimation("death"),
-			x, y, 0.12f, 0, 255, true);
-	}
-}
-
-int Player::getHit(int damage)
-{
-	currentHp -= damage;
-	return currentHp;
-}
-
-
-
+bool Player::isShooting() { return m_shooting; }
+void Player::SetShooting(bool s) { m_shooting = s; }
 
 void Player::m_buildAnimations()
 {
@@ -162,19 +140,4 @@ void Player::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-run-3"));
 
 	setAnimation(runAnimation);
-
-	Animation exhaustAnimation = Animation();
-
-	exhaustAnimation.name = "exhaust";
-	exhaustAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-idle-1"));
-	exhaustAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-idle-2"));
-	setAnimation(exhaustAnimation);
-
-	Animation deathAnimation = Animation();
-
-	deathAnimation.name = "death";
-	deathAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-idle-3"));
-	setAnimation(deathAnimation);
 }
-
-
