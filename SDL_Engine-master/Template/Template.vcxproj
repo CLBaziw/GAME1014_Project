@@ -155,6 +155,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Background.cpp" />
+    <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\Enemy.cpp" />
@@ -184,6 +186,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Animation.h" />
+    <ClInclude Include="..\src\Background.h" />
+    <ClInclude Include="..\src\Bullet.h" />
+    <ClInclude Include="..\src\BulletAnimationState.h" />
     <ClInclude Include="..\src\Button.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\CollisionShape.h" />
@@ -222,6 +227,9 @@
     <ClInclude Include="..\src\TextureManager.h" />
     <ClInclude Include="..\src\Transform.h" />
     <ClInclude Include="..\src\Util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\sprites\gamesprite.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
