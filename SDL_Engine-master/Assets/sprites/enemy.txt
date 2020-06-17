@@ -1,0 +1,10 @@
+enemy-idle-0 1 1 230 439
+enemy-idle-1 230 1 230 439
+enemy-idle-2 460 1 230 439
+enemy-idle-3 690 1 230 439
+enemy-run-0 920 1 193 436
+enemy-run-1 1113 1 193 440
+enemy-run-2 1306 1 200 442
+enemy-run-3 1506 1 180 431
+enemy-run-4 1686 1 184 434
+enemy-run-5 1870 1 176 435

@@ -9,11 +9,11 @@
 class Button : public UIControl
 {
 public:
-	explicit Button(const std::string& image_path = "../Assets/textures/StartButton.png", 
-	                std::string button_name = "startButton", 
-	                GameObjectType type = START_BUTTON, 
-	                glm::vec2 position = glm::vec2(0.0f, 0.0f), bool is_centered = true);
-	
+	explicit Button(const std::string& image_path = "../Assets/Menu Asset/play-button.png",
+		std::string button_name = "startButton",
+		GameObjectType type = START_BUTTON,
+		glm::vec2 position = glm::vec2(0.0f, 0.0f), bool is_centered = true);
+
 	~Button();
 
 	// Life Cycle Events
@@ -24,7 +24,7 @@ public:
 	// button setters
 	void setAlpha(Uint8 alpha);
 	void setActive(bool value);
-	
+
 private:
 	Uint8 m_alpha;
 	std::string m_name;
