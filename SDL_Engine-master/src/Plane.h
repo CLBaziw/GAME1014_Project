@@ -14,9 +14,11 @@ public:
 	virtual void draw() override;
 	virtual void update() override;
 	virtual void clean() override;
+	int getDamage() { return damage; }
 
 private:
 	void m_buildAnimations();
+	int damage = 50;
 };
 
 #endif /* defined (__PLANE__) */
