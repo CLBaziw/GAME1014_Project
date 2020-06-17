@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "TextureManager.h"
 
 PlayScene::PlayScene()
 {
@@ -101,6 +102,16 @@ void PlayScene::handleEvents()
 			m_pPlayer->SetAccelY(-JUMPFORCE);
 			m_pPlayer->SetJumping(false);
 		}
+
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_LSHIFT) && !m_pPlayer->isShooting())
+		{
+			m_pPlayer->SetShooting(true);
+			PlayerShoot(); 
+		}
+		else if (EventManager::Instance().isKeyUp(SDL_SCANCODE_LSHIFT) && m_pPlayer->isShooting())
+		{
+			m_pPlayer->SetShooting(false);
+		}
 	}
 	
 	m_pPlayer->update();
@@ -124,18 +135,28 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-	// Plane Sprite
-	m_pPlaneSprite = new Plane();
-	addChild(m_pPlaneSprite);
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
+	addChild(m_pBackground);
 
 	// Player Sprite
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
+	m_pEnemy = new Enemy();
+	addChild(m_pEnemy);
+
+	// CREATE OBSTACLE HERE - Like above ^
+	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
+	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
+
+	// Bullets
+	m_pPlayerBulletVec.reserve(10);
+
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
-	m_pPauseButton->getTransform()->position = glm::vec2(60.0f, 50.0f);
+	m_pPauseButton->getTransform()->position = glm::vec2(80.0f, 80.0f);
 	m_pPauseButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pPauseButton->setActive(false);
@@ -155,7 +176,7 @@ void PlayScene::start()
 
 	// Continue Button
 	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
-	m_pContinueButton->getTransform()->position = glm::vec2(150.0f, 50.0f);
+	m_pContinueButton->getTransform()->position = glm::vec2(170.0f, 80.0f);
 	m_pContinueButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pContinueButton->setActive(false);
@@ -177,7 +198,7 @@ void PlayScene::start()
 
 // Next Button
     m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
-    m_pNextButton ->getTransform()->position = glm::vec2(640, 50.0f);
+    m_pNextButton ->getTransform()->position = glm::vec2(830, 80.0f);
     m_pNextButton->addEventListener(CLICK, [&]()-> void
     {
     	m_pNextButton->setActive(false);
@@ -200,11 +221,10 @@ void PlayScene::start()
 void PlayScene::CheckBounds()
 {
 	// check left
-	if (m_pPlayer->getTransform()->position.x > 800 - m_pPlayer->getWidth() * 0.5)
+	if (m_pPlayer->getTransform()->position.x > 1000 - m_pPlayer->getWidth() * 0.5)
 	{
-		m_pPlayer->setPosition(800 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+		m_pPlayer->setPosition(1000 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
 	}
-
 	// check right
 	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
 	{
@@ -215,7 +235,6 @@ void PlayScene::CheckBounds()
 	{
 		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
 	}
-
 	// check down
 	if (m_pPlayer->getTransform()->position.y > 600 - m_pPlayer->getHeight())
 	{
@@ -227,28 +246,74 @@ void PlayScene::CheckBounds()
 
 void PlayScene::checkCollision()
 {
-	if (COMA::AABBCheck(m_pPlayer, m_pPlaneSprite))
+	// PLATFORM CHECKS
+	//if (COMA::AABBCheck(m_pPlayer, m_pPlaneSprite))
+	//{
+	//	if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->GetVelX() <= m_pPlaneSprite->getTransform()->position.x)
+	//	{ // Collision from left of obstacle.
+	//		m_pPlayer->StopX(); // Stop the player from moving horizontally.
+	//		m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
+	//	}
+	//	else if (m_pPlayer->getTransform()->position.x - (float)m_pPlayer->GetVelX() >= m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth())
+	//	{ // Collision from right of obstacle.
+	//		m_pPlayer->StopX();
+	//		m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth(), m_pPlayer->getTransform()->position.y);
+	//	}
+	//	else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - (float)m_pPlayer->GetVelY() <= m_pPlaneSprite->getTransform()->position.y)
+	//	{ // Collision from top side of obstacle.
+	//		m_pPlayer->SetJumping(true);
+	//		m_pPlayer->StopY();
+	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y - m_pPlayer->getHeight() - 1);
+	//	}
+	//	else if (m_pPlayer->getTransform()->position.y - (float)m_pPlayer->GetVelY() >= m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight())
+	//	{ // Collision from bottom side of obstacle.
+	//		m_pPlayer->StopY();
+	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight());
+	//	}
+	//}
+
+	// Player runs into enemy
+	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
 	{
-		if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->GetVelX() <= m_pPlaneSprite->getTransform()->position.x)
-		{ // Collision from left of obstacle.
-			m_pPlayer->StopX(); // Stop the player from moving horizontally.
-			m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
-		}
-		else if (m_pPlayer->getTransform()->position.x - (float)m_pPlayer->GetVelX() >= m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth())
-		{ // Collision from right of obstacle.
-			m_pPlayer->StopX();
-			m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth(), m_pPlayer->getTransform()->position.y);
-		}
-		else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - (float)m_pPlayer->GetVelY() <= m_pPlaneSprite->getTransform()->position.y)
-		{ // Collision from top side of obstacle.
-			m_pPlayer->SetJumping(true);
-			m_pPlayer->StopY();
-			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y - m_pPlayer->getHeight() - 1);
-		}
-		else if (m_pPlayer->getTransform()->position.y - (float)m_pPlayer->GetVelY() >= m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight())
-		{ // Collision from bottom side of obstacle.
-			m_pPlayer->StopY();
-			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight());
+		std::cout << "Player and enemy collide" << std::endl;
+		// Kill player
+		TheGame::Instance()->changeSceneState(END_SCENE);
+	}
+
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		if (COMA::squaredRadiusCheck(m_pEnemy, m_pPlayerBulletVec[i]))
+		{
+			std::cout << "Player killed enemy" << std::endl;
+			
+			/*delete m_pEnemy;
+			m_pEnemy = nullptr;*/
+			
+
+			/*delete m_pPlayerBulletVec[i];
+			m_pPlayerBulletVec[i] = nullptr;*/
 		}
 	}
+}
+
+void PlayScene::PlayerShoot()
+{
+	float x;
+	float y = m_pPlayer->getTransform()->position.y;
+
+	BulletAnimationState bState;
+
+	if (m_playerFacingRight)
+	{
+		bState = BULLET_MOVE_RIGHT;
+		x = m_pPlayer->getTransform()->position.x + 40;
+	}
+	else
+	{
+		bState = BULLET_MOVE_LEFT;
+		x = m_pPlayer->getTransform()->position.x - 40;
+	}
+
+	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
+	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 }
