@@ -23,6 +23,7 @@ public:
 
 private:
 	Label* m_pStartLabel{};
+	Label* m_pNameLabel{};
 	Label* m_pInstructionsLabel{};
 	Background* m_pBackground;
 
