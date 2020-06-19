@@ -3,7 +3,6 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Button.h"
@@ -32,7 +31,6 @@ public:
 private:
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
 	Background* m_pBackground;

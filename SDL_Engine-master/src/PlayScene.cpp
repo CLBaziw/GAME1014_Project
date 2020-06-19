@@ -147,6 +147,10 @@ void PlayScene::start()
 	m_pEnemy = new Enemy();
 	addChild(m_pEnemy);
 
+	// CREATE OBSTACLE HERE - Like above ^
+	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
+	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
+
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
 
