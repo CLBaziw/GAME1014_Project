@@ -65,7 +65,7 @@ void StartScene::start()
 
 	const SDL_Color Metallicgold = { 212,175, 55, 0 };
 
-	m_pStartLabel = new Label("MET", "galaxy_1", 100, Metallicgold, glm::vec2(500.0f, 120.0f));
+	m_pStartLabel = new Label("M.E.T", "galaxy_1", 100, Metallicgold, glm::vec2(500.0f, 120.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
