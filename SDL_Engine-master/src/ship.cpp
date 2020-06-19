@@ -6,7 +6,7 @@
 
 Ship::Ship() : m_maxSpeed(10.0f)
 {
-	TextureManager::Instance()->load("../Assets/textures/ship3.png","ship");
+	TextureManager::Instance()->load("../Assets/textures/spacestation.png","ship");
 
 	auto size = TextureManager::Instance()->getTextureSize("ship");
 	setWidth(size.x);
@@ -19,7 +19,7 @@ Ship::Ship() : m_maxSpeed(10.0f)
 	setType(SHIP);
 	
 	m_currentHeading = 0.0f; // current facing angle
-	m_currentDirection = glm::vec2(1.0f, 0.0f); // facing right
+	m_currentDirection = glm::vec2(3.0f, 0.0f); // facing right
 	m_turnRate = 5.0f; // 5 degrees per frame
 }
 
@@ -34,7 +34,7 @@ void Ship::draw()
 	const auto y = getTransform()->position.y;
 
 	// draw the ship
-	TextureManager::Instance()->draw("ship", x, y, m_currentHeading, 255, true);
+	TextureManager::Instance()->draw("ship", x, y, m_currentHeading, 225, true);
 }
 
 
@@ -128,7 +128,7 @@ void Ship::m_checkBounds()
 
 	if (getTransform()->position.x < 0)
 	{
-		getTransform()->position = glm::vec2(800.0f, getTransform()->position.y);
+		getTransform()->position = glm::vec2(400.0f, getTransform()->position.y);
 	}
 
 	if (getTransform()->position.y > Config::SCREEN_HEIGHT)
