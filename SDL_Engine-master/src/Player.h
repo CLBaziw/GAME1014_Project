@@ -23,7 +23,7 @@ public:
 
 	// setters
 	void setAnimationState(PlayerAnimationState new_state);
-	void setPosition(int x, int y);
+	void setPosition(float x, float y);
 
 	// Movement
 	void Stop();
@@ -35,14 +35,20 @@ public:
 	void SetJumping(bool j);
 	double GetVelX();
 	double GetVelY();
+	void SetX(float x);
+	void SetY(float y);
 
 	// Shooting
 	bool isShooting();
 	void SetShooting(bool s);
 
+	void setDst(/*float x, float y, float w, float h*/);
+	SDL_FRect& getDst();
+
 private:
 	void m_buildAnimations();
 	PlayerAnimationState m_currentAnimationState;
+	SDL_FRect dst;
 
 	bool m_jumping;
 	bool m_shooting;

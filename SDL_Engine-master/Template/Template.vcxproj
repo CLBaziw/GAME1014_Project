@@ -232,6 +232,7 @@
     <ClInclude Include="..\src\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Assets\plat\platsprites.png" />
     <Image Include="..\Assets\sprites\gamesprite.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
