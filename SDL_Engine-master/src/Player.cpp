@@ -13,12 +13,14 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("resources"));
 
 	// set frame width
-	setWidth(53);
+	setWidth(77);
 
 	// set frame height
-	setHeight(58);
+	setHeight(70);
 
-	getTransform()->position = glm::vec2(500.0f, 600.0f);
+
+
+	getTransform()->position = glm::vec2(380.0f, 400.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
@@ -97,7 +99,7 @@ void Player::setAnimationState(const PlayerAnimationState new_state)
 	m_currentAnimationState = new_state;
 }
 
-void Player::setPosition(int x, int y)
+void Player::setPosition(float x, float y)
 {
 	getTransform()->position.x = x;
 	getTransform()->position.y = y;
@@ -119,8 +121,38 @@ void Player::SetJumping(bool j) { m_jumping = j; }
 double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 
+void Player::SetX(float x)
+{
+	//getTransform()->position.x = x;
+	getTransform()->position.x = x;
+}
+
+void Player::SetY(float y)
+{
+	//getTransform()->position.y = y;
+	getTransform()->position.y = y;
+}
+
 bool Player::isShooting() { return m_shooting; }
 void Player::SetShooting(bool s) { m_shooting = s; }
+
+void Player::setDst(/*float x, float y, float w, float h*/)
+{
+	//getTransform()->position.x = x;
+	dst.x = getTransform()->position.x;	
+	
+	//getTransform()->position.y = y;
+	dst.y = getTransform()->position.y;
+
+	dst.w = getWidth();
+
+	dst.h = getHeight();
+}
+
+SDL_FRect& Player::getDst()
+{
+	return dst;
+}
 
 void Player::m_buildAnimations()
 {
