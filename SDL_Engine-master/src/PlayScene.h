@@ -3,13 +3,13 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Button.h"
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Background.h"
+#include "Platform.h"
 
 class PlayScene : public Scene
 {
@@ -32,10 +32,13 @@ public:
 private:
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
 	Background* m_pBackground;
+	Platform* m_platform;
+	//SDL_FRect* c_pPlayer;
+	//SDL_FRect* c_platform;
+
 	bool m_playerFacingRight;
 
 	std::vector<Bullet*> m_pPlayerBulletVec;
