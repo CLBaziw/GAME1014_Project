@@ -28,7 +28,7 @@ void EndScene::clean()
 
 	delete m_pRestartButton;
 	m_pRestartButton = nullptr;
-	
+
 	removeAllChildren();
 }
 
@@ -53,17 +53,17 @@ void EndScene::handleEvents()
 
 void EndScene::start()
 {
-	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "startscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	m_pBackground = new Background("../Assets/backgrounds/startscene.png", "startscene-background", BACKGROUND, glm::vec2(0, 0), true);
 	addChild(m_pBackground);
 
-	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_label = new Label("END SCENE", "Consolas", 80, blue, glm::vec2(400.0f, 40.0f));
+	const SDL_Color Metallicgold = { 212,175, 55, 0 };
+	m_label = new Label("END SCENE", "galaxy_1", 100, Metallicgold, glm::vec2(500.0f, 120.0f));
 	m_label->setParent(this);
 	addChild(m_label);
 
 	// Restart Button
 	m_pRestartButton = new Button("../Assets/Menu Asset/play-again.png", "restartButton", RESTART_BUTTON);
-	m_pRestartButton->getTransform()->position = glm::vec2(400.0f, 400.0f);
+	m_pRestartButton->getTransform()->position = glm::vec2(500.0f, 500.0f);
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);

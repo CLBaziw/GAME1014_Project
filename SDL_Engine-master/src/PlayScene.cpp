@@ -143,16 +143,27 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+
+
 	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
 	m_pEnemy = new Enemy();
 	addChild(m_pEnemy);
+
+	// CREATE OBSTACLE HERE - Like above ^
+	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
+	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
+	m_platform = new Platform(380, 450);
+	addChild(m_platform);
+
+
+
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
-	m_pPauseButton->getTransform()->position = glm::vec2(60.0f, 50.0f);
+	m_pPauseButton->getTransform()->position = glm::vec2(80.0f, 80.0f);
 	m_pPauseButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pPauseButton->setActive(false);
@@ -172,7 +183,7 @@ void PlayScene::start()
 
 	// Continue Button
 	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
-	m_pContinueButton->getTransform()->position = glm::vec2(150.0f, 50.0f);
+	m_pContinueButton->getTransform()->position = glm::vec2(170.0f, 80.0f);
 	m_pContinueButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pContinueButton->setActive(false);
@@ -194,7 +205,7 @@ void PlayScene::start()
 
 // Next Button
     m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
-    m_pNextButton ->getTransform()->position = glm::vec2(640, 50.0f);
+    m_pNextButton ->getTransform()->position = glm::vec2(830, 80.0f);
     m_pNextButton->addEventListener(CLICK, [&]()-> void
     {
     	m_pNextButton->setActive(false);
@@ -217,9 +228,9 @@ void PlayScene::start()
 void PlayScene::CheckBounds()
 {
 	// check left
-	if (m_pPlayer->getTransform()->position.x > 800 - m_pPlayer->getWidth() * 0.5)
+	if (m_pPlayer->getTransform()->position.x > 1000 - m_pPlayer->getWidth() * 0.5)
 	{
-		m_pPlayer->setPosition(800 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+		m_pPlayer->setPosition(1000 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
 	}
 	// check right
 	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
@@ -242,31 +253,56 @@ void PlayScene::CheckBounds()
 
 void PlayScene::checkCollision()
 {
-	// PLATFORM CHECKS
-	//if (COMA::AABBCheck(m_pPlayer, m_pPlaneSprite))
+	 //PLATFORM CHECKS
+	//if (COMA::AABBCheck(m_pPlayer, m_platform))
 	//{
-	//	if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->GetVelX() <= m_pPlaneSprite->getTransform()->position.x)
+	//	if (c_pPlayer->x + c_pPlayer->w - m_pPlayer->GetVelX() <= c_platform->x)
 	//	{ // Collision from left of obstacle.
 	//		m_pPlayer->StopX(); // Stop the player from moving horizontally.
-	//		m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
+	//		m_pPlayer->SetX(c_platform->x - c_pPlayer->w);
 	//	}
-	//	else if (m_pPlayer->getTransform()->position.x - (float)m_pPlayer->GetVelX() >= m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth())
+	//	else if (c_pPlayer->x - (float)m_pPlayer->GetVelX() >= c_platform->x + c_platform->w)
 	//	{ // Collision from right of obstacle.
 	//		m_pPlayer->StopX();
-	//		m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth(), m_pPlayer->getTransform()->position.y);
+	//		m_pPlayer->SetX(c_platform->x + c_platform->w);
 	//	}
-	//	else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - (float)m_pPlayer->GetVelY() <= m_pPlaneSprite->getTransform()->position.y)
+	//	else if (c_pPlayer->y + c_pPlayer->h - (float)m_pPlayer->GetVelY() <= c_platform->y)
 	//	{ // Collision from top side of obstacle.
 	//		m_pPlayer->SetJumping(true);
 	//		m_pPlayer->StopY();
-	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y - m_pPlayer->getHeight() - 1);
+	//		m_pPlayer->SetY(c_platform->y - c_pPlayer->h - 1);
 	//	}
-	//	else if (m_pPlayer->getTransform()->position.y - (float)m_pPlayer->GetVelY() >= m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight())
+	//	else if (c_pPlayer->y - (float)m_pPlayer->GetVelY() >= c_platform->y + c_platform->h)
 	//	{ // Collision from bottom side of obstacle.
 	//		m_pPlayer->StopY();
-	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight());
+	//		m_pPlayer->SetY(c_platform->y + c_platform->h);
 	//	}
-	//}
+	//}	
+	if (COMA::AABBCheck(m_pPlayer, m_platform))
+	{
+		std::cout << "Colliding" << std::endl;
+		if (m_pPlayer->getDst().x + m_pPlayer->getDst().w - m_pPlayer->getRigidBody()->velocity.x <= m_platform->getDst().x)
+		{ // Collision from left of obstacle.
+			m_pPlayer->StopX(); // Stop the player from moving horizontally.
+			m_pPlayer->SetX(m_platform->getDst().x - m_pPlayer->getDst().w);
+		}
+		else if (m_pPlayer->getDst().x - (float)m_pPlayer->getRigidBody()->velocity.x >= m_platform->getDst().x + m_platform->getDst().w)
+		{ // Collision from right of obstacle.
+			m_pPlayer->StopX();
+			m_pPlayer->SetX(m_platform->getDst().x + m_platform->getDst().w);
+		}
+		else if (m_pPlayer->getDst().y + m_pPlayer->getDst().h - (float)m_pPlayer->getRigidBody()->velocity.y <= m_platform->getDst().y)
+		{ // Collision from top side of obstacle.
+			m_pPlayer->SetJumping(true);
+			m_pPlayer->StopY();
+			m_pPlayer->SetY(m_platform->getDst().y - m_pPlayer->getDst().h - 1);
+		}
+		else if (m_pPlayer->getDst().y - (float)m_pPlayer->getRigidBody()->velocity.y >= m_platform->getDst().y + m_platform->getDst().h)
+		{ // Collision from bottom side of obstacle.
+			m_pPlayer->StopY();
+			m_pPlayer->SetY(m_platform->getDst().y + m_platform->getDst().h);
+		}
+	}
 
 	// Player runs into enemy
 	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 

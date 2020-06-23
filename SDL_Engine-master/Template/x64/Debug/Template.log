@@ -1,0 +1,55 @@
+﻿  Button.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  CollisionManager.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Enemy.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Sprite.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  UIControl.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  DisplayObject.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  EndScene.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  FontManager.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\FontManager.h(11,9): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  Game.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Game.h(11,10): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  GameController.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\GameController.h(5,10): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  GameObject.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Label.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  PlayScene.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  main.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Game.h(11,10): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  Plane.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Player.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Renderer.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Renderer.h(4,10): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  Scene.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  ship.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  SoundManager.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\SoundManager.h(11,10): fatal error C1083: 无法打开包括文件: “SDL_mixer.h”: No such file or directory
+  正在生成代码...
+  正在编译...
+  EventManager.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\EventManager.h(5,10): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  SpriteSheet.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\SpriteSheet.h(7,10): fatal error C1083: 无法打开包括文件: “SDL.h”: No such file or directory
+  StartScene.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Target.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Transform.h(4,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  TextureManager.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\TextureManager.h(10,10): fatal error C1083: 无法打开包括文件: “glm/vec2.hpp”: No such file or directory
+  Util.cpp
+D:\GAME production2\GAME1014_Project-master\SDL_Engine-master\src\Util.h(5,10): fatal error C1083: 无法打开包括文件: “GLM/vec2.hpp”: No such file or directory
+  正在生成代码...

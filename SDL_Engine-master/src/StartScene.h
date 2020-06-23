@@ -20,9 +20,10 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-	
+
 private:
 	Label* m_pStartLabel{};
+	Label* m_pNameLabel{};
 	Label* m_pInstructionsLabel{};
 	Background* m_pBackground;
 

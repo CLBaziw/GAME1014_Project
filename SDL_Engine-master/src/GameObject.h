@@ -51,6 +51,7 @@ private:
 	int m_height;
 
 	GameObjectType m_type;
+
 };
 
 #endif /* defined (__GAME_OBJECT__) */
