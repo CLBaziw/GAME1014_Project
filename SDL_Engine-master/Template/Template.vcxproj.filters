@@ -256,5 +256,8 @@
     <Image Include="..\Assets\sprites\gamesprite.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="..\Assets\plat\platsprites.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>
