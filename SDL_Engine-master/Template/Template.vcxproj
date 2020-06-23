@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Background.cpp" />
+    <ClCompile Include="..\src\Box.cpp" />
     <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
@@ -188,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\Background.h" />
+    <ClInclude Include="..\src\Box.h" />
     <ClInclude Include="..\src\Bullet.h" />
     <ClInclude Include="..\src\BulletAnimationState.h" />
     <ClInclude Include="..\src\Button.h" />

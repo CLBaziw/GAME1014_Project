@@ -8,7 +8,7 @@
 #include <vector>
 
 #define GRAV 6.0
-#define JUMPFORCE 210.0
+#define JUMPFORCE 90.0
 
 class Player final : public Sprite
 {
@@ -33,15 +33,12 @@ public:
 	void SetAccelY(double a);
 	bool isJumping();
 	void SetJumping(bool j);
-	void SetX(float x);
-	void SetY(float y);
+	double GetVelX();
+	double GetVelY();
 
 	// Shooting
 	bool isShooting();
 	void SetShooting(bool s);
-
-	void setDst();
-	SDL_FRect& getDst();
 
 private:
 	void m_buildAnimations();
@@ -50,9 +47,7 @@ private:
 
 	bool m_jumping;
 	bool m_shooting;
-	float m_maxVelX, m_maxVelY, m_drag, m_grav;
-	int maxHp = 300; // set hero hit point
-	int currentHp = 300;
+	double m_accelX, m_accelY, m_velX, m_maxVelX, m_velY, m_maxVelY, m_drag, m_grav;
 };
 
 #endif /* defined (__PLAYER__) */

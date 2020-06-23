@@ -10,6 +10,8 @@
 #include "Bullet.h"
 #include "Background.h"
 #include "Platform.h"
+#include "Box.h"
+#include <vector>
 
 class PlayScene : public Scene
 {
@@ -29,13 +31,22 @@ public:
 
 	void PlayerShoot();
 
+	void MakeObstacles();
+
 private:
 	glm::vec2 m_mousePosition;
 
+	// Game Objects
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
 	Background* m_pBackground;
 	Platform* m_platform;
+	std::vector<Sprite*> m_pObstacles;
+
+	// Boxes for scrolling
+	std::vector<Box*> m_vec;
+	int m_numSpaces;
+
 	//SDL_FRect* c_pPlayer;
 	//SDL_FRect* c_platform;
 
@@ -53,7 +64,7 @@ private:
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
-	int moveSpeed = 5;
+	int moveSpeed = 10;
 
 };
 

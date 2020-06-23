@@ -8,7 +8,7 @@
 class Enemy final : public Sprite
 {
 public:
-	Enemy();
+	Enemy(int x, int y);
 	~Enemy();
 
 	// Life Cycle Methods

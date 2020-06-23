@@ -20,6 +20,7 @@ void PlayScene::update()
 {
 	updateDisplayList();
 	CheckBounds();
+	MakeObstacles();
 }
 
 void PlayScene::clean()
@@ -143,20 +144,14 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
-
-
-	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
-	m_pEnemy = new Enemy();
-	addChild(m_pEnemy);
-
-	// CREATE OBSTACLE HERE - Like above ^
-	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
-	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
-	m_platform = new Platform(380, 450);
-	addChild(m_platform);
-
-
-
+	// Obstacle Creation 
+	m_pObstacles.reserve(4);
+	m_vec.reserve(8);
+	m_numSpaces = 3;
+	for (int i = 0; i < 9; i++)
+	{
+		m_vec.push_back(new Box(128 * i, 536));
+	}
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
@@ -253,77 +248,53 @@ void PlayScene::CheckBounds()
 
 void PlayScene::checkCollision()
 {
-	 //PLATFORM CHECKS
-	//if (COMA::AABBCheck(m_pPlayer, m_platform))
-	//{
-	//	if (c_pPlayer->x + c_pPlayer->w - m_pPlayer->GetVelX() <= c_platform->x)
-	//	{ // Collision from left of obstacle.
-	//		m_pPlayer->StopX(); // Stop the player from moving horizontally.
-	//		m_pPlayer->SetX(c_platform->x - c_pPlayer->w);
-	//	}
-	//	else if (c_pPlayer->x - (float)m_pPlayer->GetVelX() >= c_platform->x + c_platform->w)
-	//	{ // Collision from right of obstacle.
-	//		m_pPlayer->StopX();
-	//		m_pPlayer->SetX(c_platform->x + c_platform->w);
-	//	}
-	//	else if (c_pPlayer->y + c_pPlayer->h - (float)m_pPlayer->GetVelY() <= c_platform->y)
-	//	{ // Collision from top side of obstacle.
-	//		m_pPlayer->SetJumping(true);
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->SetY(c_platform->y - c_pPlayer->h - 1);
-	//	}
-	//	else if (c_pPlayer->y - (float)m_pPlayer->GetVelY() >= c_platform->y + c_platform->h)
-	//	{ // Collision from bottom side of obstacle.
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->SetY(c_platform->y + c_platform->h);
-	//	}
-	//}	
-	if (COMA::AABBCheck(m_pPlayer, m_platform))
+	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		std::cout << "Colliding" << std::endl;
-		if (m_pPlayer->getDst().x + m_pPlayer->getDst().w - m_pPlayer->getRigidBody()->velocity.x <= m_platform->getDst().x)
-		{ // Collision from left of obstacle.
-			m_pPlayer->StopX(); // Stop the player from moving horizontally.
-			m_pPlayer->SetX(m_platform->getDst().x - m_pPlayer->getDst().w);
-		}
-		else if (m_pPlayer->getDst().x - (float)m_pPlayer->getRigidBody()->velocity.x >= m_platform->getDst().x + m_platform->getDst().w)
-		{ // Collision from right of obstacle.
-			m_pPlayer->StopX();
-			m_pPlayer->SetX(m_platform->getDst().x + m_platform->getDst().w);
-		}
-		else if (m_pPlayer->getDst().y + m_pPlayer->getDst().h - (float)m_pPlayer->getRigidBody()->velocity.y <= m_platform->getDst().y)
-		{ // Collision from top side of obstacle.
-			m_pPlayer->SetJumping(true);
-			m_pPlayer->StopY();
-			m_pPlayer->SetY(m_platform->getDst().y - m_pPlayer->getDst().h - 1);
-		}
-		else if (m_pPlayer->getDst().y - (float)m_pPlayer->getRigidBody()->velocity.y >= m_platform->getDst().y + m_platform->getDst().h)
-		{ // Collision from bottom side of obstacle.
-			m_pPlayer->StopY();
-			m_pPlayer->SetY(m_platform->getDst().y + m_platform->getDst().h);
-		}
-	}
-
-	// Player runs into enemy
-	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
-	{
-		std::cout << "Player and enemy collide" << std::endl;
-		// Kill player
-		TheGame::Instance()->changeSceneState(END_SCENE);
-	}
-
-	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
-	{
-		if (COMA::squaredRadiusCheck(m_pEnemy, m_pPlayerBulletVec[i]))
+		if (COMA::circleAABBCheck(m_pPlayer, m_pObstacles[i]))
 		{
-			std::cout << "Player killed enemy" << std::endl;
-			
-			/*delete m_pEnemy;
-			m_pEnemy = nullptr;*/
-			
+			std::cout << "Player colliding with obstacle" << std::endl;
+			if (m_pObstacles[i]->GetSafe())
+			{
+				if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->getRigidBody()->velocity.x <= m_pObstacles[i]->getTransform()->position.x)
+				{ // Collision from left of obstacle.
+					m_pPlayer->StopX(); // Stop the player from moving horizontally.
+					m_pPlayer->setPosition(m_pObstacles[i]->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
+				}
+				else if (m_pPlayer->getTransform()->position.x - m_pPlayer->getRigidBody()->velocity.x >= m_pObstacles[i]->getTransform()->position.x + m_pObstacles[i]->getWidth())
+				{ // Collision from right of obstacle.
+					m_pPlayer->StopX();
+					m_pPlayer->setPosition(m_pObstacles[i]->getTransform()->position.x + m_pObstacles[i]->getWidth(), m_pPlayer->getTransform()->position.y);
+				}
+				else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - m_pPlayer->getRigidBody()->velocity.y <= m_pObstacles[i]->getTransform()->position.y)
+				{ // Collision from top side of obstacle.
+					m_pPlayer->SetJumping(true);
+					m_pPlayer->StopY();
+					m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y - m_pPlayer->getHeight() - 1);
+				}
+				else if (m_pPlayer->getTransform()->position.y - m_pPlayer->getRigidBody()->velocity.y >= m_pObstacles[i]->getTransform()->position.y + m_pObstacles[i]->getHeight())
+				{ // Collision from bottom side of obstacle.
+					m_pPlayer->StopY();
+					m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y + m_pObstacles[i]->getHeight());
+				}
+			}
+			else
+			{
+				std::cout << "Player and enemy collide" << std::endl;
+				// Kill player
+				TheGame::Instance()->changeSceneState(END_SCENE);
+			}
+		}
 
-			/*delete m_pPlayerBulletVec[i];
-			m_pPlayerBulletVec[i] = nullptr;*/
+		// Check for bullet with enemy
+		for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+		{
+			if (m_pObstacles[i]->getType() == ENEMY)
+			{
+				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
+				{
+					std::cout << "Player killed enemy" << std::endl;
+				}
+			}
 		}
 	}
 }
@@ -348,4 +319,46 @@ void PlayScene::PlayerShoot()
 
 	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+}
+
+void PlayScene::MakeObstacles()
+{
+	// Check for out of bounds.
+	if ((m_vec[0])->GetX() <= -128) // Fully off-screen.
+	{
+		m_numSpaces++;
+		// Remove front element.
+		delete m_vec[0];
+		m_vec[0] = nullptr;
+		m_vec.erase(m_vec.begin());
+
+		// Add new box.
+		if (m_numSpaces >= 3) // Add new sprite if there has been enough spaces.
+		{
+			m_vec.push_back(new Box(128 * m_vec.size(), 536, true));
+
+			m_pObstacles.push_back(m_vec.back()->GetSprite());
+			addChild(m_pObstacles[m_pObstacles.size() - 1]);
+
+			if (m_pObstacles.size() > 3)
+			{
+				m_pObstacles[0] = nullptr;
+				m_pObstacles.erase(m_pObstacles.begin());
+
+				// Remove child
+			}
+
+			m_numSpaces = 0;
+		}
+		else // Create another empty space
+		{
+			m_vec.push_back(new Box(128 * m_vec.size(), 384, false));
+		}
+	}
+
+	// Scroll the boxes.
+	for (int col = 0; col < 9; col++)
+	{
+		m_vec[col]->Update();
+	}
 }

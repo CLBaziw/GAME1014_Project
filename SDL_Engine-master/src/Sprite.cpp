@@ -34,3 +34,6 @@ bool Sprite::m_animationExists(const std::string& id)
 {
 	return m_pAnimations.find(id) != m_pAnimations.end();
 }
+
+void Sprite::SetSafe(bool s) { m_bSafe = s; }
+bool Sprite::GetSafe() { return m_bSafe; }

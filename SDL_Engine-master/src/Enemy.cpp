@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 #include <algorithm>
 
-Enemy::Enemy()
+Enemy::Enemy(int x, int y)
 {
 	TextureManager::Instance()->loadSpriteSheet(
 		"../Assets/sprites/enemy_small.txt",
@@ -15,7 +15,7 @@ Enemy::Enemy()
 	setWidth(36);
 	setHeight(58);
 
-	getTransform()->position = glm::vec2(760.0f, 550.0f);
+	getTransform()->position = glm::vec2(x, y);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
