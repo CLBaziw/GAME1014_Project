@@ -281,23 +281,23 @@ void PlayScene::checkCollision()
 	if (COMA::AABBCheck(m_pPlayer, m_platform))
 	{
 		std::cout << "Colliding" << std::endl;
-		if (m_pPlayer->getDst().x + m_pPlayer->getDst().w - m_pPlayer->GetVelX() <= m_platform->getDst().x)
+		if (m_pPlayer->getDst().x + m_pPlayer->getDst().w - m_pPlayer->getRigidBody()->velocity.x <= m_platform->getDst().x)
 		{ // Collision from left of obstacle.
 			m_pPlayer->StopX(); // Stop the player from moving horizontally.
 			m_pPlayer->SetX(m_platform->getDst().x - m_pPlayer->getDst().w);
 		}
-		else if (m_pPlayer->getDst().x - (float)m_pPlayer->GetVelX() >= m_platform->getDst().x + m_platform->getDst().w)
+		else if (m_pPlayer->getDst().x - (float)m_pPlayer->getRigidBody()->velocity.x >= m_platform->getDst().x + m_platform->getDst().w)
 		{ // Collision from right of obstacle.
 			m_pPlayer->StopX();
 			m_pPlayer->SetX(m_platform->getDst().x + m_platform->getDst().w);
 		}
-		else if (m_pPlayer->getDst().y + m_pPlayer->getDst().h - (float)m_pPlayer->GetVelY() <= m_platform->getDst().y)
+		else if (m_pPlayer->getDst().y + m_pPlayer->getDst().h - (float)m_pPlayer->getRigidBody()->velocity.y <= m_platform->getDst().y)
 		{ // Collision from top side of obstacle.
 			m_pPlayer->SetJumping(true);
 			m_pPlayer->StopY();
 			m_pPlayer->SetY(m_platform->getDst().y - m_pPlayer->getDst().h - 1);
 		}
-		else if (m_pPlayer->getDst().y - (float)m_pPlayer->GetVelY() >= m_platform->getDst().y + m_platform->getDst().h)
+		else if (m_pPlayer->getDst().y - (float)m_pPlayer->getRigidBody()->velocity.y >= m_platform->getDst().y + m_platform->getDst().h)
 		{ // Collision from bottom side of obstacle.
 			m_pPlayer->StopY();
 			m_pPlayer->SetY(m_platform->getDst().y + m_platform->getDst().h);
