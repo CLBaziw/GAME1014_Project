@@ -13,7 +13,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("resources"));
 
 	// set frame width
-	setWidth(77);
+	setWidth(70);
 
 	// set frame height
 	setHeight(70);

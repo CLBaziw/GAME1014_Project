@@ -10,8 +10,6 @@ Platform::Platform(float x, float y)
 		"platform"
 	);
 
-
-
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platform"));
 	setType(PLATFORM);
 	
@@ -27,7 +25,6 @@ Platform::Platform(float x, float y)
 	//dst.y = getTransform()->position.y;
 	//dst.w = (float)getWidth();
 	//dst.h = (float)getHeight();
-
 
 	m_buildAnimations();
 }

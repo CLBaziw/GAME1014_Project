@@ -145,8 +145,8 @@ void PlayScene::start()
 	m_playerFacingRight = true;
 
 	// Obstacle Creation 
-	m_pObstacles.reserve(4);
-	m_vec.reserve(8);
+	m_pObstacles.reserve(5);
+	m_vec.reserve(10);
 	m_numSpaces = 3;
 	for (int i = 0; i < 9; i++)
 	{
@@ -335,12 +335,12 @@ void PlayScene::MakeObstacles()
 		// Add new box.
 		if (m_numSpaces >= 3) // Add new sprite if there has been enough spaces.
 		{
-			m_vec.push_back(new Box(128 * m_vec.size(), 536, true));
+			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536, true));
 
 			m_pObstacles.push_back(m_vec.back()->GetSprite());
 			addChild(m_pObstacles[m_pObstacles.size() - 1]);
 
-			if (m_pObstacles.size() > 3)
+			if (m_pObstacles.size() > 4)
 			{
 				m_pObstacles[0] = nullptr;
 				m_pObstacles.erase(m_pObstacles.begin());
@@ -357,7 +357,7 @@ void PlayScene::MakeObstacles()
 	}
 
 	// Scroll the boxes.
-	for (int col = 0; col < 9; col++)
+	for (int col = 0; col < m_vec.size(); col++)
 	{
 		m_vec[col]->Update();
 	}

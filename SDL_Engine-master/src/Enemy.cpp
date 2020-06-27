@@ -12,8 +12,8 @@ Enemy::Enemy(int x, int y)
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-sprite"));
 	
-	setWidth(36);
-	setHeight(58);
+	setWidth(128);
+	setHeight(128);
 
 	getTransform()->position = glm::vec2(x, y);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);

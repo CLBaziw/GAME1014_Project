@@ -30,6 +30,20 @@ Obstacle::~Obstacle() = default;
 void Obstacle::draw()
 {
 	// copy and replace what is necessary from enemy or bullet
+	switch (m_pObstacleType)
+	{
+	case OBSTACLE1:
+		// Set all necessary values (eg. texture, getTransform, etc.) depending on which obstacle is created
+		break;
+	case OBSTACLE2:
+
+		break;
+	case OBSTACLE3:
+
+		break;
+	default:
+		break;
+	}
 }
 
 void Obstacle::update()
