@@ -155,7 +155,11 @@ void PlayScene::start()
 	m_platform = new Platform(380, 450);
 	addChild(m_platform);
 
+	//Ground
+	m_ground = new ground(0, 587);
+	addChild(m_ground);
 
+	std::cout << "The height of the ground: " << m_ground->getHeight() << std::endl;
 
 
 	// Bullets
@@ -227,12 +231,12 @@ void PlayScene::start()
 
 void PlayScene::CheckBounds()
 {
-	// check left
-	if (m_pPlayer->getTransform()->position.x > 1000 - m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(1000 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
 	// check right
+	if (m_pPlayer->getTransform()->position.x > m_ground->getWidth() - m_pPlayer->getWidth() * 0.5)
+	{
+		m_pPlayer->setPosition(m_ground->getWidth() - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+	}
+	// check left
 	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
 	{
 		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
@@ -242,12 +246,12 @@ void PlayScene::CheckBounds()
 	{
 		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
 	}
-	// check down
-	if (m_pPlayer->getTransform()->position.y > 600 - m_pPlayer->getHeight())
+	//// check down
+	if (m_pPlayer->getTransform()->position.y > m_ground->getTransform()->position.y - (m_pPlayer->getHeight() * 0.6))
 	{
 		m_pPlayer->SetJumping(true);
 		m_pPlayer->StopY();
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 600 - m_pPlayer->getHeight());
+		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_ground->getTransform()->position.y - (m_pPlayer->getHeight()*0.6));
 	}
 }
 

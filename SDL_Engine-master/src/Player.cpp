@@ -28,7 +28,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	m_shooting = false;
 	m_jumping = false;
 	getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = getRigidBody()->velocity.x = getRigidBody()->velocity.y = 0.0;
-	m_maxVelX = 300.0;
+	m_maxVelX = 600.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
