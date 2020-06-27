@@ -152,7 +152,7 @@ void PlayScene::start()
 	// CREATE OBSTACLE HERE - Like above ^
 	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
 	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
-	m_platform = new Platform(380, 450);
+	m_platform = new Platform(380, 350);
 	addChild(m_platform);
 
 	//Ground
@@ -231,28 +231,28 @@ void PlayScene::start()
 
 void PlayScene::CheckBounds()
 {
-	// check right
-	if (m_pPlayer->getTransform()->position.x > m_ground->getWidth() - m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(m_ground->getWidth() - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
-	// check left
-	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
-	// check up
-	if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
-	{
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
-	}
-	//// check down
-	if (m_pPlayer->getTransform()->position.y > m_ground->getTransform()->position.y - (m_pPlayer->getHeight() * 0.6))
-	{
-		m_pPlayer->SetJumping(true);
-		m_pPlayer->StopY();
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_ground->getTransform()->position.y - (m_pPlayer->getHeight()*0.6));
-	}
+		// check right
+		if (m_pPlayer->getTransform()->position.x > m_ground->getWidth() - m_pPlayer->getWidth() * 0.5)
+		{
+			m_pPlayer->setPosition(m_ground->getWidth() - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+		}
+		// check left
+		if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
+		{
+			m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+		}
+		// check up
+		if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
+		{
+			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
+		}
+		//// check down
+		if (m_pPlayer->getTransform()->position.y > m_ground->getTransform()->position.y - (m_pPlayer->getHeight() * 0.6))
+		{
+			m_pPlayer->SetJumping(true);
+			m_pPlayer->StopY();
+			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_ground->getTransform()->position.y - (m_pPlayer->getHeight()*0.6));
+		}
 }
 
 void PlayScene::checkCollision()
@@ -285,27 +285,40 @@ void PlayScene::checkCollision()
 	if (COMA::AABBCheck(m_pPlayer, m_platform))
 	{
 		std::cout << "Colliding" << std::endl;
-		if (m_pPlayer->getDst().x + m_pPlayer->getDst().w - m_pPlayer->getRigidBody()->velocity.x <= m_platform->getDst().x)
-		{ // Collision from left of obstacle.
-			m_pPlayer->StopX(); // Stop the player from moving horizontally.
-			m_pPlayer->SetX(m_platform->getDst().x - m_pPlayer->getDst().w);
-		}
-		else if (m_pPlayer->getDst().x - (float)m_pPlayer->getRigidBody()->velocity.x >= m_platform->getDst().x + m_platform->getDst().w)
-		{ // Collision from right of obstacle.
-			m_pPlayer->StopX();
-			m_pPlayer->SetX(m_platform->getDst().x + m_platform->getDst().w);
-		}
-		else if (m_pPlayer->getDst().y + m_pPlayer->getDst().h - (float)m_pPlayer->getRigidBody()->velocity.y <= m_platform->getDst().y)
-		{ // Collision from top side of obstacle.
-			m_pPlayer->SetJumping(true);
-			m_pPlayer->StopY();
-			m_pPlayer->SetY(m_platform->getDst().y - m_pPlayer->getDst().h - 1);
-		}
-		else if (m_pPlayer->getDst().y - (float)m_pPlayer->getRigidBody()->velocity.y >= m_platform->getDst().y + m_platform->getDst().h)
-		{ // Collision from bottom side of obstacle.
-			m_pPlayer->StopY();
-			m_pPlayer->SetY(m_platform->getDst().y + m_platform->getDst().h);
-		}
+			if (m_pPlayer->getDst().x + m_pPlayer->getDst().w - m_pPlayer->getRigidBody()->velocity.x <= m_platform->getDst().x)
+			{ // Collision from left of obstacle.
+				m_pPlayer->StopX(); // Stop the player from moving horizontally.
+				m_pPlayer->SetX((float)m_platform->getDst().x - (float)m_pPlayer->getDst().w);
+				std::cout << "PosX of collision from left: " << m_pPlayer->getTransform()->position.x << std::endl;
+				std::cout << "Width: " << m_pPlayer->getWidth() << std::endl;
+				std::cout << "Height: " << m_pPlayer->getHeight() << std::endl;
+
+			}
+			else if (m_pPlayer->getDst().x - (float)m_pPlayer->getRigidBody()->velocity.x >= m_platform->getDst().x + m_platform->getDst().w)
+			{ // Collision from right of obstacle.
+				m_pPlayer->StopX();
+				m_pPlayer->SetX((float)m_platform->getDst().x + (float)m_platform->getDst().w);
+				std::cout << "PosX of collision from right: " << m_pPlayer->getTransform()->position.x << std::endl;
+				std::cout << "Width: " << m_pPlayer->getWidth() << std::endl;
+				std::cout << "Height: " << m_pPlayer->getHeight() << std::endl;
+			}
+			else if (m_pPlayer->getDst().y + m_pPlayer->getDst().h - (float)m_pPlayer->getRigidBody()->velocity.y <= m_platform->getDst().y)
+			{ // Collision from top side of obstacle.
+				m_pPlayer->SetJumping(true);
+				m_pPlayer->StopY();
+				m_pPlayer->SetY((float)m_platform->getDst().y - (float)m_pPlayer->getDst().h - 1);
+				std::cout << "PosY of collision on top: " << m_pPlayer->getTransform()->position.y << std::endl;
+				std::cout << "Width: " << m_pPlayer->getWidth() << std::endl;
+				std::cout << "Height: " << m_pPlayer->getHeight() << std::endl;
+			}
+			else if(m_pPlayer->getDst().y - (float)m_pPlayer->getRigidBody()->velocity.y >= m_platform->getDst().y + m_platform->getDst().h)
+			{ // Collision from bottom side of obstacle.
+				m_pPlayer->StopY();
+				m_pPlayer->SetY((float)m_platform->getDst().y + (float)m_platform->getDst().h);
+				std::cout << "PosY of collision belew the bottom: " << m_pPlayer->getTransform()->position.y << std::endl;
+				std::cout << "Width: " << m_pPlayer->getWidth() << std::endl;
+				std::cout << "Height: " << m_pPlayer->getHeight() << std::endl;
+			}
 	}
 
 	// Player runs into enemy

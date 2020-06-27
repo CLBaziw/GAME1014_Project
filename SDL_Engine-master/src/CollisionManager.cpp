@@ -52,45 +52,49 @@ bool CollisionManager::squaredRadiusCheck(GameObject* object1, GameObject* objec
 bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 {
 	// prepare relevant variables
-	const auto p1 = object1->getTransform()->position;
-	const auto p2 = object2->getTransform()->position;
-	const float p1Width = object1->getWidth();
-	const float p1Height = object1->getHeight();
-	const float p2Width = object2->getWidth();
-	const float p2Height = object2->getHeight();
+	//const auto p1 = object1->getTransform()->position;
+	//const auto p2 = object2->getTransform()->position;
+	//const float p1Width = object1->getWidth();
+	//const float p1Height = object1->getHeight();
+	//const float p2Width = object2->getWidth();
+	//const float p2Height = object2->getHeight();
 
-	if (
-		p1.x < p2.x + p2Width &&
-		p1.x + p1Width > p2.x&&
-		p1.y < p2.y + p2Height &&
-		p1.y + p1Height > p2.y
-		)
-	{
-		if (!object2->getRigidBody()->isColliding) {
+	//if (
+	//	p1.x < p2.x + p2Width &&
+	//	p1.x + p1Width > p2.x&&
+	//	p1.y < p2.y + p2Height &&
+	//	p1.y + p1Height > p2.y
+	//	)
+	//{
+	//	if (!object2->getRigidBody()->isColliding) {
 
-			object2->getRigidBody()->isColliding = true;
+	//		object2->getRigidBody()->isColliding = true;
 
-			switch (object2->getType()) {
-			case TARGET:
-				std::cout << "Collision with Target!" << std::endl;
-				SoundManager::Instance().playSound("yay", 0);
-				break;
-			default:
-				
-				break;
-			}
+	//		switch (object2->getType()) {
+	//		case TARGET:
+	//			std::cout << "Collision with Target!" << std::endl;
+	//			SoundManager::Instance().playSound("yay", 0);
+	//			break;
+	//		default:
+	//			
+	//			break;
+	//		}
 
-			return true;
-		}
-		return false;
-	}
-	else
-	{
-		object2->getRigidBody()->isColliding = false;
-		return false;
-	}
+	//		return true;
+	//	}
+	//	return false;
+	//}
+	//else
+	//{
+	//	object2->getRigidBody()->isColliding = false;
+	//	return false;
+	//}
+	SDL_Rect temp1 = { object1->getTransform()->position.x, object1->getTransform()->position.y, object1->getWidth(), object1->getHeight() };
+	SDL_Rect temp2 = { object2->getTransform()->position.x, object2->getTransform()->position.y, object2->getWidth(), object2->getHeight() };
 
-	return false;
+
+	//return false;
+	return SDL_HasIntersection(&temp1, &temp2);
 }
 
 bool CollisionManager::lineLineCheck(const glm::vec2 line1_start, const glm::vec2 line1_end, const glm::vec2 line2_start, const glm::vec2 line2_end)
