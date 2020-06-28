@@ -5,9 +5,9 @@
 Enemy::Enemy()
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/alien.txt",
-		"../Assets/sprites/alien.png",
-		"alien"
+		"../Assets/sprites/enemy.txt",
+		"../Assets/sprites/enemy.png",
+		"enemy-sprite"
 	);
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
@@ -53,6 +53,14 @@ void Enemy::draw()
 		TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
+	/*case ENEMY_DIE_RIGHT:
+		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
+			x, y, 0.30f, 0, 255, true);
+		break;
+	case ENEMY_DIE_LEFT:
+		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
+			x, y, 0.30f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;*/
 	default:
 		break;
 	}
@@ -97,8 +105,6 @@ void Enemy::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-1"));
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-2"));
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-3"));
-	//runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-4"));
-	//runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-5"));
 
 	setAnimation(runAnimation);
 
