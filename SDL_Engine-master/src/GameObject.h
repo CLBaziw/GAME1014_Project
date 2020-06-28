@@ -27,7 +27,6 @@ public:
 
 	// getters for common variables
 	Transform* getTransform();
-
 	// getters and setters for physics properties
 	RigidBody* getRigidBody();
 	

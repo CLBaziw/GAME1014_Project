@@ -19,8 +19,13 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	setHeight(70);
 
 
+	//getTransform()->m_dst.x = 300.0f;
+	//getTransform()->m_dst.y = 400.0f;	
+	//getTransform()->m_dst.w = 77.0f;
+	//getTransform()->m_dst.h = 70.0f;
 
-	getTransform()->position = glm::vec2(380.0f, 400.0f);
+
+	//getTransform()->position = glm::vec2(380.0f, 400.0f);
 	//getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	//getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
@@ -28,7 +33,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	m_shooting = false;
 	m_jumping = false;
 	getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = getRigidBody()->velocity.x = getRigidBody()->velocity.y = 0.0;
-	m_maxVelX = 300.0;
+	m_maxVelX = 600.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
@@ -45,7 +50,10 @@ void Player::draw()
 {
 	// alias for x and y
 	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;
+	const auto y = getTransform()->position.y;	
+	
+	//const auto x = getTransform()->m_dst.x;
+	//const auto y = getTransform()->m_dst.y;
 
 
 	// draw the player according to animation state
@@ -101,6 +109,9 @@ void Player::setAnimationState(const PlayerAnimationState new_state)
 
 void Player::setPosition(float x, float y)
 {
+	//getTransform()->m_dst.x = x;
+	//getTransform()->m_dst.y = y;	
+	
 	getTransform()->position.x = x;
 	getTransform()->position.y = y;
 }
@@ -122,11 +133,13 @@ void Player::SetJumping(bool j) { m_jumping = j; }
 
 void Player::SetX(float x)
 {
+	//getTransform()->m_dst.x = x;
 	getTransform()->position.x = x;
 }
 
 void Player::SetY(float y)
 {
+	//getTransform()->m_dst.y = y;
 	getTransform()->position.y = y;
 }
 
