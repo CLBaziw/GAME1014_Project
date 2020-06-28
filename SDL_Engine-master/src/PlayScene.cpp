@@ -19,7 +19,7 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
-	CheckBounds();
+	CheckGrounds();
 }
 
 void PlayScene::clean()
@@ -152,7 +152,7 @@ void PlayScene::start()
 	// CREATE OBSTACLE HERE - Like above ^
 	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
 	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
-	m_platform = new Platform(380, 350);
+	m_platform = new Platform(380, 400);
 	addChild(m_platform);
 
 	//Ground
@@ -229,59 +229,59 @@ void PlayScene::start()
     addChild(m_pNextButton);
 }
 
-void PlayScene::CheckBounds()
+void PlayScene::CheckGrounds()
 {
-		// check right
-		if (m_pPlayer->getTransform()->position.x > m_ground->getWidth() - m_pPlayer->getWidth() * 0.5)
-		{
-			m_pPlayer->setPosition(m_ground->getWidth() - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-		}
-		// check left
-		if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
-		{
-			m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-		}
-		// check up
-		if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
-		{
-			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
-		}
-		//// check down
-		if (m_pPlayer->getTransform()->position.y > m_ground->getTransform()->position.y - (m_pPlayer->getHeight() * 0.6))
-		{
-			m_pPlayer->SetJumping(true);
-			m_pPlayer->StopY();
-			m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_ground->getTransform()->position.y - (m_pPlayer->getHeight()*0.6));
-		}
+	 // check right
+	if (m_pPlayer->getTransform()->position.x > m_ground->getWidth() - m_pPlayer->getWidth() * 0.5)
+	{
+		m_pPlayer->setPosition(m_ground->getWidth() - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+	}
+	// check left
+	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
+	{
+		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
+	}
+	// check up
+	if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
+	{
+		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
+	}
+	//// check down
+	if (m_pPlayer->getTransform()->position.y > m_ground->getTransform()->position.y - (m_pPlayer->getHeight() * 0.6))
+	{
+		m_pPlayer->SetJumping(true);
+		m_pPlayer->StopY();
+		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_ground->getTransform()->position.y - (m_pPlayer->getHeight()*0.6));
+	}		
+		
+		//// check right
+		//if (m_pPlayer->getTransform()->m_dst.x > m_ground->getTransform()->m_dst.w - m_pPlayer->getTransform()->m_dst.w * 0.5)
+		//{
+		//	m_pPlayer->setPosition(m_ground->getTransform()->m_dst.w - m_pPlayer->getTransform()->m_dst.w * 0.5, m_pPlayer->getTransform()->m_dst.y);
+		//}
+		//// check left
+		//if (m_pPlayer->getTransform()->m_dst.x < 0 + m_pPlayer->getTransform()->m_dst.w * 0.5)
+		//{
+		//	m_pPlayer->setPosition(0 + m_pPlayer->getTransform()->m_dst.w * 0.5, m_pPlayer->getTransform()->m_dst.y);
+		//}
+		//// check up
+		//if (m_pPlayer->getTransform()->m_dst.y < 0 + m_pPlayer->getTransform()->m_dst.h * 0.5)
+		//{
+		//	m_pPlayer->setPosition(m_pPlayer->getTransform()->m_dst.x, 0 + m_pPlayer->getTransform()->m_dst.h * 0.5);
+		//}
+		////// check down
+		//if (m_pPlayer->getTransform()->m_dst.y > m_ground->getTransform()->m_dst.y - (m_pPlayer->getTransform()->m_dst.h * 0.6))
+		//{
+		//	m_pPlayer->SetJumping(true);
+		//	m_pPlayer->StopY();
+		//	m_pPlayer->setPosition(m_pPlayer->getTransform()->m_dst.x, m_ground->getTransform()->m_dst.y - (m_pPlayer->getTransform()->m_dst.h *0.6));
+		//}
 }
 
 void PlayScene::checkCollision()
 {
 	 //PLATFORM CHECKS
-	//if (COMA::AABBCheck(m_pPlayer, m_platform))
-	//{
-	//	if (c_pPlayer->x + c_pPlayer->w - m_pPlayer->GetVelX() <= c_platform->x)
-	//	{ // Collision from left of obstacle.
-	//		m_pPlayer->StopX(); // Stop the player from moving horizontally.
-	//		m_pPlayer->SetX(c_platform->x - c_pPlayer->w);
-	//	}
-	//	else if (c_pPlayer->x - (float)m_pPlayer->GetVelX() >= c_platform->x + c_platform->w)
-	//	{ // Collision from right of obstacle.
-	//		m_pPlayer->StopX();
-	//		m_pPlayer->SetX(c_platform->x + c_platform->w);
-	//	}
-	//	else if (c_pPlayer->y + c_pPlayer->h - (float)m_pPlayer->GetVelY() <= c_platform->y)
-	//	{ // Collision from top side of obstacle.
-	//		m_pPlayer->SetJumping(true);
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->SetY(c_platform->y - c_pPlayer->h - 1);
-	//	}
-	//	else if (c_pPlayer->y - (float)m_pPlayer->GetVelY() >= c_platform->y + c_platform->h)
-	//	{ // Collision from bottom side of obstacle.
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->SetY(c_platform->y + c_platform->h);
-	//	}
-	//}	
+
 	if (COMA::AABBCheck(m_pPlayer, m_platform))
 	{
 		std::cout << "Colliding" << std::endl;
@@ -321,6 +321,50 @@ void PlayScene::checkCollision()
 			}
 	}
 
+	//if (COMA::AABBCheck(m_pPlayer, m_platform))
+	//{
+	//	std::cout << "Colliding" << std::endl;
+	//	m_pPlayer->getRigidBody()->isColliding = true;
+	//	m_platform->getRigidBody()->isColliding = true;
+	//	if (m_pPlayer->getRigidBody()->isColliding && m_platform->getRigidBody()->isColliding)
+	//	{
+	//		if (m_pPlayer->getTransform()->m_dst.x + m_pPlayer->getTransform()->m_dst.w - m_pPlayer->getRigidBody()->velocity.x <= m_platform->getTransform()->m_dst.x)
+	//		{ // Collision from left of obstacle.
+	//			m_pPlayer->StopX(); // Stop the player from moving horizontally.
+	//			m_pPlayer->SetX(m_platform->getTransform()->m_dst.x - m_pPlayer->getTransform()->m_dst.w);
+	//			std::cout << "PosX of collision from left: " << m_pPlayer->getTransform()->m_dst.x << std::endl;
+	//			std::cout << "Width: " << m_pPlayer->getTransform()->m_dst.w << std::endl;
+	//			std::cout << "Height: " << m_pPlayer->getTransform()->m_dst.h << std::endl;
+
+	//		}
+	//		else if (m_pPlayer->getTransform()->m_dst.x - m_pPlayer->getRigidBody()->velocity.x >= m_platform->getTransform()->m_dst.x + m_platform->getTransform()->m_dst.w)
+	//		{ // Collision from right of obstacle.
+	//			m_pPlayer->StopX();
+	//			m_pPlayer->SetX(m_platform->getTransform()->m_dst.x + m_platform->getTransform()->m_dst.w);
+	//			std::cout << "PosX of collision from right: " << m_pPlayer->getTransform()->m_dst.x << std::endl;
+	//			std::cout << "Width: " << m_pPlayer->getTransform()->m_dst.w << std::endl;
+	//			std::cout << "Height: " << m_pPlayer->getTransform()->m_dst.h << std::endl;
+	//		}
+	//		else if (m_pPlayer->getTransform()->m_dst.y + m_pPlayer->getTransform()->m_dst.h - m_pPlayer->getRigidBody()->velocity.y <= m_platform->getTransform()->m_dst.y)
+	//		{ // Collision from top side of obstacle.
+	//			m_pPlayer->SetJumping(true);
+	//			m_pPlayer->StopY();
+	//			m_pPlayer->SetY(m_platform->getTransform()->m_dst.y - m_pPlayer->getTransform()->m_dst.h - 1);
+	//			std::cout << "PosY of collision on top: " << m_pPlayer->getTransform()->m_dst.y << std::endl;
+	//			std::cout << "Width: " << m_pPlayer->getTransform()->m_dst.w << std::endl;
+	//			std::cout << "Height: " << m_pPlayer->getTransform()->m_dst.h << std::endl;
+	//		}
+	//		else if(m_pPlayer->getTransform()->m_dst.y - m_pPlayer->getRigidBody()->velocity.y >= m_platform->getTransform()->m_dst.y + m_platform->getTransform()->m_dst.h)
+	//		{ // Collision from bottom side of obstacle.
+	//			m_pPlayer->StopY();
+	//			m_pPlayer->SetY(m_platform->getTransform()->m_dst.y + m_platform->getTransform()->m_dst.h);
+	//			std::cout << "PosY of collision belew the bottom: " << m_pPlayer->getTransform()->m_dst.y << std::endl;
+	//			std::cout << "Width: " << m_pPlayer->getTransform()->m_dst.w << std::endl;
+	//			std::cout << "Height: " << m_pPlayer->getTransform()->m_dst.h << std::endl;
+	//		}
+	//	}
+	//}
+
 	// Player runs into enemy
 	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
 	{
@@ -339,8 +383,8 @@ void PlayScene::checkCollision()
 			m_pEnemy = nullptr;*/
 			
 
-			/*delete m_pPlayerBulletVec[i];
-			m_pPlayerBulletVec[i] = nullptr;*/
+			//delete m_pPlayerBulletVec[i];
+			//m_pPlayerBulletVec[i] = nullptr;
 		}
 	}
 }

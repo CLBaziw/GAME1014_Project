@@ -7,8 +7,8 @@
 #include "Bullet.h"
 #include <vector>
 
-#define GRAV 5.0
-#define JUMPFORCE 300.0
+#define GRAV 5.5
+#define JUMPFORCE 210.0
 
 class Player final : public Sprite
 {
