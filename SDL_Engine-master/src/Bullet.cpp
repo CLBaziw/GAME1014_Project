@@ -69,7 +69,7 @@ void Bullet::draw()
 	{
 	case BULLET_MOVE_RIGHT:
 		TextureManager::Instance()->playAnimation(sprite, getAnimation("bullet-moving"),
-			x, y, 0.12f, 0, 255, true);
+			x, y, 0.12f, 0, 200, true);
 		break;
 	case BULLET_MOVE_LEFT:
 		TextureManager::Instance()->playAnimation(sprite, getAnimation("bullet-moving"),
