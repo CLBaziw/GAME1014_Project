@@ -90,6 +90,11 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 		return false;
 	}
 
+	//SDL_Rect temp1 = { (int)object1->getTransform()->m_dst.x, (int)object1->getTransform()->m_dst.y, (int)object1->getTransform()->m_dst.w, (int)object1->getTransform()->m_dst.h };
+	//SDL_Rect temp2 = { (int)object2->getTransform()->m_dst.x, (int)object2->getTransform()->m_dst.y, (int)object2->getTransform()->m_dst.w, (int)object2->getTransform()->m_dst.h };
+
+
+	//return SDL_HasIntersection(&temp1, &temp2);
 	return false;
 }
 
