@@ -5,9 +5,9 @@
 Enemy::Enemy()
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/enemy.txt",
-		"../Assets/sprites/enemy.png",
-		"enemy-sprite"
+		"../Assets/sprites/alien.txt",
+		"../Assets/sprites/alien.png",
+		"alien"
 	);
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));

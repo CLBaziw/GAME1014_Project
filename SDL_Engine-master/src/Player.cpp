@@ -19,10 +19,10 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	setHeight(70);
 
 
-	//getTransform()->m_dst.x = 300.0f;
-	//getTransform()->m_dst.y = 400.0f;	
-	//getTransform()->m_dst.w = 77.0f;
-	//getTransform()->m_dst.h = 70.0f;
+	/*getTransform()->m_dst.x = 300.0f;
+	getTransform()->m_dst.y = 400.0f;	
+	getTransform()->m_dst.w = 77.0f;
+	getTransform()->m_dst.h = 70.0f;*/
 
 
 	//getTransform()->position = glm::vec2(380.0f, 400.0f);
