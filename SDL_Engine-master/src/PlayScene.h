@@ -24,8 +24,7 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-
-	void CheckGrounds();
+ 
 	void checkCollision();
 
 	void PlayerShoot();

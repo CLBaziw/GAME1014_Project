@@ -8,7 +8,7 @@
 #include <vector>
 
 #define GRAV 5.5
-#define JUMPFORCE 210.0
+#define JUMPFORCE 300
 
 class Player final : public Sprite
 {
