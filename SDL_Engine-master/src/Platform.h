@@ -4,10 +4,11 @@
 
 #include "Sprite.h"
 
+
 class Platform final : public Sprite
 {
 public:
-	Platform();
+	Platform(float x, float y);
 	~Platform();
 
 	// Life Cycle Functions
@@ -15,9 +16,12 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	void setDst();
+	SDL_FRect& getDst();
 
 private:
 	void m_buildAnimations();
+	SDL_FRect dst;
 };
 
 #endif /* defined (__PLANE__) */

@@ -7,8 +7,8 @@
 #include "Bullet.h"
 #include <vector>
 
-#define GRAV 1.6
-#define JUMPFORCE 24.0
+#define GRAV 5.5
+#define JUMPFORCE 300
 
 class Player final : public Sprite
 {
@@ -23,7 +23,7 @@ public:
 
 	// setters
 	void setAnimationState(PlayerAnimationState new_state);
-	void setPosition(int x, int y);
+	void setPosition(float x, float y);
 
 	// Movement
 	void Stop();
@@ -33,20 +33,24 @@ public:
 	void SetAccelY(double a);
 	bool isJumping();
 	void SetJumping(bool j);
-	double GetVelX();
-	double GetVelY();
+	void SetX(float x);
+	void SetY(float y);
 
 	// Shooting
 	bool isShooting();
 	void SetShooting(bool s);
 
+	void setDst();
+	SDL_FRect& getDst();
+
 private:
 	void m_buildAnimations();
 	PlayerAnimationState m_currentAnimationState;
+	SDL_FRect dst;
 
 	bool m_jumping;
 	bool m_shooting;
-	double m_accelX, m_accelY, m_velX, m_maxVelX, m_velY, m_maxVelY, m_drag, m_grav;
+	float m_maxVelX, m_maxVelY, m_drag, m_grav;
 	int maxHp = 300; // set hero hit point
 	int currentHp = 300;
 };
