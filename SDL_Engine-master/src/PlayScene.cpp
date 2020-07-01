@@ -1,4 +1,5 @@
 #include "PlayScene.h"
+#include "Obstacle.h"
 #include "Game.h"
 #include "EventManager.h"
 #include "TextureManager.h"
@@ -147,6 +148,13 @@ void PlayScene::start()
 
 	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
 	m_pEnemy = new Enemy();
+	addChild(m_pEnemy);
+
+	m_pObstacleType = new Obstacle(OBSTACLE1);
+	addChild(m_pEnemy);
+	m_pObstacleType = new Obstacle(OBSTACLE2);
+	addChild(m_pEnemy);
+	m_pObstacleType = new Obstacle(OBSTACLE3);
 	addChild(m_pEnemy);
 
 	// CREATE OBSTACLE HERE - Like above ^
