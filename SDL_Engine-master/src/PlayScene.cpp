@@ -255,7 +255,8 @@ void PlayScene::checkCollision()
 	if (playerY < platformY - halfPlatformHeight)
 	{
 		std::cout << "Player above platform" << std::endl;
-		if (playerX < platformX + halfPlatformWidth && playerX > platformX - halfPlatformWidth)
+		if ((playerX + halfPlayerWidth < platformX + halfPlatformWidth || playerX - halfPlayerWidth < platformX + halfPlatformWidth)
+			&& (playerX + halfPlayerWidth > platformX - halfPlatformWidth || playerX - halfPlayerWidth > platformX - halfPlatformWidth))
 		{
 			std::cout << "Player on platform" << std::endl;
 			m_pPlayer->SetJumping(true);
@@ -267,21 +268,7 @@ void PlayScene::checkCollision()
 			std::cout << "Player should fall" << std::endl;
 			m_pPlayer->SetJumping(false);
 		}
-
 	}
-	
-	// Platform check
-	//if (COMA::AABBCheck(m_pPlayer, m_platform))
-	//{
-	//	std::cout << "Player is under platform" << std::endl;
-	//	if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() > m_platform->getTransform()->position.y) // Player's head <= top of platform
-	//	{
-	//		std::cout << "Player on platform" << std::endl;
-	//		m_pPlayer->SetJumping(true);
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_platform->getTransform()->position.y - (m_pPlayer->getHeight() * 0.7));
-	//	}
-	//}
 	
 	// Player runs into enemy
 	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
