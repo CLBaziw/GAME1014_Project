@@ -12,12 +12,8 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("resources"));
 
-	// set frame width
-	setWidth(77);
-
-	// set frame height
-	setHeight(70);
-
+	setWidth(80);
+	setHeight(80);
 
 	/*getTransform()->m_dst.x = 300.0f;
 	getTransform()->m_dst.y = 400.0f;	
@@ -25,9 +21,10 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	getTransform()->m_dst.h = 70.0f;*/
 
 
-	//getTransform()->position = glm::vec2(380.0f, 400.0f);
+	getTransform()->position = glm::vec2(100.0f, 500.0f);
 	//getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	//getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
+
 	getRigidBody()->isColliding = false;
 
 	m_shooting = false;
@@ -83,17 +80,25 @@ void Player::draw()
 
 void Player::update()
 {
-
 	// check jumping on x-axis
 	getRigidBody()->velocity.x += getRigidBody()->acceleration.x;
 	getRigidBody()->velocity.x *= (m_jumping ? m_drag : 1);
 	getRigidBody()->velocity.y = std::min(std::max(getRigidBody()->velocity.x, -(m_maxVelX)), (m_maxVelX));
 	getTransform()->position.x += (int)getRigidBody()->velocity.x; // Had to cast it to int to get crisp collision with side of platform.
+	
 	// check jumping on y-axis
-	getRigidBody()->velocity.y += getRigidBody()->acceleration.y + m_grav; // Adjust gravity to get slower jump.
-	getRigidBody()->velocity.y = std::min(std::max(getRigidBody()->velocity.y, -(m_maxVelY)), (m_grav * 5));
-	getTransform()->position.y += (int)getRigidBody()->velocity.y; // To remove aliasing, I made cast it to an int too.
-	getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = 0.0;
+	if (!m_jumping)
+	{
+		getRigidBody()->velocity.y += getRigidBody()->acceleration.y + m_grav; // Adjust gravity to get slower jump.
+		getRigidBody()->velocity.y = std::min(std::max(getRigidBody()->velocity.y, -(m_maxVelY)), (m_grav * 5));
+		getTransform()->position.y += (int)getRigidBody()->velocity.y; // To remove aliasing, I made cast it to an int too.
+		getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = 0.0;
+	}
+	else
+	{
+		getRigidBody()->velocity.y = 0;
+	}
+	
 }
 
 void Player::clean()

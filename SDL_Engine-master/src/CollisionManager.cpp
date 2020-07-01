@@ -57,7 +57,7 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 	const float p1Width = object1->getWidth();
 	const float p1Height = object1->getHeight();
 	const float p2Width = object2->getWidth();
-	const float p2Height = object2->getHeight();
+	const float p2Height = object2->getHeight() - 20;
 
 	if (
 		p1.x < p2.x + p2Width &&
