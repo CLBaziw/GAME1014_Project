@@ -13,6 +13,7 @@ Transform* GameObject::getTransform()
 	return &m_transform;
 }
 
+
 RigidBody* GameObject::getRigidBody() 
 {
 	return &m_rigidBody;

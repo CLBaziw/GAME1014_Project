@@ -27,7 +27,6 @@ public:
 
 	// getters for common variables
 	Transform* getTransform();
-
 	// getters and setters for physics properties
 	RigidBody* getRigidBody();
 	
@@ -51,6 +50,7 @@ private:
 	int m_height;
 
 	GameObjectType m_type;
+
 };
 
 #endif /* defined (__GAME_OBJECT__) */

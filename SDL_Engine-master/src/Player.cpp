@@ -12,21 +12,25 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("resources"));
 
-	// set frame width
-	setWidth(53);
+	setWidth(80);
+	setHeight(80);
 
-	// set frame height
-	setHeight(58);
+	/*getTransform()->m_dst.x = 300.0f;
+	getTransform()->m_dst.y = 400.0f;	
+	getTransform()->m_dst.w = 77.0f;
+	getTransform()->m_dst.h = 70.0f;*/
 
-	getTransform()->position = glm::vec2(500.0f, 600.0f);
-	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
-	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
+
+	getTransform()->position = glm::vec2(100.0f, 500.0f);
+	//getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+	//getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
+
 	getRigidBody()->isColliding = false;
 
 	m_shooting = false;
 	m_jumping = false;
-	m_accelX = m_accelY = m_velX = m_velY = 0.0;
-	m_maxVelX = 300.0;
+	getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = getRigidBody()->velocity.x = getRigidBody()->velocity.y = 0.0;
+	m_maxVelX = 600.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
@@ -43,7 +47,10 @@ void Player::draw()
 {
 	// alias for x and y
 	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;
+	const auto y = getTransform()->position.y;	
+	
+	//const auto x = getTransform()->m_dst.x;
+	//const auto y = getTransform()->m_dst.y;
 
 
 	// draw the player according to animation state
@@ -73,17 +80,25 @@ void Player::draw()
 
 void Player::update()
 {
-
 	// check jumping on x-axis
-	m_velX += m_accelX;
-	m_velX *= (m_jumping ? m_drag : 1);
-	m_velX = std::min(std::max(m_velX, -(m_maxVelX)), (m_maxVelX));
-	getTransform()->position.x += (int)m_velX; // Had to cast it to int to get crisp collision with side of platform.
+	getRigidBody()->velocity.x += getRigidBody()->acceleration.x;
+	getRigidBody()->velocity.x *= (m_jumping ? m_drag : 1);
+	getRigidBody()->velocity.y = std::min(std::max(getRigidBody()->velocity.x, -(m_maxVelX)), (m_maxVelX));
+	getTransform()->position.x += (int)getRigidBody()->velocity.x; // Had to cast it to int to get crisp collision with side of platform.
+	
 	// check jumping on y-axis
-	m_velY += m_accelY + m_grav; // Adjust gravity to get slower jump.
-	m_velY = std::min(std::max(m_velY, -(m_maxVelY)), (m_grav * 5));
-	getTransform()->position.y += (int)m_velY; // To remove aliasing, I made cast it to an int too.
-	m_accelX = m_accelY = 0.0;
+	if (!m_jumping)
+	{
+		getRigidBody()->velocity.y += getRigidBody()->acceleration.y + m_grav; // Adjust gravity to get slower jump.
+		getRigidBody()->velocity.y = std::min(std::max(getRigidBody()->velocity.y, -(m_maxVelY)), (m_grav * 5));
+		getTransform()->position.y += (int)getRigidBody()->velocity.y; // To remove aliasing, I made cast it to an int too.
+		getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = 0.0;
+	}
+	else
+	{
+		getRigidBody()->velocity.y = 0;
+	}
+	
 }
 
 void Player::clean()
@@ -97,8 +112,11 @@ void Player::setAnimationState(const PlayerAnimationState new_state)
 	m_currentAnimationState = new_state;
 }
 
-void Player::setPosition(int x, int y)
+void Player::setPosition(float x, float y)
 {
+	//getTransform()->m_dst.x = x;
+	//getTransform()->m_dst.y = y;	
+	
 	getTransform()->position.x = x;
 	getTransform()->position.y = y;
 }
@@ -109,18 +127,45 @@ void Player::Stop() // stop at the right time
 	StopX();
 	StopY();
 }
-void Player::StopX() { m_velX = 0.0; }
-void Player::StopY() { m_velY = 0.0; }
+void Player::StopX() { getRigidBody()->velocity.x = 0.0; }
+void Player::StopY() { getRigidBody()->velocity.y = 0.0; }
 
-void Player::SetAccelX(double a) { m_accelX = a; }
-void Player::SetAccelY(double a) { m_accelY = a; }
+void Player::SetAccelX(double a) { getRigidBody()->acceleration.x = a; }
+void Player::SetAccelY(double a) { getRigidBody()->acceleration.y = a; }
 bool Player::isJumping() { return m_jumping; }
 void Player::SetJumping(bool j) { m_jumping = j; }
-double Player::GetVelX() { return m_velX; }
-double Player::GetVelY() { return m_velY; }
+
+
+void Player::SetX(float x)
+{
+	//getTransform()->m_dst.x = x;
+	getTransform()->position.x = x;
+}
+
+void Player::SetY(float y)
+{
+	//getTransform()->m_dst.y = y;
+	getTransform()->position.y = y;
+}
 
 bool Player::isShooting() { return m_shooting; }
 void Player::SetShooting(bool s) { m_shooting = s; }
+
+void Player::setDst()
+{
+	dst.x = getTransform()->position.x;	
+	
+	dst.y = getTransform()->position.y;
+
+	dst.w = getWidth();
+
+	dst.h = getHeight();
+}
+
+SDL_FRect& Player::getDst()
+{
+	return dst;
+}
 
 void Player::m_buildAnimations()
 {
