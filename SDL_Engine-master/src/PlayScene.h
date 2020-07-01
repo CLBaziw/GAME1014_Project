@@ -10,6 +10,8 @@
 #include "Bullet.h"
 #include "Background.h"
 #include "Platform.h"
+#include "ground.h"
+#include "Obstacle.h"
 
 class PlayScene : public Scene
 {
@@ -23,8 +25,7 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-
-	void CheckBounds();
+ 
 	void checkCollision();
 
 	void PlayerShoot();
@@ -36,6 +37,10 @@ private:
 	Enemy* m_pEnemy;
 	Background* m_pBackground;
 	Platform* m_platform;
+	ground* m_ground;
+	Obstacle* m_pObstacle1;
+	Obstacle* m_pObstacle2;
+	Obstacle* m_pObstacle3;
 	//SDL_FRect* c_pPlayer;
 	//SDL_FRect* c_platform;
 
