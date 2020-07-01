@@ -12,6 +12,8 @@
 #include "Platform.h"
 #include "Box.h"
 #include <vector>
+#include "ground.h"
+#include "Obstacle.h"
 
 class PlayScene : public Scene
 {
@@ -25,8 +27,7 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-
-	void CheckBounds();
+ 
 	void checkCollision();
 
 	void PlayerShoot();
@@ -36,7 +37,6 @@ public:
 private:
 	glm::vec2 m_mousePosition;
 
-	// Game Objects
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
 	Background* m_pBackground;
@@ -47,6 +47,10 @@ private:
 	std::vector<Box*> m_vec;
 	int m_numSpaces;
 
+	ground* m_ground;
+	Obstacle* m_pObstacle1;
+	Obstacle* m_pObstacle2;
+	Obstacle* m_pObstacle3;
 	//SDL_FRect* c_pPlayer;
 	//SDL_FRect* c_platform;
 

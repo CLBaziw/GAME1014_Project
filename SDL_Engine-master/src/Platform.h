@@ -15,14 +15,15 @@ public:
 	virtual void draw() override;
 	virtual void update() override;
 	virtual void clean() override;
-	int getDamage() { return damage; }
+
+	void setDst();
+	SDL_FRect& getDst();
 
 	void setDst();
 	SDL_FRect& getDst();
 
 private:
 	void m_buildAnimations();
-	int damage = 50;
 	SDL_FRect dst;
 };
 

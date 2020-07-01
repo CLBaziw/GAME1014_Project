@@ -1,4 +1,5 @@
 #include "PlayScene.h"
+#include "Obstacle.h"
 #include "Game.h"
 #include "EventManager.h"
 #include "TextureManager.h"
@@ -21,6 +22,7 @@ void PlayScene::update()
 	updateDisplayList();
 	CheckBounds();
 	MakeObstacles();
+	checkCollision();
 }
 
 void PlayScene::clean()
@@ -116,7 +118,6 @@ void PlayScene::handleEvents()
 	}
 	
 	m_pPlayer->update();
-	checkCollision();
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
@@ -152,6 +153,31 @@ void PlayScene::start()
 	{
 		m_vec.push_back(new Box(128 * i, 536));
 	}
+	m_pPlayer->SetJumping(false);
+
+	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
+	m_pEnemy = new Enemy();
+	addChild(m_pEnemy);
+
+	/*m_pObstacle1 = new Obstacle(OBSTACLE1);
+	addChild(m_pObstacle1);
+	m_pObstacle2 = new Obstacle(OBSTACLE2);
+	addChild(m_pObstacle2);
+	m_pObstacle1 = new Obstacle(OBSTACLE3);
+	addChild(m_pObstacle3);*/
+
+	// CREATE OBSTACLE HERE - Like above ^
+	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
+	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
+	m_platform = new Platform(380, 400);
+	addChild(m_platform);
+
+	//Ground
+	m_ground = new ground(0, 587);
+	addChild(m_ground);
+
+	std::cout << "The height of the ground: " << m_ground->getHeight() << std::endl;
+
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
@@ -220,35 +246,52 @@ void PlayScene::start()
     addChild(m_pNextButton);
 }
 
-void PlayScene::CheckBounds()
-{
-	// check left
-	if (m_pPlayer->getTransform()->position.x > 1000 - m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(1000 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
-	// check right
-	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
-	// check up
-	if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
-	{
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
-	}
-	// check down
-	if (m_pPlayer->getTransform()->position.y > 600 - m_pPlayer->getHeight())
-	{
-		m_pPlayer->SetJumping(true);
-		m_pPlayer->StopY();
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 600 - m_pPlayer->getHeight());
-	}
-}
-
 void PlayScene::checkCollision()
 {
-	for (int i = 0; i < m_pObstacles.size(); i++)
+	int playerX = m_pPlayer->getTransform()->position.x;
+	int playerY = m_pPlayer->getTransform()->position.y;
+	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
+	int halfPlayerHeight = m_pPlayer->getHeight() * 0.5;
+	int groundY = m_ground->getTransform()->position.y;
+
+	// Ground check
+	if (playerY > groundY - halfPlayerHeight - 20)
+	{
+		std::cout << "Player on ground" << std::endl;
+		m_pPlayer->SetJumping(true);
+		m_pPlayer->StopY();
+		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
+	}
+
+	// This will change into m_pObstacles and be inside a loop for later.
+	int platformX = m_platform->getTransform()->position.x;
+	int platformY = m_platform->getTransform()->position.y;
+	int halfPlatformWidth = m_platform->getWidth() * 0.5;
+	int halfPlatformHeight = m_platform->getHeight() * 0.5;
+
+	// Platform check
+	if (playerY < platformY - halfPlatformHeight)
+	{
+		std::cout << "Player above platform" << std::endl;
+		if ((playerX + halfPlayerWidth < platformX + halfPlatformWidth || playerX - halfPlayerWidth < platformX + halfPlatformWidth)
+			&& (playerX + halfPlayerWidth > platformX - halfPlatformWidth || playerX - halfPlayerWidth > platformX - halfPlatformWidth))
+		{
+			std::cout << "Player on platform" << std::endl;
+			m_pPlayer->SetJumping(true);
+			m_pPlayer->StopY();
+			m_pPlayer->setPosition(playerX, platformY - halfPlayerHeight - 30);
+		}
+		else if (playerX > platformX + halfPlatformWidth || playerX < platformX - halfPlatformWidth)
+		{
+			std::cout << "Player should fall" << std::endl;
+			m_pPlayer->SetJumping(false);
+		}
+	}
+
+	//for (int i = 0; i < m_pObstacles.size(); i++)
+	
+	// Player runs into enemy
+	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
 	{
 		if (COMA::circleAABBCheck(m_pPlayer, m_pObstacles[i]))
 		{
@@ -293,6 +336,11 @@ void PlayScene::checkCollision()
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
 					std::cout << "Player killed enemy" << std::endl;
+
+					/*delete m_pEnemy;
+					m_pEnemy = nullptr;*/
+					//delete m_pPlayerBulletVec[i];
+					//m_pPlayerBulletVec[i] = nullptr;
 				}
 			}
 		}

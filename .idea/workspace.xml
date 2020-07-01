@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="18a4aade-1609-4793-a557-df41be1a3209" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/backgrounds/spritesheet enemy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemysprites.tps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/.vs/Template/v16/Browse.VC.db" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/.vs/Template/v16/Browse.VC.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemy.png" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemy.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemy.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemy.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemy_small.png" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/enemy_small.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/gamesprite.png" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/gamesprite.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/resources.png" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/resources.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/resources.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/Assets/sprites/resources.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/bin/Debug/Template.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/bin/Debug/Template.ilk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/bin/Debug/Template.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/bin/Debug/Template.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/src/Bullet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/src/Bullet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SDL_Engine-master/src/Enemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SDL_Engine-master/src/Enemy.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1dy6oAg4dZVgGBc9FiDTsdkifkR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="18a4aade-1609-4793-a557-df41be1a3209" name="Default Changelist" comment="" />
+      <created>1593385158158</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1593385158158</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1416" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1593385560411">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1416" y="523" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1593385560411" />
+  </component>
+</project>
