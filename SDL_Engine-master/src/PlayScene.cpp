@@ -149,12 +149,12 @@ void PlayScene::start()
 	m_pEnemy = new Enemy();
 	addChild(m_pEnemy);
 
-	m_pObstacleType = new Obstacle(OBSTACLE1);
-	addChild(m_pEnemy);
-	m_pObstacleType = new Obstacle(OBSTACLE2);
-	addChild(m_pEnemy);
-	m_pObstacleType = new Obstacle(OBSTACLE3);
-	addChild(m_pEnemy);
+	/*m_pObstacle1 = new Obstacle(OBSTACLE1);
+	addChild(m_pObstacle1);
+	m_pObstacle2 = new Obstacle(OBSTACLE2);
+	addChild(m_pObstacle2);
+	m_pObstacle1 = new Obstacle(OBSTACLE3);
+	addChild(m_pObstacle3);*/
 
 	// CREATE OBSTACLE HERE - Like above ^
 	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
