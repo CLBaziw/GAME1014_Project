@@ -9,12 +9,12 @@ Obstacle::Obstacle(ObstacleType obsType)
 	{
 	case OBSTACLE1:
 		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/enemy_small.txt",
-			"../Assets/sprites/enemy_small.png",
-			"enemy-sprite"
+			"../Assets/plat/platsprites.txt",
+			"../Assets/plat/platsprites.png",
+			"platsprites"
 		);
 
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-sprite"));
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platsprites"));
 
 		setWidth(36);
 		setHeight(58);
@@ -24,12 +24,12 @@ Obstacle::Obstacle(ObstacleType obsType)
 		break;
 	case OBSTACLE2:
 		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/enemy_small.txt",
-			"../Assets/sprites/enemy_small.png",
-			"enemy-sprite"
+			"../Assets/sprites/Obstacles.txt",
+			"../Assets/sprite/Fireball_Sheet.png",
+			"Fireball_Sheet"
 		);
 
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-sprite"));
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Fireball_Sheet"));
 
 		setWidth(36);
 		setHeight(58);
@@ -41,19 +41,17 @@ Obstacle::Obstacle(ObstacleType obsType)
 		break;
 	case OBSTACLE3:
 		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/enemy_small.txt",
-			"../Assets/sprites/enemy_small.png",
-			"enemy-sprite"
+			"../Assets/sprites/Obstacles.txt",
+			"../Assets/sprites/SpikeEnemies.png",
+			"SpikeEnemies"
 		);
 
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-sprite"));
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("SpikeEnemies"));
 
 		setWidth(36);
 		setHeight(58);
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
-		getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 		getRigidBody()->isColliding = false;
 		break;
 	default:
@@ -77,15 +75,15 @@ void Obstacle::draw()
 	switch (m_pObstacleType)
 	{
 	case OBSTACLE1:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-idle"),
+		TextureManager::Instance()->playAnimation("platsprites", getAnimation("hazard"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case OBSTACLE2:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-idle"),
+		TextureManager::Instance()->playAnimation("Fireball_Sheet", getAnimation("Fireball"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case OBSTACLE3:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-run"),
+		TextureManager::Instance()->playAnimation("SpikeEnemies", getAnimation("Spike-Enemy"),
 			x, y, 0.25f, 0, 255, true);
 		break;
 	default:
