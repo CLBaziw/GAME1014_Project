@@ -20,7 +20,6 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
-	CheckBounds();
 	MakeObstacles();
 	checkCollision();
 }
@@ -156,8 +155,8 @@ void PlayScene::start()
 	m_pPlayer->SetJumping(false);
 
 	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
-	m_pEnemy = new Enemy();
-	addChild(m_pEnemy);
+	/*m_pEnemy = new Enemy();
+	addChild(m_pEnemy);*/
 
 	/*m_pObstacle1 = new Obstacle(OBSTACLE1);
 	addChild(m_pObstacle1);
@@ -291,60 +290,60 @@ void PlayScene::checkCollision()
 	//for (int i = 0; i < m_pObstacles.size(); i++)
 	
 	// Player runs into enemy
-	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
-	{
-		if (COMA::circleAABBCheck(m_pPlayer, m_pObstacles[i]))
-		{
-			std::cout << "Player colliding with obstacle" << std::endl;
-			if (m_pObstacles[i]->GetSafe())
-			{
-				if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->getRigidBody()->velocity.x <= m_pObstacles[i]->getTransform()->position.x)
-				{ // Collision from left of obstacle.
-					m_pPlayer->StopX(); // Stop the player from moving horizontally.
-					m_pPlayer->setPosition(m_pObstacles[i]->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
-				}
-				else if (m_pPlayer->getTransform()->position.x - m_pPlayer->getRigidBody()->velocity.x >= m_pObstacles[i]->getTransform()->position.x + m_pObstacles[i]->getWidth())
-				{ // Collision from right of obstacle.
-					m_pPlayer->StopX();
-					m_pPlayer->setPosition(m_pObstacles[i]->getTransform()->position.x + m_pObstacles[i]->getWidth(), m_pPlayer->getTransform()->position.y);
-				}
-				else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - m_pPlayer->getRigidBody()->velocity.y <= m_pObstacles[i]->getTransform()->position.y)
-				{ // Collision from top side of obstacle.
-					m_pPlayer->SetJumping(true);
-					m_pPlayer->StopY();
-					m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y - m_pPlayer->getHeight() - 1);
-				}
-				else if (m_pPlayer->getTransform()->position.y - m_pPlayer->getRigidBody()->velocity.y >= m_pObstacles[i]->getTransform()->position.y + m_pObstacles[i]->getHeight())
-				{ // Collision from bottom side of obstacle.
-					m_pPlayer->StopY();
-					m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y + m_pObstacles[i]->getHeight());
-				}
-			}
-			else
-			{
-				std::cout << "Player and enemy collide" << std::endl;
-				// Kill player
-				TheGame::Instance()->changeSceneState(END_SCENE);
-			}
-		}
+	//if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
+	//{
+	//	if (COMA::circleAABBCheck(m_pPlayer, m_pObstacles[i]))
+	//	{
+	//		std::cout << "Player colliding with obstacle" << std::endl;
+	//		if (m_pObstacles[i]->GetSafe())
+	//		{
+	//			if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->getRigidBody()->velocity.x <= m_pObstacles[i]->getTransform()->position.x)
+	//			{ // Collision from left of obstacle.
+	//				m_pPlayer->StopX(); // Stop the player from moving horizontally.
+	//				m_pPlayer->setPosition(m_pObstacles[i]->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
+	//			}
+	//			else if (m_pPlayer->getTransform()->position.x - m_pPlayer->getRigidBody()->velocity.x >= m_pObstacles[i]->getTransform()->position.x + m_pObstacles[i]->getWidth())
+	//			{ // Collision from right of obstacle.
+	//				m_pPlayer->StopX();
+	//				m_pPlayer->setPosition(m_pObstacles[i]->getTransform()->position.x + m_pObstacles[i]->getWidth(), m_pPlayer->getTransform()->position.y);
+	//			}
+	//			else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - m_pPlayer->getRigidBody()->velocity.y <= m_pObstacles[i]->getTransform()->position.y)
+	//			{ // Collision from top side of obstacle.
+	//				m_pPlayer->SetJumping(true);
+	//				m_pPlayer->StopY();
+	//				m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y - m_pPlayer->getHeight() - 1);
+	//			}
+	//			else if (m_pPlayer->getTransform()->position.y - m_pPlayer->getRigidBody()->velocity.y >= m_pObstacles[i]->getTransform()->position.y + m_pObstacles[i]->getHeight())
+	//			{ // Collision from bottom side of obstacle.
+	//				m_pPlayer->StopY();
+	//				m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y + m_pObstacles[i]->getHeight());
+	//			}
+	//		}
+	//		else
+	//		{
+	//			std::cout << "Player and enemy collide" << std::endl;
+	//			// Kill player
+	//			TheGame::Instance()->changeSceneState(END_SCENE);
+	//		}
+	//	}
 
-		// Check for bullet with enemy
-		for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
-		{
-			if (m_pObstacles[i]->getType() == ENEMY)
-			{
-				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
-				{
-					std::cout << "Player killed enemy" << std::endl;
+	//	// Check for bullet with enemy
+	//	for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+	//	{
+	//		if (m_pObstacles[i]->getType() == ENEMY)
+	//		{
+	//			if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
+	//			{
+	//				std::cout << "Player killed enemy" << std::endl;
 
-					/*delete m_pEnemy;
-					m_pEnemy = nullptr;*/
-					//delete m_pPlayerBulletVec[i];
-					//m_pPlayerBulletVec[i] = nullptr;
-				}
-			}
-		}
-	}
+	//				/*delete m_pEnemy;
+	//				m_pEnemy = nullptr;*/
+	//				//delete m_pPlayerBulletVec[i];
+	//				//m_pPlayerBulletVec[i] = nullptr;
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 void PlayScene::PlayerShoot()

@@ -19,9 +19,6 @@ public:
 	void setDst();
 	SDL_FRect& getDst();
 
-	void setDst();
-	SDL_FRect& getDst();
-
 private:
 	void m_buildAnimations();
 	SDL_FRect dst;
