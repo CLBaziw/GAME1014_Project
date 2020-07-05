@@ -10,7 +10,9 @@ StartScene::StartScene()
 }
 
 StartScene::~StartScene()
-= default;
+{
+	SoundManager::Instance().stopMusic();
+}
 
 void StartScene::draw()
 {
@@ -102,5 +104,5 @@ void StartScene::start()
 	});
 	addChild(m_pStartButton);
 
-
+	SoundManager::Instance().playMusic("startScreen");
 }

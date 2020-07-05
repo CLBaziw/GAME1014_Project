@@ -10,7 +10,9 @@ PlayScene::PlayScene()
 }
 
 PlayScene::~PlayScene()
-= default;
+{
+	SoundManager::Instance().stopMusic();
+}
 
 void PlayScene::draw()
 {
@@ -102,6 +104,7 @@ void PlayScene::handleEvents()
 		{
 			m_pPlayer->SetAccelY(-JUMPFORCE);
 			m_pPlayer->SetJumping(false);
+			SoundManager::Instance().playSound("jump");
 		}
 
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_LSHIFT) && !m_pPlayer->isShooting())
@@ -234,6 +237,8 @@ void PlayScene::start()
     });
     
     addChild(m_pNextButton);
+
+	SoundManager::Instance().playMusic("playScreen");
 }
 
 void PlayScene::checkCollision()
@@ -322,4 +327,6 @@ void PlayScene::PlayerShoot()
 
 	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+
+	SoundManager::Instance().playSound("shot");
 }
