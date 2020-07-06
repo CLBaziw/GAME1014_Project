@@ -5,17 +5,17 @@
 Enemy::Enemy()
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/enemy_small.txt",
-		"../Assets/sprites/enemy_small.png",
-		"enemy-sprite"
+		"../Assets/sprites/alien.txt",
+		"../Assets/sprites/alien.png",
+		"alien"
 	);
 
-	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-sprite"));
+	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
 	
-	setWidth(36);
-	setHeight(58);
+	setWidth(128);
+	setHeight(128);
 
-	getTransform()->position = glm::vec2(760.0f, 550.0f);
+	getTransform()->position = glm::vec2(760.0f, 520.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
@@ -38,21 +38,29 @@ void Enemy::draw()
 	switch (m_currentAnimationState)
 	{
 	case ENEMY_IDLE_RIGHT:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-idle"),
+		TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case ENEMY_IDLE_LEFT:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-idle"),
+		TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_RUN_RIGHT:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-run"),
+		TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 			x, y, 0.25f, 0, 255, true);
 		break;
 	case ENEMY_RUN_LEFT:
-		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-run"),
+		TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
+	/*case ENEMY_DIE_RIGHT:
+		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
+			x, y, 0.30f, 0, 255, true);
+		break;
+	case ENEMY_DIE_LEFT:
+		TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
+			x, y, 0.30f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;*/
 	default:
 		break;
 	}
@@ -97,8 +105,6 @@ void Enemy::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-1"));
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-2"));
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-3"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-4"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-5"));
 
 	setAnimation(runAnimation);
 

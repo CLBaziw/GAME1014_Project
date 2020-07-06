@@ -42,7 +42,7 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 
 		// if succeeded create our window
 		m_pWindow = (Config::make_resource(SDL_CreateWindow(title, x, y, width, height, flags)));
-		
+
 		// if window creation successful create our renderer
 		if (m_pWindow != nullptr)
 		{
@@ -51,7 +51,7 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 			// create a new SDL Renderer and store it in the Singleton
 			const auto renderer = (Config::make_resource(SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)));
 			Renderer::Instance()->setRenderer(renderer);
-			
+
 			if (Renderer::Instance()->getRenderer() != nullptr) // render init success
 			{
 				std::cout << "renderer creation success" << std::endl;
@@ -73,7 +73,7 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 			start();
 
 		}
-		else 
+		else
 		{
 			std::cout << "window init failure" << std::endl;
 			return false; // window init fail
@@ -124,7 +124,7 @@ void Game::changeSceneState(const SceneState new_state)
 	if (new_state != m_currentSceneState) {
 
 		// scene clean up
-		if (m_currentSceneState != NO_SCENE) 
+		if (m_currentSceneState != NO_SCENE)
 		{
 			m_currentScene->clean();
 			std::cout << "cleaning previous scene" << std::endl;
@@ -159,7 +159,7 @@ void Game::changeSceneState(const SceneState new_state)
 			break;
 		}
 	}
-	
+
 }
 
 void Game::quit()
@@ -193,4 +193,24 @@ void Game::clean() const
 void Game::handleEvents()
 {
 	m_currentScene->handleEvents();
+}
+
+void Game::setWindowWidth(float width)
+{
+	m_windowWidth = width;
+}
+
+float Game::getWindowWidth()
+{
+	return m_windowWidth;
+}
+
+void Game::setWindowHeight(float height)
+{
+	m_windowHeight = height;
+}
+
+float Game::getWindowHeight()
+{
+	return m_windowHeight;
 }

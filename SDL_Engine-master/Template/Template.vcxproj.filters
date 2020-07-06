@@ -25,6 +25,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{21657abb-080f-4d0e-bc26-e9581cebc5a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{bf4cb190-f55c-4ea6-ae51-fb3f1db613d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\StartScene.cpp">
@@ -99,11 +102,26 @@
     <ClCompile Include="..\src\Sprite.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Plane.cpp">
-      <Filter>Game Objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Enemy.cpp">
       <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Bullet.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Background.cpp">
+      <Filter>UI Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Obstacle.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ground.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Platform.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Scoreboard.cpp">
+      <Filter>UI Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,15 +230,46 @@
     <ClInclude Include="..\src\Sprite.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Plane.h">
-      <Filter>Game Objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoundType.h">
       <Filter>Enums</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Enemy.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EnemyAnimationState.h" />
+    <ClInclude Include="..\src\Bullet.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EnemyAnimationState.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Background.h">
+      <Filter>UI Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BulletAnimationState.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Obstacle.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ObstacleType.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ground.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Platform.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Scoreboard.h">
+      <Filter>UI Objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\sprites\gamesprite.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\Assets\plat\platsprites.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>

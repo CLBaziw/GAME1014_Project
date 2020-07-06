@@ -1,6 +1,8 @@
 #include "PlayScene.h"
+#include "Obstacle.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "TextureManager.h"
 
 PlayScene::PlayScene()
 {
@@ -18,7 +20,7 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
-	CheckBounds();
+	checkCollision();
 }
 
 void PlayScene::clean()
@@ -26,8 +28,7 @@ void PlayScene::clean()
 	delete m_pPauseButton;
 	m_pPauseButton = nullptr;
 
-	delete m_pNextButton;
-	m_pNextButton = nullptr;
+	
 
 	removeAllChildren();
 }
@@ -101,10 +102,19 @@ void PlayScene::handleEvents()
 			m_pPlayer->SetAccelY(-JUMPFORCE);
 			m_pPlayer->SetJumping(false);
 		}
+
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_LSHIFT) && !m_pPlayer->isShooting())
+		{
+			m_pPlayer->SetShooting(true);
+			PlayerShoot(); 
+		}
+		else if (EventManager::Instance().isKeyUp(SDL_SCANCODE_LSHIFT) && m_pPlayer->isShooting())
+		{
+			m_pPlayer->SetShooting(false);
+		}
 	}
 	
 	m_pPlayer->update();
-	checkCollision();
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
@@ -124,14 +134,48 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	addChild(m_pBackground);
+
+	//Score Board
+	const SDL_Color yellow = { 255, 255, 0, 255 };
+	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
+	m_pScoreBoard->setParent(this);
+	addChild(m_pScoreBoard);
+
 	// Player Sprite
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+	m_pPlayer->SetJumping(false);
+
 	// Enemy Sprite - this will be removed later as enemies will not be spawned at scene start
 	m_pEnemy = new Enemy();
 	addChild(m_pEnemy);
+
+	/*m_pObstacle1 = new Obstacle(OBSTACLE1);
+	addChild(m_pObstacle1);
+	m_pObstacle2 = new Obstacle(OBSTACLE2);
+	addChild(m_pObstacle2);
+	m_pObstacle1 = new Obstacle(OBSTACLE3);
+	addChild(m_pObstacle3);*/
+
+	// CREATE OBSTACLE HERE - Like above ^
+	// You want to make sure to randomize which obstacle will be created as we will have more than one option 
+	// Enum options can be used like integers starting with 0 so you can select a type using the 0-2 or however many options you have
+	m_platform = new Platform(380, 400);
+	addChild(m_platform);
+
+	//Ground
+	m_ground = new ground(0, 587);
+	addChild(m_ground);
+
+	std::cout << "The height of the ground: " << m_ground->getHeight() << std::endl;
+
+
+	// Bullets
+	m_pPlayerBulletVec.reserve(10);
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
@@ -173,88 +217,94 @@ void PlayScene::start()
 	});
 
 	addChild(m_pContinueButton);
-
-
-// Next Button
-    m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
-    m_pNextButton ->getTransform()->position = glm::vec2(830, 80.0f);
-    m_pNextButton->addEventListener(CLICK, [&]()-> void
-    {
-    	m_pNextButton->setActive(false);
-    	TheGame::Instance()->changeSceneState(END_SCENE);
-    });
-    
-    m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
-    {
-    	m_pNextButton->setAlpha(128);
-    });
-    
-    m_pNextButton->addEventListener(MOUSE_OUT, [&]()->void
-    {
-    	m_pNextButton->setAlpha(255);
-    });
-    
-    addChild(m_pNextButton);
 }
 
-void PlayScene::CheckBounds()
-{
-	// check left
-	if (m_pPlayer->getTransform()->position.x > 1000 - m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(1000 - m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
-	// check right
-	if (m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.5)
-	{
-		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.5, m_pPlayer->getTransform()->position.y);
-	}
-	// check up
-	if (m_pPlayer->getTransform()->position.y < 0 + m_pPlayer->getHeight() * 0.5)
-	{
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 0 + m_pPlayer->getHeight() * 0.5);
-	}
-	// check down
-	if (m_pPlayer->getTransform()->position.y > 600 - m_pPlayer->getHeight())
-	{
-		m_pPlayer->SetJumping(true);
-		m_pPlayer->StopY();
-		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, 600 - m_pPlayer->getHeight());
-	}
-}
+
 
 void PlayScene::checkCollision()
 {
-	// PLATFORM CHECKS
-	//if (COMA::AABBCheck(m_pPlayer, m_pPlaneSprite))
-	//{
-	//	if (m_pPlayer->getTransform()->position.x + m_pPlayer->getWidth() - m_pPlayer->GetVelX() <= m_pPlaneSprite->getTransform()->position.x)
-	//	{ // Collision from left of obstacle.
-	//		m_pPlayer->StopX(); // Stop the player from moving horizontally.
-	//		m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x - m_pPlayer->getWidth(), m_pPlayer->getTransform()->position.y);
-	//	}
-	//	else if (m_pPlayer->getTransform()->position.x - (float)m_pPlayer->GetVelX() >= m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth())
-	//	{ // Collision from right of obstacle.
-	//		m_pPlayer->StopX();
-	//		m_pPlayer->setPosition(m_pPlaneSprite->getTransform()->position.x + m_pPlaneSprite->getWidth(), m_pPlayer->getTransform()->position.y);
-	//	}
-	//	else if (m_pPlayer->getTransform()->position.y + m_pPlayer->getHeight() - (float)m_pPlayer->GetVelY() <= m_pPlaneSprite->getTransform()->position.y)
-	//	{ // Collision from top side of obstacle.
-	//		m_pPlayer->SetJumping(true);
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y - m_pPlayer->getHeight() - 1);
-	//	}
-	//	else if (m_pPlayer->getTransform()->position.y - (float)m_pPlayer->GetVelY() >= m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight())
-	//	{ // Collision from bottom side of obstacle.
-	//		m_pPlayer->StopY();
-	//		m_pPlayer->setPosition(m_pPlayer->getTransform()->position.x, m_pPlaneSprite->getTransform()->position.y + m_pPlaneSprite->getHeight());
-	//	}
-	//}
+	int playerX = m_pPlayer->getTransform()->position.x;
+	int playerY = m_pPlayer->getTransform()->position.y;
+	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
+	int halfPlayerHeight = m_pPlayer->getHeight() * 0.5;
+	int groundY = m_ground->getTransform()->position.y;
 
+	// Ground check
+	if (playerY > groundY - halfPlayerHeight - 20)
+	{
+		std::cout << "Player on ground" << std::endl;
+		m_pPlayer->SetJumping(true);
+		m_pPlayer->StopY();
+		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
+	}
+
+	// This will change into m_pObstacles and be inside a loop for later.
+	int platformX = m_platform->getTransform()->position.x;
+	int platformY = m_platform->getTransform()->position.y;
+	int halfPlatformWidth = m_platform->getWidth() * 0.5;
+	int halfPlatformHeight = m_platform->getHeight() * 0.5;
+
+	// Platform check
+	if (playerY < platformY - halfPlatformHeight)
+	{
+		std::cout << "Player above platform" << std::endl;
+		if ((playerX + halfPlayerWidth < platformX + halfPlatformWidth || playerX - halfPlayerWidth < platformX + halfPlatformWidth)
+			&& (playerX + halfPlayerWidth > platformX - halfPlatformWidth || playerX - halfPlayerWidth > platformX - halfPlatformWidth))
+		{
+			std::cout << "Player on platform" << std::endl;
+			m_pPlayer->SetJumping(true);
+			m_pPlayer->StopY();
+			m_pPlayer->setPosition(playerX, platformY - halfPlayerHeight - 30);
+		}
+		else if (playerX > platformX + halfPlatformWidth || playerX < platformX - halfPlatformWidth)
+		{
+			std::cout << "Player should fall" << std::endl;
+			m_pPlayer->SetJumping(false);
+		}
+	}
+	
+	// Player runs into enemy
 	if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemy)) 
 	{
 		std::cout << "Player and enemy collide" << std::endl;
 		// Kill player
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
+
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		if (COMA::squaredRadiusCheck(m_pEnemy, m_pPlayerBulletVec[i]))
+		{
+			std::cout << "Player killed enemy" << std::endl;
+			
+			/*delete m_pEnemy;
+			m_pEnemy = nullptr;*/
+			
+
+			//delete m_pPlayerBulletVec[i];
+			//m_pPlayerBulletVec[i] = nullptr;
+		}
+	}
+}
+
+void PlayScene::PlayerShoot()
+{
+	float x;
+	float y = m_pPlayer->getTransform()->position.y;
+
+	BulletAnimationState bState;
+
+	if (m_playerFacingRight)
+	{
+		bState = BULLET_MOVE_RIGHT;
+		x = m_pPlayer->getTransform()->position.x + 40;
+	}
+	else
+	{
+		bState = BULLET_MOVE_LEFT;
+		x = m_pPlayer->getTransform()->position.x - 40;
+	}
+
+	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
+	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 }

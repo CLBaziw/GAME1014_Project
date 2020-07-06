@@ -1,3 +1,4 @@
+
 #pragma once
 #ifndef __GAME__
 #define __GAME__
@@ -23,7 +24,7 @@
 class Game
 {
 public:
-	
+
 	static Game* Instance()
 	{
 		if (s_pInstance == nullptr)
@@ -51,7 +52,12 @@ public:
 	Uint32 getFrames() const;
 	bool isRunning() const;
 	void changeSceneState(SceneState new_state);
-	
+
+	void setWindowWidth(float width);
+	float getWindowWidth();
+	void setWindowHeight(float height);
+	float getWindowHeight();
+
 private:
 	Game();
 	~Game();
@@ -68,9 +74,11 @@ private:
 	// storage structures
 	std::shared_ptr<SDL_Window> m_pWindow;
 	static Game* s_pInstance;
+
+	int m_windowWidth;
+	int m_windowHeight;
 };
 
 typedef Game TheGame;
 
 #endif /* defined (__GAME__) */
-

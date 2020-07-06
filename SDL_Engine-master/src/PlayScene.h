@@ -3,10 +3,19 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Button.h"
 #include "Enemy.h"
+#include "Bullet.h"
+#include "Background.h"
+#include "Platform.h"
+#include "ground.h"
+#include "Obstacle.h"
+#include "Scoreboard.h"
+
+
+
 
 class PlayScene : public Scene
 {
@@ -20,21 +29,36 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-
-	void CheckBounds();
+ 
 	void checkCollision();
+
+	void PlayerShoot();
 
 private:
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
+	Background* m_pBackground;
+	Platform* m_platform;
+	ground* m_ground;
+	Obstacle* m_pObstacle1;
+	Obstacle* m_pObstacle2;
+	Obstacle* m_pObstacle3;
+	ScoreBoard* m_pScoreBoard;
+	//SDL_FRect* c_pPlayer;
+	//SDL_FRect* c_platform;
+
 	bool m_playerFacingRight;
+
+	std::vector<Bullet*> m_pPlayerBulletVec;
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
-	Button* m_pNextButton;
+	
+
+	float m_shootTime;
+	float m_currentTime;
 
 	// movement for character
 	int moveX = 0;
