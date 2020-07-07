@@ -43,7 +43,6 @@ private:
 	Background* m_pBackground;
 	ground* m_ground;
 	ScoreBoard* m_pScoreBoard;
-	Platform* m_platform;
 
 	// Boxes for scrolling
 	ObjectPool* m_objPool;

@@ -222,8 +222,6 @@ void PlayScene::checkCollision()
 {
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
-	int EnemyX = m_pEnemy->getTransform()->position.x + 70;
-	int EnemyY = m_pEnemy->getTransform()->position.y + 23;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
 	int halfPlayerHeight = m_pPlayer->getHeight() * 0.5;
 	int groundY = m_ground->getTransform()->position.y;
@@ -312,28 +310,6 @@ void PlayScene::PlayerShoot()
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 }
 
-//void PlayScene::EnemyShoot()
-//{
-//	float x;
-//	float y = m_pEnemy->getTransform()->position.y;
-//
-//
-//	BulletAnimationState ebState;
-//
-//	if (m_enemyFacingRight)
-//	{
-//		ebState = ENEMY_BULLET_MOVE_RIGHT;
-//		x = m_pEnemy->getTransform()->position.x + 70;
-//	}
-//	else
-//	{
-//		ebState = BULLET_MOVE_LEFT;
-//		x = m_pEnemy->getTransform()->position.x - 23;
-//	}
-//
-//	m_pEnemyBulletVec.push_back(new EnemyBullet(x, y, true, ebState));
-//	addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
-//}
 void PlayScene::MakeObstacles()
 {
 	// Check for out of bounds.
@@ -353,13 +329,13 @@ void PlayScene::MakeObstacles()
 			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
 			std::cout << "X: " << m_pObstacles[0]->getTransform()->position.x << " Y: " << m_pObstacles[0]->getTransform()->position.y << std::endl;
 
-			if (m_pObstacles.size() > 4)
+			/*if (m_pObstacles.size() > 4)
 			{
 				std::cout << "Remove obstacle" << std::endl;
 				m_pObstacles[0]->setActive(false);
 				m_pObstacles[0] = nullptr;
 				m_pObstacles.erase(m_pObstacles.begin());
-			}
+			}*/
 
 			m_numSpaces = 0;
 		}

@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "EnemyAnimationState.h"
+#include "ObstacleAnimationState.h"
 #include "TextureManager.h"
 #include <algorithm>
 #include "Player.h"
@@ -83,15 +83,9 @@ void Enemy::clean()
 
 void Enemy::setAnimationState(ObstacleAnimationState new_state)
 {
-}
-
-void Enemy::setAnimationState(EnemyAnimationState new_state)
-{
 	m_currentAnimationState = new_state;
 }
-//
-//
-//
+
 void Enemy::setPosition(int x, int y)
 {
 	getTransform()->position.x = x ;
