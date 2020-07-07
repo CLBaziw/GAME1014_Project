@@ -12,6 +12,10 @@
 #include "Platform.h"
 #include "ground.h"
 #include "Obstacle.h"
+#include "Scoreboard.h"
+
+
+
 
 class PlayScene : public Scene
 {
@@ -41,6 +45,7 @@ private:
 	Obstacle* m_pObstacle1;
 	Obstacle* m_pObstacle2;
 	Obstacle* m_pObstacle3;
+	ScoreBoard* m_pScoreBoard;
 	//SDL_FRect* c_pPlayer;
 	//SDL_FRect* c_platform;
 
@@ -50,7 +55,7 @@ private:
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
-	Button* m_pNextButton;
+	
 
 	float m_shootTime;
 	float m_currentTime;

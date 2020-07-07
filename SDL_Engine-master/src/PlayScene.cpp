@@ -28,8 +28,7 @@ void PlayScene::clean()
 	delete m_pPauseButton;
 	m_pPauseButton = nullptr;
 
-	delete m_pNextButton;
-	m_pNextButton = nullptr;
+	
 
 	removeAllChildren();
 }
@@ -135,8 +134,14 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
 	addChild(m_pBackground);
+
+	//Score Board
+	const SDL_Color yellow = { 255, 255, 0, 255 };
+	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
+	m_pScoreBoard->setParent(this);
+	addChild(m_pScoreBoard);
 
 	// Player Sprite
 	m_pPlayer = new Player();
@@ -212,29 +217,9 @@ void PlayScene::start()
 	});
 
 	addChild(m_pContinueButton);
-
-
-// Next Button
-    m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
-    m_pNextButton ->getTransform()->position = glm::vec2(830, 80.0f);
-    m_pNextButton->addEventListener(CLICK, [&]()-> void
-    {
-    	m_pNextButton->setActive(false);
-    	TheGame::Instance()->changeSceneState(END_SCENE);
-    });
-    
-    m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
-    {
-    	m_pNextButton->setAlpha(128);
-    });
-    
-    m_pNextButton->addEventListener(MOUSE_OUT, [&]()->void
-    {
-    	m_pNextButton->setAlpha(255);
-    });
-    
-    addChild(m_pNextButton);
 }
+
+
 
 void PlayScene::checkCollision()
 {
