@@ -10,8 +10,6 @@ Platform::Platform(float x, float y)
 		"platform"
 	);
 
-
-
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platform"));
 	setType(PLATFORM);
 	
@@ -19,16 +17,9 @@ Platform::Platform(float x, float y)
 	setHeight(128);
 
 	getTransform()->position = glm::vec2(x, y);
-
-	//getTransform()->m_dst.x = x;
-	//getTransform()->m_dst.y = y;
-	//getTransform()->m_dst.w = 128.0f;
-	//getTransform()->m_dst.h = 128.0f;
-
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
-
 
 	m_buildAnimations();
 }
@@ -40,10 +31,7 @@ void Platform::draw()
 {
 	// alias for x and y
 	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;	
-	
-	//const auto x = getTransform()->m_dst.x;
-	//const auto y = getTransform()->m_dst.y;
+	const auto y = getTransform()->position.y;
 
 	//draw the bullet according to animation state
 	
@@ -58,20 +46,6 @@ void Platform::update()
 
 void Platform::clean()
 {
-}
-
-void Platform::setDst()
-{
-	dst.x = getTransform()->position.x;
-	dst.y = getTransform()->position.y;
-	dst.w = getWidth();
-	dst.h = getHeight();
-
-}
-
-SDL_FRect& Platform::getDst()
-{
-	return dst;
 }
 
 void Platform::m_buildAnimations()

@@ -3,12 +3,13 @@
 #define __OBSTACLE__
 
 #include "Sprite.h"
-#include "ObstacleType.h"
+#include "GameObjectType.h"
+#include "ObstacleAnimationState.h"
 
 class Obstacle final : public Sprite
 {
 public:
-	Obstacle(ObstacleType obsType);
+	Obstacle(GameObjectType obsType);
 	~Obstacle();
 
 	// Life Cycle Methods
@@ -16,12 +17,14 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	void setAnimationState(ObstacleAnimationState new_state);
+
 	void setPosition(int x, int y);
 
 private:
 	void m_buildAnimations();
 
-	ObstacleType m_pObstacleType;
+	ObstacleAnimationState m_currentAnimationState;
 };
 
 #endif // ! __OBSTACLE__

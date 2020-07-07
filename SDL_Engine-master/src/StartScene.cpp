@@ -65,11 +65,11 @@ void StartScene::start()
 
 	const SDL_Color Metallicgold = { 212,175, 55, 0 };
 
-	m_pStartLabel = new Label("M.E.T", "galaxy_1", 100, Metallicgold, glm::vec2(500.0f, 120.0f));
+	m_pStartLabel = new Label("M.E.T", "galaxy_1", 100, Metallicgold, glm::vec2(576.0f, 120.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
-	m_pNameLabel = new Label("ENTITY", "galaxy_1", 150, Metallicgold, glm::vec2(500.0f, 205.0f));
+	m_pNameLabel = new Label("ENTITY", "galaxy_1", 150, Metallicgold, glm::vec2(576.0f, 205.0f));
 	m_pNameLabel->setParent(this);
 	addChild(m_pNameLabel);
 
@@ -78,12 +78,12 @@ void StartScene::start()
 	addChild(m_pInstructionsLabel);
 
 	m_pShip = new Ship();
-	m_pShip->getTransform()->position = glm::vec2(600.0f, 350.0f);
+	m_pShip->getTransform()->position = glm::vec2(576.0f, 350.0f);
 	addChild(m_pShip);
 
 	// Start Button
 	m_pStartButton = new Button();
-	m_pStartButton->getTransform()->position = glm::vec2(500.0f, 500.0f);
+	m_pStartButton->getTransform()->position = glm::vec2(576.0f, 540.0f);
 
 	m_pStartButton->addEventListener(CLICK, [&]()-> void
 	{

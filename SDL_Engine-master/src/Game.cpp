@@ -194,3 +194,23 @@ void Game::handleEvents()
 {
 	m_currentScene->handleEvents();
 }
+
+void Game::setWindowWidth(float width)
+{
+	m_windowWidth = width;
+}
+
+float Game::getWindowWidth()
+{
+	return m_windowWidth;
+}
+
+void Game::setWindowHeight(float height)
+{
+	m_windowHeight = height;
+}
+
+float Game::getWindowHeight()
+{
+	return m_windowHeight;
+}

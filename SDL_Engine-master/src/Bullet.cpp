@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 
 #define BULLETSPEED 10;
+#define EBULLETSPEED 7;
 
 Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bulletState)
 {
@@ -17,33 +18,55 @@ Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bul
 
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("player-bullet-sprite"));
 		setType(P_BULLET);
+
+		setWidth(20);
+		setHeight(10);
+
+		setAnimationState(bulletState);
+		if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+		{
+			m_speed = BULLETSPEED;
+		}
+		else if (m_currentAnimationState == BULLET_MOVE_LEFT)
+		{
+			m_speed = -BULLETSPEED;
+		}
 	}
 	else
 	{
 		// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
+		std::cout << "Enemy bullet created " << std::endl;
+		TextureManager::Instance()->loadSpriteSheet(
+			"../Assets/sprites/enemybullet.txt",
+			"../Assets/sprites/enemybullet.png",
+			"enemy-bullet-sprite"
+		);
 
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-bullet-sprite"));
 		setType(E_BULLET);
+
+		setWidth(70);
+		setHeight(46);
+
+
+		setAnimationState(bulletState);
+		if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+		{
+			m_speed = EBULLETSPEED;
+		}
+		else if (m_currentAnimationState == BULLET_MOVE_LEFT)
+		{
+			m_speed = -EBULLETSPEED;
+		}
 	}
 
-	setWidth(20);
-	setHeight(10);
 
 	getTransform()->position = glm::vec2(xPos, yPos);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 
-	setAnimationState(bulletState);
 
-	if (m_currentAnimationState == BULLET_MOVE_RIGHT)
-	{
-		m_speed = BULLETSPEED;
-	}
-	else if (m_currentAnimationState == BULLET_MOVE_LEFT)
-	{
-		m_speed = -BULLETSPEED;
-	}
-	
 	m_buildAnimations();
 }
 
