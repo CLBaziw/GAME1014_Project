@@ -33,6 +33,7 @@ public:
 	void checkCollision();
 
 	void PlayerShoot();
+	void EnemyShoot();
 
 private:
 	glm::vec2 m_mousePosition;
@@ -52,6 +53,7 @@ private:
 	bool m_playerFacingRight;
 
 	std::vector<Bullet*> m_pPlayerBulletVec;
+	std::vector<Bullet*> m_pEnemyBulletVec;
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
@@ -64,6 +66,9 @@ private:
 	int moveX = 0;
 	int moveY = 0;
 	int moveSpeed = 5;
+
+	int m_bulletTimer = 0,
+		m_timerMax = 35;
 
 };
 

@@ -130,6 +130,7 @@ void PlayScene::handleEvents()
 	{
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
+	EnemyShoot();
 }
 
 void PlayScene::start()
@@ -277,10 +278,9 @@ void PlayScene::checkCollision()
 		{
 			std::cout << "Player killed enemy" << std::endl;
 			
-			/*delete m_pEnemy;
-			m_pEnemy = nullptr;*/
+			//delete m_pEnemy;
+			//m_pEnemy = nullptr;
 			
-
 			//delete m_pPlayerBulletVec[i];
 			//m_pPlayerBulletVec[i] = nullptr;
 		}
@@ -307,4 +307,35 @@ void PlayScene::PlayerShoot()
 
 	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+}
+
+void PlayScene::EnemyShoot()
+{
+
+	float x = m_pEnemy->getTransform()->position.x;
+	float y = m_pEnemy->getTransform()->position.y;
+	if (m_pPlayer->getTransform()->position.x < m_pEnemy->getTransform()->position.x && m_pPlayer->getTransform()->position.y >= m_pEnemy->getTransform()->position.y)
+	{
+		x = m_pEnemy->getTransform()->position.x - 48;
+		m_pEnemy->setAnimationState(ENEMY_IDLE_LEFT);
+		if (m_bulletTimer++ == m_timerMax)
+		{
+			m_pEnemyBulletVec.push_back(new Bullet(x, y, false, BULLET_MOVE_LEFT));
+			addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+			m_bulletTimer = 0;
+		}
+	}
+	if (m_pPlayer->getTransform()->position.x > m_pEnemy->getTransform()->position.x&& m_pPlayer->getTransform()->position.y >= m_pEnemy->getTransform()->position.y)
+	{
+		x = m_pEnemy->getTransform()->position.x + 48;
+		m_pEnemy->setAnimationState(ENEMY_IDLE_RIGHT);
+		if (m_bulletTimer++ == m_timerMax)
+		{
+			m_pEnemyBulletVec.push_back(new Bullet(x, y, false, BULLET_MOVE_RIGHT));
+			addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+			m_bulletTimer = 0;
+		}
+	}
+
+
 }
