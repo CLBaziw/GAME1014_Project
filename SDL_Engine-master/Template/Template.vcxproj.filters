@@ -137,9 +137,6 @@
     <ClInclude Include="..\src\SoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TextureManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\GameObjectType.h">
       <Filter>Enums</Filter>
     </ClInclude>
@@ -224,9 +221,6 @@
     <ClInclude Include="..\src\UIControl.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Sprite.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoundType.h">
       <Filter>Enums</Filter>
     </ClInclude>
@@ -235,9 +229,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Bullet.h">
       <Filter>Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\EnemyAnimationState.h">
-      <Filter>Enums</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Background.h">
       <Filter>UI Objects</Filter>
@@ -257,12 +248,27 @@
     <ClInclude Include="..\src\Platform.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\TextureManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Sprite.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EnemyAnimationState.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Assets\sprites\gamesprite.png">
       <Filter>Assets</Filter>
     </Image>
     <Image Include="..\Assets\plat\platsprites.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\Assets\sprites\enemybullet.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\Assets\sprites\beam_Right_.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>
