@@ -21,12 +21,10 @@ public:
 	// getters
 	SpriteSheet* getSpriteSheet();
 	Animation& getAnimation(const std::string& name);
-	bool GetSafe();
 	
 	// setters
 	void setSpriteSheet(SpriteSheet* sprite_sheet);
 	void setAnimation(const Animation& animation);
-	void SetSafe(bool s);
 
 private:
 	// private utility functions
@@ -35,8 +33,6 @@ private:
 	SpriteSheet* m_pSpriteSheet;
 
 	std::unordered_map<std::string, Animation> m_pAnimations;
-
-	bool m_bSafe;
 };
 
 #endif /* defined (__SPRITE__) */

@@ -14,7 +14,7 @@ private:
 
 	ObjectPool* m_objectPool;
 public:
-	Box(ObjectPool* objPool, int x, int y, bool hasSprite = false);
+	Box(float x, float y);
 	~Box();
 
 	void Update();

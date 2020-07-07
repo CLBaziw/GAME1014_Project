@@ -1,12 +1,13 @@
 #include "ObjectPool.h"
 #include <iostream>
 
-#define MAXPLATFORM 4
-#define MAXOBSTACLE 4
+#define MAXPLATFORM 5
+#define MAXOBSTACLE 5
 #define MAXENEMY 6
 
 ObjectPool::ObjectPool()
 {
+	m_activeObstacles.reserve(5);
 	for (int i = 0; i < MAXPLATFORM; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(PLATFORM));
@@ -38,19 +39,24 @@ void ObjectPool::UpdateActiveSprites()
 		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
 			m_activeObstacles[i]->update();
-			m_activeObstacles[i]->draw();
+		}
+		else
+		{
+			std::cout << "Remove inactive sprite from list of active sprites" << std::endl;
+			m_activeObstacles.erase(m_activeObstacles.begin() + i);
 		}
 	}
 }
 
-void ObjectPool::RemoveInactiveSprites()
+void ObjectPool::DrawActiveSprites()
 {
 	for (int i = 0; i < m_activeObstacles.size(); i++)
 	{
-		if (!m_activeObstacles[i]->getActive())
+		//std::cout << "Position: " << i << " Type: " << m_activeObstacles[i]->getType() << " Active: " << m_activeObstacles[i]->getActive() << std::endl;
+
+		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
-			std::cout << "Remove inactive sprite from list of active sprites" << std::endl;
-			m_activeObstacles.erase(m_activeObstacles.begin() + i);
+			m_activeObstacles[i]->draw();
 		}
 	}
 }

@@ -14,7 +14,7 @@ public:
 	~ObjectPool();
 
 	void UpdateActiveSprites();
-	void RemoveInactiveSprites();
+	void DrawActiveSprites();
 	Obstacle* GetObstacle(GameObjectType newObj);
 private:
 	std::vector<Obstacle*> m_activeObstacles;

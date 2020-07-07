@@ -13,6 +13,7 @@
 #include "ground.h"
 #include "Obstacle.h"
 #include "ObjectPool.h"
+#include "Platform.h"
 
 class PlayScene : public Scene
 {
@@ -39,6 +40,7 @@ private:
 	Player* m_pPlayer;
 	Background* m_pBackground;
 	ground* m_ground;
+	Platform* m_platform;
 
 	// Boxes for scrolling
 	ObjectPool* m_objPool;
@@ -53,9 +55,6 @@ private:
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
 	Button* m_pNextButton;
-
-	float m_shootTime;
-	float m_currentTime;
 
 	// movement for character
 	int moveX = 0;

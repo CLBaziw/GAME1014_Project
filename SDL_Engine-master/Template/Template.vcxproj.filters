@@ -45,7 +45,6 @@
     <ClInclude Include="..\src\CollisionShape.h" />
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\Enemy.h" />
-    <ClInclude Include="..\src\EnemyAnimationState.h" />
     <ClInclude Include="..\src\ground.h" />
     <ClInclude Include="..\src\Obstacle.h" />
     <ClInclude Include="..\src\ObstacleType.h" />
@@ -82,6 +81,7 @@
     <ClInclude Include="..\src\Transform.h" />
     <ClInclude Include="..\src\Util.h" />
     <ClInclude Include="..\src\ObjectPool.h" />
+    <ClInclude Include="..\src\ObstacleAnimationState.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Assets\plat\platsprites.png" />

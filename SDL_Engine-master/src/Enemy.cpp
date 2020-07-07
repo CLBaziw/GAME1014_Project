@@ -76,7 +76,7 @@ void Enemy::clean()
 {
 }
 
-void Enemy::setAnimationState(EnemyAnimationState new_state)
+void Enemy::setAnimationState(ObstacleAnimationState new_state)
 {
 	m_currentAnimationState = new_state;
 }

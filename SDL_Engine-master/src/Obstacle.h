@@ -4,7 +4,7 @@
 
 #include "Sprite.h"
 #include "GameObjectType.h"
-#include "EnemyAnimationState.h"
+#include "ObstacleAnimationState.h"
 
 class Obstacle final : public Sprite
 {
@@ -22,8 +22,7 @@ public:
 private:
 	void m_buildAnimations();
 
-	GameObjectType m_pObstacleType;
-	EnemyAnimationState m_currentAnimationState;
+	ObstacleAnimationState m_currentAnimationState;
 };
 
 #endif // ! __OBSTACLE__

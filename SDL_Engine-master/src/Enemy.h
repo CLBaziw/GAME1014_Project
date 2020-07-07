@@ -2,7 +2,7 @@
 #ifndef __ENEMY__
 #define __ENEMY__
 
-#include "EnemyAnimationState.h"
+#include "ObstacleAnimationState.h"
 #include "Sprite.h"
 
 class Enemy final : public Sprite
@@ -17,12 +17,12 @@ public:
 	virtual void clean() override;
 
 	// Setters
-	void setAnimationState(EnemyAnimationState new_state);
+	void setAnimationState(ObstacleAnimationState new_state);
 	void setPosition(int x, int y);
 	
 private:
 	void m_buildAnimations();
-	EnemyAnimationState m_currentAnimationState;
+	ObstacleAnimationState m_currentAnimationState;
 };
 
 #endif /* defined (__ENEMY__) */

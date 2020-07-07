@@ -15,16 +15,15 @@ PlayScene::~PlayScene()
 void PlayScene::draw()
 {
 	drawDisplayList();
+	m_objPool->DrawActiveSprites();
 }
 
 void PlayScene::update()
 {
+	checkCollision();
 	m_objPool->UpdateActiveSprites();
-	m_objPool->RemoveInactiveSprites();
 	updateDisplayList();
 	MakeObstacles();
-	checkCollision();
-	m_pPlayer->update();
 }
 
 void PlayScene::clean()
@@ -119,6 +118,8 @@ void PlayScene::handleEvents()
 		}
 	}
 
+	m_pPlayer->update();
+
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		TheGame::Instance()->quit();
@@ -137,9 +138,6 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-	// Object Pool
-	m_objPool = new ObjectPool();
-
 	// Background
 	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
 	addChild(m_pBackground);
@@ -155,9 +153,12 @@ void PlayScene::start()
 	m_numSpaces = 3;
 	for (int i = 0; i < 10; i++)
 	{
-		m_vec.push_back(new Box(m_objPool, 128 * i, 520));
+		m_vec.push_back(new Box(128 * i, 520));
 	}
 	m_pPlayer->SetJumping(false);
+
+	// Object Pool
+	m_objPool = new ObjectPool();
 
 	//Ground
 	m_ground = new ground(0, 587);
@@ -280,7 +281,7 @@ void PlayScene::checkCollision()
 			}
 
 			// Check for bullet with enemy
-			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+			/*for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
 			{
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
@@ -290,7 +291,7 @@ void PlayScene::checkCollision()
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
 				}
-			}
+			}*/
 		}
 	}
 }
@@ -331,9 +332,10 @@ void PlayScene::MakeObstacles()
 		// Add new box.
 		if (m_numSpaces >= 3) // Add new sprite if there has been enough spaces.
 		{
-			m_vec.push_back(new Box(m_objPool, 128 * (m_vec.size() + 1), 536, true));
+			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 
-			m_pObstacles.push_back(m_vec.back()->GetSprite());
+			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
+			std::cout << "X: " << m_pObstacles[0]->getTransform()->position.x << " Y: " << m_pObstacles[0]->getTransform()->position.y << std::endl;
 
 			if (m_pObstacles.size() > 4)
 			{
@@ -347,7 +349,7 @@ void PlayScene::MakeObstacles()
 		}
 		else // Create another empty space
 		{
-			m_vec.push_back(new Box(m_objPool, 128 * m_vec.size(), 384, false));
+			m_vec.push_back(new Box(128 * m_vec.size(), 536));
 		}
 	}
 
