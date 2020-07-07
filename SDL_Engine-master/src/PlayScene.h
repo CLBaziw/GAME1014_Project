@@ -7,7 +7,7 @@
 #include "Enemy.h"
 #include "Button.h"
 #include "Bullet.h"
-#include "EnemyBullet.h"
+//#include "EnemyBullet.h"
 #include "Background.h"
 #include "Platform.h"
 #include "ground.h"
@@ -29,7 +29,7 @@ public:
 	void checkCollision();
 
 	void PlayerShoot();
-	void EnemyShoot();
+	/*void EnemyShoot();*/
 	
 
 private:
@@ -47,10 +47,10 @@ private:
 	//SDL_FRect* c_platform;
 
 	bool m_playerFacingRight;
-	bool m_enemyFacingRight;
+	/*bool m_enemyFacingRight;*/
 
 	std::vector<Bullet*> m_pPlayerBulletVec;
-	std::vector<EnemyBullet*> m_pEnemyBulletVec;
+	/*std::vector<EnemyBullet*> m_pEnemyBulletVec;*/
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;

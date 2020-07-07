@@ -17,7 +17,7 @@ public:
 	virtual void clean() override;
 
 	// Setters
-	/*void setAnimationState(EnemyAnimationState new_state);*/
+	void setAnimationState(EnemyAnimationState new_state);
 	void setPosition(int x, int y);
 
 	void SetX(float x);
@@ -34,7 +34,7 @@ public:
 private:
 	void m_buildAnimations();
 	SDL_FRect dst;
-	/*EnemyAnimationState m_currentAnimationState;*/
+	EnemyAnimationState m_currentAnimationState;
 
 	bool m_shooting;
 	float m_maxVelX, m_maxVelY, m_drag, m_grav;

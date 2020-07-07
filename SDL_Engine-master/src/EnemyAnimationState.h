@@ -2,7 +2,7 @@
 #ifndef __ENEMY_ANIMATION_STATE__
 #define __ENEMY_ANIMATION_STATE__
 
-enum EnemyBulletAnimationState
+enum EnemyAnimationState
 {
 	ENEMY_IDLE_RIGHT,
 	ENEMY_IDLE_LEFT,

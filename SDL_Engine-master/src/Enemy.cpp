@@ -1,7 +1,9 @@
 #include "Enemy.h"
-#include "BulletAnimationState.h"
+#include "EnemyAnimationState.h"
 #include "TextureManager.h"
 #include <algorithm>
+#include "Player.h"
+#include "EnemyBullet.h"
 
 Enemy::Enemy()
 {
@@ -78,18 +80,22 @@ void Enemy::clean()
 {
 }
 
-//void Enemy::setAnimationState(EnemyAnimationState new_state)
-//{
-//	m_currentAnimationState = new_state;
-//}
+void Enemy::setAnimationState(EnemyAnimationState new_state)
+{
+}
+
+void Enemy::setAnimationState(EnemyAnimationState new_state)
+{
+	m_currentAnimationState = new_state;
+}
 //
 //
 //
-//void Enemy::setPosition(int x, int y)
-//{
-//	getTransform()->position.x = x + 70;
-//	getTransform()->position.y = y + 23;
-//}
+void Enemy::setPosition(int x, int y)
+{
+	getTransform()->position.x = x ;
+	getTransform()->position.y = y;
+}
 //
 //
 //void Enemy::SetX(float x)

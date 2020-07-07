@@ -172,7 +172,7 @@ void PlayScene::start()
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
-	m_pEnemyBulletVec.reserve(30);
+	/*m_pEnemyBulletVec.reserve(30);*/
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
@@ -333,24 +333,25 @@ void PlayScene::PlayerShoot()
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 }
 
-void PlayScene::EnemyShoot()
-{
-	float x;
-	float y = m_pEnemy->getTransform()->position.y;
-
-	BulletAnimationState ebState;
-
-	if (m_enemyFacingRight)
-	{
-		ebState = ENEMY_BULLET_MOVE_RIGHT;
-		x = m_pEnemy->getTransform()->position.x + 70;
-	}
-	else
-	{
-		ebState = BULLET_MOVE_LEFT;
-		x = m_pEnemy->getTransform()->position.x - 23;
-	}
-
-	m_pEnemyBulletVec.push_back(new EnemyBullet(x, y, true, ebState));
-	addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
-}
+//void PlayScene::EnemyShoot()
+//{
+//	float x;
+//	float y = m_pEnemy->getTransform()->position.y;
+//
+//
+//	BulletAnimationState ebState;
+//
+//	if (m_enemyFacingRight)
+//	{
+//		ebState = ENEMY_BULLET_MOVE_RIGHT;
+//		x = m_pEnemy->getTransform()->position.x + 70;
+//	}
+//	else
+//	{
+//		ebState = BULLET_MOVE_LEFT;
+//		x = m_pEnemy->getTransform()->position.x - 23;
+//	}
+//
+//	m_pEnemyBulletVec.push_back(new EnemyBullet(x, y, true, ebState));
+//	addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+//}
