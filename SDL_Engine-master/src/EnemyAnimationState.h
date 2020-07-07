@@ -4,6 +4,7 @@
 
 enum EnemyAnimationState
 {
+	NOT_ENEMY,
 	ENEMY_IDLE_RIGHT,
 	ENEMY_IDLE_LEFT,
 	ENEMY_RUN_RIGHT,

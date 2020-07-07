@@ -21,11 +21,6 @@ Platform::Platform(float x, float y)
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 
-	//dst.x = getTransform()->position.x;
-	//dst.y = getTransform()->position.y;
-	//dst.w = (float)getWidth();
-	//dst.h = (float)getHeight();
-
 	m_buildAnimations();
 }
 
@@ -51,20 +46,6 @@ void Platform::update()
 
 void Platform::clean()
 {
-}
-
-void Platform::setDst()
-{
-	dst.x = getTransform()->position.x;
-	dst.y = getTransform()->position.y;
-	dst.w = getWidth();
-	dst.h = getHeight();
-
-}
-
-SDL_FRect& Platform::getDst()
-{
-	return dst;
 }
 
 void Platform::m_buildAnimations()

@@ -1,43 +1,74 @@
 #include "ObjectPool.h"
+#include <iostream>
 
-void ObjectPool::CreateObjectPool()
+#define MAXPLATFORM 4
+#define MAXOBSTACLE 4
+#define MAXENEMY 6
+
+ObjectPool::ObjectPool()
+{
+	for (int i = 0; i < MAXPLATFORM; i++)
+	{
+		m_poolObstacles.push_back(new Obstacle(PLATFORM));
+	}
+
+	for (int i = 0; i < MAXOBSTACLE; i++)
+	{
+		m_poolObstacles.push_back(new Obstacle(OBSTACLE1));
+		m_poolObstacles.push_back(new Obstacle(OBSTACLE2));
+		m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
+	}
+
+	for (int i = 0; i < MAXENEMY; i++)
+	{
+		m_poolObstacles.push_back(new Obstacle(ENEMY));
+	}
+}
+
+ObjectPool::~ObjectPool()
 {
 }
 
 void ObjectPool::UpdateActiveSprites()
 {
-	
-	for (int i = 0; i < m_activeSprites.size(); i++)
+	for (int i = 0; i < m_activeObstacles.size(); i++)
 	{
-		bool active = m_activeSprites[i]->getActive();
-		if (!active) // Deactivate Inactive Sprites
+		//std::cout << "Position: " << i << " Type: " << m_activeObstacles[i]->getType() << " Active: " << m_activeObstacles[i]->getActive() << std::endl;
+
+		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
-			m_activeSprites.erase(m_activeSprites.begin() + i);
-		}
-		else
-		{
-			m_activeSprites[i]->update();
-			m_activeSprites[i]->draw();
+			m_activeObstacles[i]->update();
+			m_activeObstacles[i]->draw();
 		}
 	}
 }
 
-void ObjectPool::AddToActiveList(GameObjectType newObj)
+void ObjectPool::RemoveInactiveSprites()
 {
-	GameObject* temp;
-
-	switch (newObj)
+	for (int i = 0; i < m_activeObstacles.size(); i++)
 	{
-	case PLATFORM:
-		// Search through PlatformPool for an inactive platform
-		// temp = first inactive platform
-	case ENEMY:
-		// Search through EnemyPool for an inactive enemy
-		// temp = first inactive enemy
-	// OBSTACLE DIFFERENCES NEED TO BE CHANGED TO ONLY BE SPIKES, ETC INSTEAD OF HAVING THEIR OWN ENUM
-	case PLAYER:
-		// temp = player;
+		if (!m_activeObstacles[i]->getActive())
+		{
+			std::cout << "Remove inactive sprite from list of active sprites" << std::endl;
+			m_activeObstacles.erase(m_activeObstacles.begin() + i);
+		}
+	}
+}
+
+Obstacle* ObjectPool::GetObstacle(GameObjectType newObj)
+{
+	Obstacle* temp;
+
+	for (int i = 0; i < m_poolObstacles.size(); i++)
+	{
+		if (m_poolObstacles[i]->getType() == newObj && !m_poolObstacles[i]->getActive())
+		{
+			temp = m_poolObstacles[i];
+			temp->setActive(true);
+			m_activeObstacles.push_back(temp);
+			return temp;
+		}
 	}
 
-	m_activeSprites.push_back(temp);
+	std::cout << "Nothing found" << std::endl;
 }

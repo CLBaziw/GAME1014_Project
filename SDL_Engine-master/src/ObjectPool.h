@@ -4,16 +4,21 @@
 
 #include "GameObject.h"
 #include "GameObjectType.h"
+#include "Obstacle.h"
 #include <vector>
 
 class ObjectPool
 {
 public:
-	void CreateObjectPool();
+	ObjectPool();
+	~ObjectPool();
+
 	void UpdateActiveSprites();
-	void AddToActiveList(GameObjectType newObj);
+	void RemoveInactiveSprites();
+	Obstacle* GetObstacle(GameObjectType newObj);
 private:
-	std::vector<GameObject*> m_activeSprites;
+	std::vector<Obstacle*> m_activeObstacles;
+	std::vector<Obstacle*> m_poolObstacles;
 };
 
 #endif

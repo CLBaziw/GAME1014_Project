@@ -2,24 +2,26 @@
 #ifndef __BOX__
 #define __BOX__
 
-#include "Sprite.h"
+#include "Obstacle.h"
+#include "ObjectPool.h"
 
 class Box
 {
 private:
 	int m_x, m_y;
-	Sprite* m_sprite;
+	Obstacle* m_obstacle;
 	SDL_Rect m_rect;
 
+	ObjectPool* m_objectPool;
 public:
-	Box(int x, int y, bool hasSprite = false);
+	Box(ObjectPool* objPool, int x, int y, bool hasSprite = false);
 	~Box();
 
 	void Update();
 	void Render();
 	int GetX();
-	Sprite* GetSprite();
+	Obstacle* GetSprite();
 
-	Sprite* GetRandomObstacle(int x, int y);
+	Obstacle* GetRandomObstacle(ObjectPool* objPool, int x, int y);
 };
 #endif

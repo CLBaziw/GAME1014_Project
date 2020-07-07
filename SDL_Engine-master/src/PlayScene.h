@@ -6,14 +6,13 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Button.h"
-#include "Enemy.h"
 #include "Bullet.h"
 #include "Background.h"
-#include "Platform.h"
 #include "Box.h"
 #include <vector>
 #include "ground.h"
 #include "Obstacle.h"
+#include "ObjectPool.h"
 
 class PlayScene : public Scene
 {
@@ -38,21 +37,14 @@ private:
 	glm::vec2 m_mousePosition;
 
 	Player* m_pPlayer;
-	Enemy* m_pEnemy;
 	Background* m_pBackground;
-	Platform* m_platform;
-	std::vector<Sprite*> m_pObstacles;
+	ground* m_ground;
 
 	// Boxes for scrolling
+	ObjectPool* m_objPool;
 	std::vector<Box*> m_vec;
+	std::vector<Obstacle*> m_pObstacles;
 	int m_numSpaces;
-
-	ground* m_ground;
-	Obstacle* m_pObstacle1;
-	Obstacle* m_pObstacle2;
-	Obstacle* m_pObstacle3;
-	//SDL_FRect* c_pPlayer;
-	//SDL_FRect* c_platform;
 
 	bool m_playerFacingRight;
 

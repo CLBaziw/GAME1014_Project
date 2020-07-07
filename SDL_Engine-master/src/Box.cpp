@@ -1,26 +1,25 @@
 #include "Box.h"
-#include "Platform.h"
-#include "Enemy.h"
+#include "Obstacle.h"
 
 #include <iostream>
 
 #define SCROLLSPD 2
 
-Box::Box(int x, int y, bool hasSprite) : m_x(x), m_y(y), m_sprite(nullptr)
+Box::Box(ObjectPool* objPool, int x, int y, bool hasSprite) : m_x(x), m_y(y), m_obstacle(nullptr)
 {
 	if (hasSprite)
 	{
-		m_sprite = GetRandomObstacle(x, y);
-		m_sprite->getTransform()->position = glm::vec2(x, y);
+		m_obstacle = GetRandomObstacle(objPool, x, y);
+		m_obstacle->getTransform()->position = glm::vec2(x, y);
 	}
 }
 
 Box::~Box()
 {
-	if (m_sprite != nullptr)
+	if (m_obstacle != nullptr)
 	{
-		delete m_sprite;
-		m_sprite = nullptr;
+		delete m_obstacle;
+		m_obstacle = nullptr;
 	}
 }
 
@@ -28,9 +27,9 @@ void Box::Update()
 {
 	m_x -= SCROLLSPD;
 
-	if (m_sprite != nullptr)
+	if (m_obstacle != nullptr)
 	{
-		m_sprite->getTransform()->position = glm::vec2(m_x, m_sprite->getTransform()->position.y);
+		m_obstacle->getTransform()->position = glm::vec2(m_x, m_obstacle->getTransform()->position.y);
 	}
 }
 
@@ -43,39 +42,43 @@ int Box::GetX()
 	return m_x;
 }
 
-Sprite* Box::GetSprite()
+Obstacle* Box::GetSprite()
 {
-	return m_sprite;
+	return m_obstacle;
 }
 
-Sprite* Box::GetRandomObstacle(int x, int y)
+Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 {
-	int randNumber = (rand() % 2) + 1;
+	int randNumber = (rand() % 1) + 1;
 
-	Sprite* sprite = nullptr;
+	Obstacle* sprite = nullptr;
 
 	switch (randNumber)
 	{
 	case 1:
 		std::cout << "Get Random Obstacle - Platform" << std::endl;
-		sprite = new Platform(x, 300);
-		sprite->SetSafe(true);
+		sprite = objPool->GetObstacle(PLATFORM);
 		sprite->getTransform()->position = glm::vec2(x, 300);
 		break;
 	case 2:
 		std::cout << "Get Random Obstacle - Enemy" << std::endl;
-		sprite = new Enemy(x, 600);
-		sprite->SetSafe(false);
+		sprite = objPool->GetObstacle(ENEMY);
 		sprite->getTransform()->position = glm::vec2(x, 600);
 		break;
 	case 3:
-		// obstacle type 1
+		std::cout << "Get Random Obstacle - Obstacle1" << std::endl;
+		sprite = objPool->GetObstacle(OBSTACLE1);
+		sprite->getTransform()->position = glm::vec2(x, 600);
 		break;
 	case 4:
-		// obstacle type 2
+		std::cout << "Get Random Obstacle - Obstacle2" << std::endl;
+		sprite = objPool->GetObstacle(OBSTACLE2);
+		sprite->getTransform()->position = glm::vec2(x, 600);
 		break;
 	case 5:
-		// obstacle type 3
+		std::cout << "Get Random Obstacle - Obstacle3" << std::endl;
+		sprite = objPool->GetObstacle(OBSTACLE3);
+		sprite->getTransform()->position = glm::vec2(x, 600);
 		break;
 	}
 
