@@ -15,4 +15,4 @@ enum EnemyAnimationState
 	NUM_OF_ENEMY_ANIMATION_STATES
 };
 
-#endif /* defined (__PLAYER_ANIMATION_STATE__)*/
+#endif /* defined (__ENEMY_ANIMATION_STATE__)*/

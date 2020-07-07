@@ -4,6 +4,7 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 
+
 PlayScene::PlayScene()
 {
 	PlayScene::start();
@@ -176,6 +177,7 @@ void PlayScene::start()
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
+	/*m_pEnemyBulletVec.reserve(30);*/
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
@@ -225,6 +227,8 @@ void PlayScene::checkCollision()
 {
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
+	int EnemyX = m_pEnemy->getTransform()->position.x + 70;
+	int EnemyY = m_pEnemy->getTransform()->position.y + 23;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
 	int halfPlayerHeight = m_pPlayer->getHeight() * 0.5;
 	int groundY = m_ground->getTransform()->position.y;
@@ -285,7 +289,12 @@ void PlayScene::checkCollision()
 			//m_pPlayerBulletVec[i] = nullptr;
 		}
 	}
+
+
+
 }
+
+
 
 void PlayScene::PlayerShoot()
 {
@@ -297,14 +306,37 @@ void PlayScene::PlayerShoot()
 	if (m_playerFacingRight)
 	{
 		bState = BULLET_MOVE_RIGHT;
-		x = m_pPlayer->getTransform()->position.x + 40;
+		x = m_pPlayer->getTransform()->position.x + 20;
 	}
 	else
 	{
 		bState = BULLET_MOVE_LEFT;
-		x = m_pPlayer->getTransform()->position.x - 40;
+		x = m_pPlayer->getTransform()->position.x - 10;
 	}
 
 	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 }
+
+//void PlayScene::EnemyShoot()
+//{
+//	float x;
+//	float y = m_pEnemy->getTransform()->position.y;
+//
+//
+//	BulletAnimationState ebState;
+//
+//	if (m_enemyFacingRight)
+//	{
+//		ebState = ENEMY_BULLET_MOVE_RIGHT;
+//		x = m_pEnemy->getTransform()->position.x + 70;
+//	}
+//	else
+//	{
+//		ebState = BULLET_MOVE_LEFT;
+//		x = m_pEnemy->getTransform()->position.x - 23;
+//	}
+//
+//	m_pEnemyBulletVec.push_back(new EnemyBullet(x, y, true, ebState));
+//	addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+//}
