@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "EnemyBullet.h"
 
-Enemy::Enemy()
+Enemy::Enemy(int x, int y)
 {
 	TextureManager::Instance()->loadSpriteSheet(
 		"../Assets/sprites/alien.txt",
@@ -20,6 +20,7 @@ Enemy::Enemy()
 
 	m_shooting = false;
 	getTransform()->position = glm::vec2(760.0f, 525.0f);
+	getTransform()->position = glm::vec2(x, y);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
@@ -80,7 +81,7 @@ void Enemy::clean()
 {
 }
 
-void Enemy::setAnimationState(EnemyAnimationState new_state)
+void Enemy::setAnimationState(ObstacleAnimationState new_state)
 {
 }
 

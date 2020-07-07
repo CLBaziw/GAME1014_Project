@@ -4,18 +4,16 @@
 
 #include "Scene.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Button.h"
 #include "Bullet.h"
 //#include "EnemyBullet.h"
 #include "Background.h"
-#include "Platform.h"
+#include "Box.h"
+#include <vector>
 #include "ground.h"
 #include "Obstacle.h"
 #include "Scoreboard.h"
-
-
-
+#include "ObjectPool.h"
 
 class PlayScene : public Scene
 {
@@ -36,20 +34,22 @@ public:
 	/*void EnemyShoot();*/
 	
 
+	void MakeObstacles();
+
 private:
 	glm::vec2 m_mousePosition;
 
 	Player* m_pPlayer;
-	Enemy* m_pEnemy;
 	Background* m_pBackground;
-	Platform* m_platform;
 	ground* m_ground;
-	Obstacle* m_pObstacle1;
-	Obstacle* m_pObstacle2;
-	Obstacle* m_pObstacle3;
 	ScoreBoard* m_pScoreBoard;
-	//SDL_FRect* c_pPlayer;
-	//SDL_FRect* c_platform;
+	Platform* m_platform;
+
+	// Boxes for scrolling
+	ObjectPool* m_objPool;
+	std::vector<Box*> m_vec;
+	std::vector<Obstacle*> m_pObstacles;
+	int m_numSpaces;
 
 	bool m_playerFacingRight;
 	/*bool m_enemyFacingRight;*/
@@ -61,13 +61,10 @@ private:
 	Button* m_pContinueButton;
 	
 
-	float m_shootTime;
-	float m_currentTime;
-
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
-	int moveSpeed = 5;
+	int moveSpeed = 10;
 
 };
 

@@ -33,7 +33,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	m_maxVelX = 600.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
-	m_drag = 0.88;
+	m_drag = 0.3f;
 
 	setType(PLAYER);
 

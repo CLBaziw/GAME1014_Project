@@ -156,11 +156,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Background.cpp" />
+    <ClCompile Include="..\src\Box.cpp" />
     <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\Enemy.cpp" />
     <ClCompile Include="..\src\ground.cpp" />
+    <ClCompile Include="..\src\ObjectPool.cpp" />
     <ClCompile Include="..\src\Obstacle.cpp" />
     <ClCompile Include="..\src\Platform.cpp" />
     <ClCompile Include="..\src\Scoreboard.cpp" />
@@ -190,6 +192,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\Background.h" />
+    <ClInclude Include="..\src\Box.h" />
     <ClInclude Include="..\src\Bullet.h" />
     <ClInclude Include="..\src\BulletAnimationState.h" />
     <ClInclude Include="..\src\Button.h" />
@@ -197,8 +200,9 @@
     <ClInclude Include="..\src\CollisionShape.h" />
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\Enemy.h" />
-    <ClInclude Include="..\src\EnemyAnimationState.h" />
+    <ClInclude Include="..\src\ObstacleAnimationState.h" />
     <ClInclude Include="..\src\ground.h" />
+    <ClInclude Include="..\src\ObjectPool.h" />
     <ClInclude Include="..\src\Obstacle.h" />
     <ClInclude Include="..\src\ObstacleType.h" />
     <ClInclude Include="..\src\Platform.h" />

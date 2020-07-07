@@ -2,8 +2,9 @@
 #ifndef __ENEMY_ANIMATION_STATE__
 #define __ENEMY_ANIMATION_STATE__
 
-enum EnemyAnimationState
+enum ObstacleAnimationState
 {
+	NOT_ENEMY,
 	ENEMY_IDLE_RIGHT,
 	ENEMY_IDLE_LEFT,
 	ENEMY_RUN_RIGHT,
