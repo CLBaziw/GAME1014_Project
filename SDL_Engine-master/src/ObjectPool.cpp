@@ -1,8 +1,8 @@
 #include "ObjectPool.h"
 #include <iostream>
 
-#define MAXPLATFORM 5
-#define MAXOBSTACLE 5
+#define MAXPLATFORM 4
+#define MAXOBSTACLE 4
 #define MAXENEMY 6
 
 ObjectPool::ObjectPool()
@@ -26,16 +26,12 @@ ObjectPool::ObjectPool()
 	}
 }
 
-ObjectPool::~ObjectPool()
-{
-}
+ObjectPool::~ObjectPool() = default;
 
 void ObjectPool::UpdateActiveSprites()
 {
 	for (int i = 0; i < m_activeObstacles.size(); i++)
 	{
-		//std::cout << "Position: " << i << " Type: " << m_activeObstacles[i]->getType() << " Active: " << m_activeObstacles[i]->getActive() << std::endl;
-
 		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
 			m_activeObstacles[i]->update();
@@ -52,8 +48,6 @@ void ObjectPool::DrawActiveSprites()
 {
 	for (int i = 0; i < m_activeObstacles.size(); i++)
 	{
-		//std::cout << "Position: " << i << " Type: " << m_activeObstacles[i]->getType() << " Active: " << m_activeObstacles[i]->getActive() << std::endl;
-
 		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
 			m_activeObstacles[i]->draw();

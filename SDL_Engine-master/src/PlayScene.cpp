@@ -4,6 +4,7 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 
+#define ENEMYSIGHT 250
 
 PlayScene::PlayScene()
 {
@@ -21,18 +22,16 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
-	checkCollision();
 	m_objPool->UpdateActiveSprites();
 	updateDisplayList();
 	MakeObstacles();
+	checkCollision();
 }
 
 void PlayScene::clean()
 {
 	delete m_pPauseButton;
 	m_pPauseButton = nullptr;
-
-	
 
 	removeAllChildren();
 }
@@ -139,6 +138,10 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+
+	// Object Pool
+	m_objPool = new ObjectPool();
+
 	// Background
 	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
 	addChild(m_pBackground);
@@ -163,9 +166,6 @@ void PlayScene::start()
 		m_vec.push_back(new Box(128 * i, 520));
 	}
 	m_pPlayer->SetJumping(false);
-
-	// Object Pool
-	m_objPool = new ObjectPool();
 
 	//Ground
 	m_ground = new ground(0, 587);
@@ -216,8 +216,6 @@ void PlayScene::start()
 
 	addChild(m_pContinueButton);
 }
-
-
 
 void PlayScene::checkCollision()
 {
@@ -282,12 +280,7 @@ void PlayScene::checkCollision()
 			}*/
 		}
 	}
-
-
-
 }
-
-
 
 void PlayScene::PlayerShoot()
 {
@@ -328,15 +321,14 @@ void PlayScene::MakeObstacles()
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 
 			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
-			std::cout << "X: " << m_pObstacles[0]->getTransform()->position.x << " Y: " << m_pObstacles[0]->getTransform()->position.y << std::endl;
 
-			/*if (m_pObstacles.size() > 4)
+			if (m_pObstacles.size() > 4)
 			{
 				std::cout << "Remove obstacle" << std::endl;
 				m_pObstacles[0]->setActive(false);
 				m_pObstacles[0] = nullptr;
 				m_pObstacles.erase(m_pObstacles.begin());
-			}*/
+			}
 
 			m_numSpaces = 0;
 		}
@@ -354,31 +346,37 @@ void PlayScene::MakeObstacles()
 }
 void PlayScene::EnemyShoot()
 {
-
-	float x = m_pEnemy->getTransform()->position.x;
-	float y = m_pEnemy->getTransform()->position.y;
-	if (m_pPlayer->getTransform()->position.x < m_pEnemy->getTransform()->position.x && m_pPlayer->getTransform()->position.y >= m_pEnemy->getTransform()->position.y)
+	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		x = m_pEnemy->getTransform()->position.x - 48;
-		m_pEnemy->setAnimationState(ENEMY_IDLE_LEFT);
-		if (m_bulletTimer++ == m_timerMax)
+		if (m_pObstacles[i]->getType() == ENEMY)
 		{
-			m_pEnemyBulletVec.push_back(new Bullet(x, y, false, BULLET_MOVE_LEFT));
-			addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
-			m_bulletTimer = 0;
+			Obstacle* enemy = m_pObstacles[i];
+			float enemyX = enemy->getTransform()->position.x;
+			float enemyY = enemy->getTransform()->position.y;
+			float playerX = m_pPlayer->getTransform()->position.x;
+			float playerY = m_pPlayer->getTransform()->position.y;
+			if (playerX < enemyX && playerY >= enemyY)
+			{
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 48;
+				enemy->setAnimationState(ENEMY_IDLE_LEFT);
+				if (m_bulletTimer++ == m_timerMax)
+				{
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
+					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+					m_bulletTimer = 0;
+				}
+			}
+			if (playerX + ENEMYSIGHT > enemyX && playerX >= enemyY)
+			{
+				enemyX = enemyX + 48;
+				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				if (m_bulletTimer++ == m_timerMax)
+				{
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
+					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+					m_bulletTimer = 0;
+				}
+			}
 		}
 	}
-	if (m_pPlayer->getTransform()->position.x > m_pEnemy->getTransform()->position.x&& m_pPlayer->getTransform()->position.y >= m_pEnemy->getTransform()->position.y)
-	{
-		x = m_pEnemy->getTransform()->position.x + 48;
-		m_pEnemy->setAnimationState(ENEMY_IDLE_RIGHT);
-		if (m_bulletTimer++ == m_timerMax)
-		{
-			m_pEnemyBulletVec.push_back(new Bullet(x, y, false, BULLET_MOVE_RIGHT));
-			addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
-			m_bulletTimer = 0;
-		}
-	}
-
-
 }
