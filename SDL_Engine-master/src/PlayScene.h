@@ -4,14 +4,16 @@
 
 #include "Scene.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Button.h"
-#include "Enemy.h"
 #include "Bullet.h"
+//#include "EnemyBullet.h"
 #include "Background.h"
-#include "Platform.h"
+#include "Box.h"
+#include <vector>
 #include "ground.h"
 #include "Obstacle.h"
+#include "Scoreboard.h"
+#include "ObjectPool.h"
 
 class PlayScene : public Scene
 {
@@ -29,36 +31,40 @@ public:
 	void checkCollision();
 
 	void PlayerShoot();
+	void MakeObstacles();
+	void EnemyShoot();
 
 private:
 	glm::vec2 m_mousePosition;
 
 	Player* m_pPlayer;
-	Enemy* m_pEnemy;
 	Background* m_pBackground;
-	Platform* m_platform;
 	ground* m_ground;
-	Obstacle* m_pObstacle1;
-	Obstacle* m_pObstacle2;
-	Obstacle* m_pObstacle3;
-	//SDL_FRect* c_pPlayer;
-	//SDL_FRect* c_platform;
+	ScoreBoard* m_pScoreBoard;
+
+	// Boxes for scrolling
+	ObjectPool* m_objPool;
+	std::vector<Box*> m_vec;
+	std::vector<Obstacle*> m_pObstacles;
+	int m_numSpaces;
 
 	bool m_playerFacingRight;
+	/*bool m_enemyFacingRight;*/
 
 	std::vector<Bullet*> m_pPlayerBulletVec;
+	std::vector<Bullet*> m_pEnemyBulletVec;
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
-	Button* m_pNextButton;
-
-	float m_shootTime;
-	float m_currentTime;
+	
 
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
-	int moveSpeed = 5;
+	int moveSpeed = 10;
+
+	int m_bulletTimer = 0,
+		m_timerMax = 35;
 
 };
 
