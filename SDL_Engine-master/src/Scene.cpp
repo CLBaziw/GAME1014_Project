@@ -52,6 +52,9 @@ void Scene::drawDisplayList()
 		{
 			m_displayList[count]->draw();
 		}
+		else if (m_displayList[count] == nullptr)
+		{
+			m_displayList.erase(m_displayList.begin() + count);
+		}
 	}
-
 }

@@ -61,7 +61,7 @@ Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bul
 	}
 
 
-	getTransform()->position = glm::vec2(xPos, yPos);
+	getTransform()->position = glm::vec2(xPos + 30, yPos + 27);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;

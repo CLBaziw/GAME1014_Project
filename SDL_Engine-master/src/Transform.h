@@ -9,6 +9,5 @@ struct Transform
 	glm::vec2 rotation;
 	glm::vec2 scale;
 	SDL_FRect m_dst;
-
 };
 #endif /* defined (__TRANSFORM__) */
