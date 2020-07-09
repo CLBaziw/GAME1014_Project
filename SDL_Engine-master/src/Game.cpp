@@ -134,6 +134,10 @@ void Game::changeSceneState(const SceneState new_state)
 			std::cout << "cleaning TextureManager" << std::endl;
 		}
 
+		if (m_currentScene != nullptr)
+		{
+			delete m_currentScene;
+		}
 		m_currentScene = nullptr;
 
 		m_currentSceneState = new_state;
@@ -193,4 +197,24 @@ void Game::clean() const
 void Game::handleEvents()
 {
 	m_currentScene->handleEvents();
+}
+
+void Game::setWindowWidth(float width)
+{
+	m_windowWidth = width;
+}
+
+float Game::getWindowWidth()
+{
+	return m_windowWidth;
+}
+
+void Game::setWindowHeight(float height)
+{
+	m_windowHeight = height;
+}
+
+float Game::getWindowHeight()
+{
+	return m_windowHeight;
 }

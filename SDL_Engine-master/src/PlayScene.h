@@ -4,16 +4,16 @@
 
 #include "Scene.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Button.h"
 #include "Bullet.h"
+//#include "EnemyBullet.h"
 #include "Background.h"
 #include "Box.h"
 #include <vector>
 #include "ground.h"
 #include "Obstacle.h"
+#include "Scoreboard.h"
 #include "ObjectPool.h"
-#include "Platform.h"
 
 class PlayScene : public Scene
 {
@@ -31,8 +31,8 @@ public:
 	void checkCollision();
 
 	void PlayerShoot();
-
 	void MakeObstacles();
+	void EnemyShoot();
 
 private:
 	glm::vec2 m_mousePosition;
@@ -40,7 +40,7 @@ private:
 	Player* m_pPlayer;
 	Background* m_pBackground;
 	ground* m_ground;
-	Platform* m_platform;
+	ScoreBoard* m_pScoreBoard;
 
 	// Boxes for scrolling
 	ObjectPool* m_objPool;
@@ -49,17 +49,22 @@ private:
 	int m_numSpaces;
 
 	bool m_playerFacingRight;
+	/*bool m_enemyFacingRight;*/
 
 	std::vector<Bullet*> m_pPlayerBulletVec;
+	std::vector<Bullet*> m_pEnemyBulletVec;
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
-	Button* m_pNextButton;
+	
 
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
 	int moveSpeed = 10;
+
+	int m_bulletTimer = 0,
+		m_timerMax = 35;
 
 };
 

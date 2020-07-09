@@ -17,6 +17,8 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	void setAnimationState(ObstacleAnimationState new_state);
+
 	void setPosition(int x, int y);
 
 private:

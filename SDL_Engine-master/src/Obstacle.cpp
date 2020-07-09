@@ -1,28 +1,63 @@
 #include "Obstacle.h"
 #include "TextureManager.h"
 #include "Animation.h"
-#include <iostream>
 
 Obstacle::Obstacle(GameObjectType obsType)
 {
 	setType(obsType);
-
-	if (getType() == ENEMY)
+	// Check to see which obstacle was randomly chosen
+	switch (getType())
 	{
-		m_currentAnimationState = ENEMY_IDLE_LEFT;
-
+	case OBSTACLE1:
 		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/alien.txt",
-			"../Assets/sprites/alien.png",
-			"alien"
+			"../Assets/plat/platsprites.txt",
+			"../Assets/plat/platsprites.png",
+			"platsprites"
 		);
 
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
-	}
-	else
-	{
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platsprites"));
+
+		setWidth(36);
+		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
+		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getRigidBody()->isColliding = false;
+		break;
+	case OBSTACLE2:
+		TextureManager::Instance()->loadSpriteSheet(
+			"../Assets/sprites/Obstacles.txt",
+			"../Assets/sprite/Fireball_Sheet.png",
+			"Fireball_Sheet"
+		);
+
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Fireball_Sheet"));
+
+		setWidth(36);
+		setHeight(58);
+		m_currentAnimationState = NOT_ENEMY;
+
+		getTransform()->position = glm::vec2(760.0f, 550.0f);
+
+		break;
+	case OBSTACLE3:
+		TextureManager::Instance()->loadSpriteSheet(
+			"../Assets/sprites/Obstacles.txt",
+			"../Assets/sprites/SpikeEnemies.png",
+			"SpikeEnemies"
+		);
+
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("SpikeEnemies"));
+
+		setWidth(36);
+		setHeight(58);
+		m_currentAnimationState = NOT_ENEMY;
+
+		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getRigidBody()->isColliding = false;
+		break;
+	case PLATFORM:
+		// Copy from obstacle but make relevant for platform
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/plat/plas.txt",
 			"../Assets/plat/plas.png",
@@ -30,15 +65,35 @@ Obstacle::Obstacle(GameObjectType obsType)
 		);
 
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platform"));
+
+		setWidth(128);
+		setHeight(128);
+		m_currentAnimationState = NOT_ENEMY;
+
+		getTransform()->position = glm::vec2(760.0f, 550.0f);
+
+		break;
+	case ENEMY:
+		TextureManager::Instance()->loadSpriteSheet(
+			"../Assets/sprites/alien.txt",
+			"../Assets/sprites/alien.png",
+			"alien"
+		);
+
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
+
+		setWidth(128);
+		setHeight(128);
+		m_currentAnimationState = ENEMY_IDLE_LEFT;
+
+	default:
+		break;
 	}
 
-	setActive(false);
-	setWidth(128);
-	setHeight(128);
-	getTransform()->position = glm::vec2(300, 300);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
+	setType(obsType);
 
 	m_buildAnimations();
 }
@@ -51,17 +106,58 @@ void Obstacle::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	std::string sprite;
-	if (getType() == ENEMY)
+	//draw the player according to animation state
+	switch (getType())
 	{
-		sprite = "alien";
+	case OBSTACLE1:
+		TextureManager::Instance()->playAnimation("platsprites", getAnimation("hazard"),
+			x, y, 0.12f, 0, 255, true);
+		break;
+	case OBSTACLE2:
+		TextureManager::Instance()->playAnimation("Fireball_Sheet", getAnimation("Fireball"),
+			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
+	case OBSTACLE3:
+		TextureManager::Instance()->playAnimation("SpikeEnemies", getAnimation("Spike-Enemy"),
+			x, y, 0.25f, 0, 255, true);
+		break;
+	case PLATFORM:
+		TextureManager::Instance()->playAnimation("platform", getAnimation("stationary-platform"),
+			x, y, 0.12f, 0, 255, true);
+		break;
+	case ENEMY:
+		switch (m_currentAnimationState)
+		{
+		case ENEMY_IDLE_RIGHT:
+			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
+				x, y, 0.12f, 0, 255, true);
+			break;
+		case ENEMY_IDLE_LEFT:
+			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
+				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			break;
+		case ENEMY_RUN_RIGHT:
+			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
+				x, y, 0.25f, 0, 255, true);
+			break;
+		case ENEMY_RUN_LEFT:
+			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
+				x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			break;
+			/*case ENEMY_DIE_RIGHT:
+				TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
+					x, y, 0.30f, 0, 255, true);
+				break;
+			case ENEMY_DIE_LEFT:
+				TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
+					x, y, 0.30f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+				break;*/
+		default:
+			break;
+		}
+	default:
+		break;
 	}
-	else if (getType() == PLATFORM)
-	{
-		sprite = "platform";
-	}
-
-	TextureManager::Instance()->playAnimation(sprite, getAnimation("idle"), x, y, 0.12f, 0, 255, true);
 }
 
 void Obstacle::update()
@@ -76,6 +172,11 @@ void Obstacle::clean()
 {
 }
 
+void Obstacle::setAnimationState(ObstacleAnimationState new_state)
+{
+	m_currentAnimationState = new_state;
+}
+
 void Obstacle::setPosition(int x, int y)
 {
 	getTransform()->position.x = x;
@@ -86,7 +187,7 @@ void Obstacle::m_buildAnimations()
 {
 	switch (getType())
 	{
-	/*case OBSTACLE1:
+	case OBSTACLE1:
 
 		break;
 	case OBSTACLE2:
@@ -94,20 +195,20 @@ void Obstacle::m_buildAnimations()
 		break;
 	case OBSTACLE3:
 
-		break;*/
+		break;
 	case PLATFORM: {
 		Animation platform = Animation();
 
-		platform.name = "idle";
+		platform.name = "stationary-platform";
 		platform.frames.push_back(getSpriteSheet()->getFrame("plas"));
 
 		setAnimation(platform);
 	}
-		break;
+				 break;
 	case ENEMY: {
 		Animation idleAnimation = Animation();
 
-		idleAnimation.name = "idle";
+		idleAnimation.name = "enemy-idle";
 		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-idle-0"));
 		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-idle-1"));
 		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-idle-2"));
@@ -115,7 +216,7 @@ void Obstacle::m_buildAnimations()
 
 		setAnimation(idleAnimation);
 
-		/*Animation runAnimation = Animation();
+		Animation runAnimation = Animation();
 
 		runAnimation.name = "enemy-run";
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-0"));
@@ -133,9 +234,9 @@ void Obstacle::m_buildAnimations()
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-2"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-3"));
 
-		setAnimation(deathAnimation);*/
+		setAnimation(deathAnimation);
 	}
-		break;	
+			  break;
 	default:
 		break;
 	}

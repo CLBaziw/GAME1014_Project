@@ -1,6 +1,9 @@
 #include "Enemy.h"
+#include "ObstacleAnimationState.h"
 #include "TextureManager.h"
 #include <algorithm>
+#include "Player.h"
+#include "EnemyBullet.h"
 
 Enemy::Enemy(int x, int y)
 {
@@ -15,11 +18,13 @@ Enemy::Enemy(int x, int y)
 	setWidth(128);
 	setHeight(128);
 
+	m_shooting = false;
+	getTransform()->position = glm::vec2(760.0f, 525.0f);
 	getTransform()->position = glm::vec2(x, y);
-	//getTransform()->position = glm::vec2(760.0f, 520.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
+
 
 	setAnimationState(ENEMY_IDLE_LEFT);
 	setType(ENEMY);
@@ -83,9 +88,41 @@ void Enemy::setAnimationState(ObstacleAnimationState new_state)
 
 void Enemy::setPosition(int x, int y)
 {
-	getTransform()->position.x = x;
+	getTransform()->position.x = x ;
 	getTransform()->position.y = y;
 }
+//
+//
+//void Enemy::SetX(float x)
+//{
+//	//getTransform()->m_dst.x = x;
+//	getTransform()->position.x = x + 70;
+//}
+//
+//void Enemy::SetY(float y)
+//{
+//	//getTransform()->m_dst.y = y;
+//	getTransform()->position.y = y + 70;
+//}
+//
+//bool Enemy::isShooting() { return m_shooting; }
+//void Enemy::SetShooting(bool s) { m_shooting = s; }
+//
+//void Enemy::setDst()
+//{
+//	dst.x = getTransform()->position.x;
+//
+//	dst.y = getTransform()->position.y;
+//
+//	dst.w = getWidth();
+//
+//	dst.h = getHeight();
+//}
+//
+//SDL_FRect& Enemy::getDst()
+//{
+//	return dst;
+//}
 
 void Enemy::m_buildAnimations()
 {

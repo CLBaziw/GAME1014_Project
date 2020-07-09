@@ -10,7 +10,9 @@ EndScene::EndScene()
 }
 
 EndScene::~EndScene()
-= default;
+{
+	SoundManager::Instance().stopMusic();
+}
 
 void EndScene::draw()
 {
@@ -57,13 +59,13 @@ void EndScene::start()
 	addChild(m_pBackground);
 
 	const SDL_Color Metallicgold = { 212,175, 55, 0 };
-	m_label = new Label("END SCENE", "galaxy_1", 100, Metallicgold, glm::vec2(500.0f, 120.0f));
+	m_label = new Label("END SCENE", "galaxy_1", 100, Metallicgold, glm::vec2(576.0f, 120.0f));
 	m_label->setParent(this);
 	addChild(m_label);
 
 	// Restart Button
 	m_pRestartButton = new Button("../Assets/Menu Asset/play-again.png", "restartButton", RESTART_BUTTON);
-	m_pRestartButton->getTransform()->position = glm::vec2(500.0f, 500.0f);
+	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 500.0f);
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);
@@ -81,4 +83,6 @@ void EndScene::start()
 	});
 
 	addChild(m_pRestartButton);
+
+	SoundManager::Instance().playSound("endScreen");
 }

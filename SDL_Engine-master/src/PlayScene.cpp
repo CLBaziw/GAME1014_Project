@@ -4,13 +4,17 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 
+#define ENEMYSIGHT 250
+
 PlayScene::PlayScene()
 {
 	PlayScene::start();
 }
 
 PlayScene::~PlayScene()
-= default;
+{
+	SoundManager::Instance().stopMusic();
+}
 
 void PlayScene::draw()
 {
@@ -20,19 +24,16 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
-	checkCollision();
 	m_objPool->UpdateActiveSprites();
 	updateDisplayList();
 	MakeObstacles();
+	checkCollision();
 }
 
 void PlayScene::clean()
 {
 	delete m_pPauseButton;
 	m_pPauseButton = nullptr;
-
-	delete m_pNextButton;
-	m_pNextButton = nullptr;
 
 	removeAllChildren();
 }
@@ -105,6 +106,7 @@ void PlayScene::handleEvents()
 		{
 			m_pPlayer->SetAccelY(-JUMPFORCE);
 			m_pPlayer->SetJumping(false);
+			SoundManager::Instance().playSound("jump");
 		}
 
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_LSHIFT) && !m_pPlayer->isShooting())
@@ -134,13 +136,24 @@ void PlayScene::handleEvents()
 	{
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
+	EnemyShoot();
 }
 
 void PlayScene::start()
 {
+
+	// Object Pool
+	m_objPool = new ObjectPool();
+
 	// Background
 	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
 	addChild(m_pBackground);
+
+	//Score Board
+	const SDL_Color yellow = { 255, 255, 0, 255 };
+	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
+	m_pScoreBoard->setParent(this);
+	addChild(m_pScoreBoard);
 
 	// Player Sprite
 	m_pPlayer = new Player();
@@ -157,15 +170,13 @@ void PlayScene::start()
 	}
 	m_pPlayer->SetJumping(false);
 
-	// Object Pool
-	m_objPool = new ObjectPool();
-
 	//Ground
 	m_ground = new ground(0, 587);
 	addChild(m_ground);
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
+	/*m_pEnemyBulletVec.reserve(30);*/
 
 	// Pause Button
 	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
@@ -207,28 +218,6 @@ void PlayScene::start()
 	});
 
 	addChild(m_pContinueButton);
-
-
-// Next Button
-    m_pNextButton = new Button("../Assets/Menu Asset/Next_1_small.png", "nextButton", NEXT_BUTTON);
-    m_pNextButton ->getTransform()->position = glm::vec2(830, 80.0f);
-    m_pNextButton->addEventListener(CLICK, [&]()-> void
-    {
-    	m_pNextButton->setActive(false);
-    	TheGame::Instance()->changeSceneState(END_SCENE);
-    });
-    
-    m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
-    {
-    	m_pNextButton->setAlpha(128);
-    });
-    
-    m_pNextButton->addEventListener(MOUSE_OUT, [&]()->void
-    {
-    	m_pNextButton->setAlpha(255);
-    });
-    
-    addChild(m_pNextButton);
 }
 
 void PlayScene::checkCollision()
@@ -306,16 +295,18 @@ void PlayScene::PlayerShoot()
 	if (m_playerFacingRight)
 	{
 		bState = BULLET_MOVE_RIGHT;
-		x = m_pPlayer->getTransform()->position.x + 40;
+		x = m_pPlayer->getTransform()->position.x + 20;
 	}
 	else
 	{
 		bState = BULLET_MOVE_LEFT;
-		x = m_pPlayer->getTransform()->position.x - 40;
+		x = m_pPlayer->getTransform()->position.x - 10;
 	}
 
 	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+
+	SoundManager::Instance().playSound("shot");
 }
 
 void PlayScene::MakeObstacles()
@@ -335,7 +326,6 @@ void PlayScene::MakeObstacles()
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 
 			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
-			std::cout << "X: " << m_pObstacles[0]->getTransform()->position.x << " Y: " << m_pObstacles[0]->getTransform()->position.y << std::endl;
 
 			if (m_pObstacles.size() > 4)
 			{
@@ -357,5 +347,41 @@ void PlayScene::MakeObstacles()
 	for (int col = 0; col < m_vec.size(); col++)
 	{
 		m_vec[col]->Update();
+	}
+}
+void PlayScene::EnemyShoot()
+{
+	for (int i = 0; i < m_pObstacles.size(); i++)
+	{
+		if (m_pObstacles[i]->getType() == ENEMY)
+		{
+			Obstacle* enemy = m_pObstacles[i];
+			float enemyX = enemy->getTransform()->position.x;
+			float enemyY = enemy->getTransform()->position.y;
+			float playerX = m_pPlayer->getTransform()->position.x;
+			float playerY = m_pPlayer->getTransform()->position.y;
+			if (playerX < enemyX && playerY >= enemyY)
+			{
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 48;
+				enemy->setAnimationState(ENEMY_IDLE_LEFT);
+				if (m_bulletTimer++ == m_timerMax)
+				{
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
+					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+					m_bulletTimer = 0;
+				}
+			}
+			if (playerX + ENEMYSIGHT > enemyX && playerX >= enemyY)
+			{
+				enemyX = enemyX + 48;
+				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				if (m_bulletTimer++ == m_timerMax)
+				{
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
+					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+					m_bulletTimer = 0;
+				}
+			}
+		}
 	}
 }
