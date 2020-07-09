@@ -7,6 +7,7 @@
 #include "ship.h"
 #include "Button.h"
 #include "Background.h"
+#include "SoundManager.h"
 
 class StartScene final : public Scene
 {

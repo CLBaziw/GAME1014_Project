@@ -10,7 +10,9 @@ EndScene::EndScene()
 }
 
 EndScene::~EndScene()
-= default;
+{
+	SoundManager::Instance().stopMusic();
+}
 
 void EndScene::draw()
 {
@@ -81,4 +83,6 @@ void EndScene::start()
 	});
 
 	addChild(m_pRestartButton);
+
+	SoundManager::Instance().playSound("endScreen");
 }

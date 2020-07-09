@@ -5,6 +5,12 @@ SoundManager::SoundManager()
 {
 	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
 	panReset();
+	load("../Assets/audio/startScreen.wav", "startScreen", SOUND_MUSIC);
+	load("../Assets/audio/playscreenbackgroundaudio.mp3", "playScreen", SOUND_MUSIC);
+	load("../Assets/audio/game-over-sound-effect.mp3", "endScreen", SOUND_SFX);
+	load("../Assets/audio/laser_shot.wav", "shot", SOUND_SFX);
+	load("../Assets/audio/jump.mp3", "jump", SOUND_SFX);
+	load("../Assets/audio/button.wav", "button", SOUND_SFX);
 }
 
 SoundManager::~SoundManager()

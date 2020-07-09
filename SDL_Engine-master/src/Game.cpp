@@ -134,6 +134,10 @@ void Game::changeSceneState(const SceneState new_state)
 			std::cout << "cleaning TextureManager" << std::endl;
 		}
 
+		if (m_currentScene != nullptr)
+		{
+			delete m_currentScene;
+		}
 		m_currentScene = nullptr;
 
 		m_currentSceneState = new_state;

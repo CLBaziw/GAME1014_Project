@@ -26,7 +26,6 @@ public:
 	void setSpriteSheet(SpriteSheet* sprite_sheet);
 	void setAnimation(const Animation& animation);
 
-
 private:
 	// private utility functions
 	bool m_animationExists(const std::string& id);
@@ -34,7 +33,6 @@ private:
 	SpriteSheet* m_pSpriteSheet;
 
 	std::unordered_map<std::string, Animation> m_pAnimations;
-
 };
 
 #endif /* defined (__SPRITE__) */

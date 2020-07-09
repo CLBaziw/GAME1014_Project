@@ -16,9 +16,6 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
-	void setDst();
-	SDL_FRect& getDst();
-
 private:
 	void m_buildAnimations();
 	SDL_FRect dst;
