@@ -171,7 +171,7 @@ void PlayScene::start()
 	m_pPlayer->SetJumping(false);
 
 	//Ground
-	m_ground = new ground(0, 587);
+	m_ground = new ground(0, 588);
 	addChild(m_ground);
 
 	// Bullets
@@ -348,6 +348,7 @@ void PlayScene::MakeObstacles()
 	{
 		m_vec[col]->Update();
 	}
+
 }
 void PlayScene::EnemyShoot()
 {
