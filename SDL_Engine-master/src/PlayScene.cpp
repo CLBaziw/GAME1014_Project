@@ -7,7 +7,6 @@
 
 #define ENEMYSIGHT 280
 
-
 PlayScene::PlayScene()
 {
 	PlayScene::start();
@@ -34,8 +33,17 @@ void PlayScene::update()
 
 void PlayScene::clean()
 {
+	delete m_objPool;
+	m_objPool = nullptr;
+
 	delete m_pPauseButton;
 	m_pPauseButton = nullptr;
+
+	for (int i = 0; i < m_pObstacles.size(); i++)
+	{
+		delete m_pObstacles[i];
+		m_pObstacles[i] = nullptr;
+	}
 
 	removeAllChildren();
 }
@@ -143,12 +151,20 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-
+	//Differentiate between levels
+	if (TheGame::Instance()->getLevel() == 0)
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	}
+	else
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	}
+	
 	// Object Pool
 	m_objPool = new ObjectPool();
 
-	// Background
-	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	// Background 
 	addChild(m_pBackground);
 
 	//Score Board
@@ -310,7 +326,6 @@ void PlayScene::MakeObstacles()
 	{
 		m_vec[col]->Update();
 	}
-
 }
 void PlayScene::EnemyShoot()
 {
