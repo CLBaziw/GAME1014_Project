@@ -134,6 +134,10 @@ void Game::changeSceneState(const SceneState new_state)
 			std::cout << "cleaning TextureManager" << std::endl;
 		}
 
+		if (m_currentScene != nullptr)
+		{
+			delete m_currentScene;
+		}
 		m_currentScene = nullptr;
 
 		m_currentSceneState = new_state;
@@ -145,6 +149,10 @@ void Game::changeSceneState(const SceneState new_state)
 		case START_SCENE:
 			m_currentScene = new StartScene();
 			std::cout << "start scene activated" << std::endl;
+			break;
+		case LEVELSELECT_SCENE:
+			m_currentScene = new LevelSelectScene();
+			std::cout << "level select scene activated" << std::endl;
 			break;
 		case PLAY_SCENE:
 			m_currentScene = new PlayScene();

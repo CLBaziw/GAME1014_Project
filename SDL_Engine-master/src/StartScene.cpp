@@ -10,7 +10,9 @@ StartScene::StartScene()
 }
 
 StartScene::~StartScene()
-= default;
+{
+	SoundManager::Instance().stopMusic();
+}
 
 void StartScene::draw()
 {
@@ -88,7 +90,7 @@ void StartScene::start()
 	m_pStartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pStartButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(LEVELSELECT_SCENE);
 	});
 
 	m_pStartButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -102,5 +104,5 @@ void StartScene::start()
 	});
 	addChild(m_pStartButton);
 
-
+	SoundManager::Instance().playMusic("startScreen");
 }

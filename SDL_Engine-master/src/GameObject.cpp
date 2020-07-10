@@ -34,6 +34,11 @@ GameObjectType GameObject::getType() const
 	return m_type;
 }
 
+bool GameObject::getActive()
+{
+	return m_bActive;
+}
+
 void GameObject::setWidth(const int new_width)
 {
 	m_width = new_width;
@@ -47,4 +52,9 @@ void GameObject::setHeight(const int new_height)
 void GameObject::setType(const GameObjectType new_type)
 {
 	m_type = new_type;
+}
+
+void GameObject::setActive(bool active)
+{
+	m_bActive = active;
 }

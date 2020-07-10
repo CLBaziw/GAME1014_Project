@@ -37,6 +37,8 @@ public:
 	void setHeight(int new_height);
 	GameObjectType getType() const;
 	void setType(GameObjectType new_type);
+	bool getActive();
+	void setActive(bool active);
 
 private:
 	// transform component
@@ -51,6 +53,7 @@ private:
 
 	GameObjectType m_type;
 
+	bool m_bActive;
 };
 
 #endif /* defined (__GAME_OBJECT__) */

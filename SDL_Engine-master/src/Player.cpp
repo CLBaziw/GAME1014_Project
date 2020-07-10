@@ -33,7 +33,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	m_maxVelX = 600.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
-	m_drag = 0.88;
+	m_drag = 0.3f;
 
 	setType(PLAYER);
 
@@ -89,9 +89,17 @@ void Player::update()
 	// check jumping on y-axis
 	if (!m_jumping)
 	{
-		getRigidBody()->velocity.y += getRigidBody()->acceleration.y + m_grav; // Adjust gravity to get slower jump.
+		getRigidBody()->velocity.y += (getRigidBody()->acceleration.y) + m_grav; // Adjust gravity to get slower jump.
 		getRigidBody()->velocity.y = std::min(std::max(getRigidBody()->velocity.y, -(m_maxVelY)), (m_grav * 5));
 		getTransform()->position.y += (int)getRigidBody()->velocity.y; // To remove aliasing, I made cast it to an int too.
+		if (m_currentAnimationState == PLAYER_IDLE_RIGHT || m_currentAnimationState == PLAYER_RUN_RIGHT)
+		{
+			getTransform()->position.x += 1.7; // To remove aliasing, I made cast it to an int too.
+		}
+		else
+		{
+			getTransform()->position.x -= 1.7; // To remove aliasing, I made cast it to an int too.
+		}
 		getRigidBody()->acceleration.x = getRigidBody()->acceleration.y = 0.0;
 	}
 	else
