@@ -19,7 +19,7 @@ Enemy::Enemy(int x, int y)
 	setHeight(128);
 
 	m_shooting = false;
-	getTransform()->position = glm::vec2(760.0f, 525.0f);
+	getTransform()->position = glm::vec2(760.0f, 100.0f);
 	getTransform()->position = glm::vec2(x, y);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
@@ -155,4 +155,6 @@ void Enemy::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-3"));
 
 	setAnimation(deathAnimation);
+
+
 }
