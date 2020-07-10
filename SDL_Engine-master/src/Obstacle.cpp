@@ -79,7 +79,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 			"../Assets/sprites/alien.png",
 			"alien"
 		);
-
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
 
 		setWidth(128);
