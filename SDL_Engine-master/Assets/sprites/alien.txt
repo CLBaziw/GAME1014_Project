@@ -7,6 +7,6 @@ enemy-idle-1 127 129 127 129
 enemy-idle-2 254 129 127 129
 enemy-idle-3 382 129 127 129
 enemy-run-0 1 257 127 128
-enemy-run-1 128 1 127 128
-enemy-run-2 258 1 127 128 
-enemy-run-3 387 1 127 128
+enemy-run-1 128 257 127 128
+enemy-run-2 258 257 127 128 
+enemy-run-3 387 257 127 128

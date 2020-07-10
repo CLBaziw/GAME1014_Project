@@ -1,10 +1,12 @@
 #include "PlayScene.h"
+#include <algorithm>
 #include "Obstacle.h"
 #include "Game.h"
 #include "EventManager.h"
 #include "TextureManager.h"
 
-#define ENEMYSIGHT 250
+#define ENEMYSIGHT 280
+
 
 PlayScene::PlayScene()
 {
@@ -355,10 +357,15 @@ void PlayScene::EnemyShoot()
 			float enemyY = enemy->getTransform()->position.y;
 			float playerX = m_pPlayer->getTransform()->position.x;
 			float playerY = m_pPlayer->getTransform()->position.y;
-			if (playerX < enemyX && playerY >= enemyY)
+			//playerX = std::min((int)ENEMYSIGHT, (int)enemyX);
+			if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 			{
-				enemyX = m_pObstacles[i]->getTransform()->position.x - 48;
+				std::cout << "PlayerPos: " << playerX /*+ ENEMYSIGHT*/ << std::endl;
+				std::cout << "EnemyPos: " << enemyX << std::endl;
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 85; 
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10; 
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
+				enemy->setAnimationState(ENEMY_RUN_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
@@ -366,10 +373,14 @@ void PlayScene::EnemyShoot()
 					m_bulletTimer = 0;
 				}
 			}
-			if (playerX + ENEMYSIGHT > enemyX && playerX >= enemyY)
+			if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX && playerX >= enemyY)
 			{
-				enemyX = enemyX + 48;
+				std::cout << "PlayerPos: " << playerX /*+ ENEMYSIGHT*/ << std::endl;
+				std::cout << "EnemyPos: " << enemyX << std::endl;
+				enemyX = m_pObstacles[i]->getTransform()->position.x + 85;
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				enemy->setAnimationState(ENEMY_RUN_RIGHT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
