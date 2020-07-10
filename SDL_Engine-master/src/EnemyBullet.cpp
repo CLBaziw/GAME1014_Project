@@ -6,7 +6,7 @@
 
 
 
-#define BULLETSPEED 30;
+#define BULLETSPEED 20;
 
 EnemyBullet::EnemyBullet(float xPos, float yPos, bool bulletType, EnemyBulletAnimationState bulletState)
 {
@@ -73,7 +73,7 @@ void EnemyBullet::draw()
 	{
 	case ENEMY_BULLET_MOVE_RIGHT:
 		TextureManager::Instance()->playAnimation(sprite, getAnimation("Ebullet-moving"),
-			x, y, 0.12f, 0, 200, true);
+			x, y, 0.12f, 0, 255, true);
 		break;
 	case ENEMY_BULLET_MOVE_LEFT:
 		TextureManager::Instance()->playAnimation(sprite, getAnimation("Ebullet-moving"),
@@ -109,7 +109,7 @@ void EnemyBullet::setAnimationState(EnemyBulletAnimationState new_state)
 
 void EnemyBullet::setPosition(int x, int y)
 {
-	getTransform()->position.x = x + 70;
+	getTransform()->position.x = x + 40;
 
 	getTransform()->position.y = y + 23;
 }

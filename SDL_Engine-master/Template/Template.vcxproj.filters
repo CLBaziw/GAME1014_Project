@@ -33,6 +33,7 @@
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
     <ClCompile Include="..\src\ObjectPool.cpp" />
+    <ClCompile Include="..\src\Scoreboard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Animation.h" />
@@ -82,9 +83,14 @@
     <ClInclude Include="..\src\Util.h" />
     <ClInclude Include="..\src\ObjectPool.h" />
     <ClInclude Include="..\src\ObstacleAnimationState.h" />
+    <ClInclude Include="..\src\Scoreboard.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Assets\plat\platsprites.png" />
     <Image Include="..\Assets\sprites\gamesprite.png" />
+    <Image Include="..\Assets\sprites\beam_Right_.png" />
+    <Image Include="..\Assets\sprites\enemybullet.png" />
+    <Image Include="..\Assets\sprites\Dobstacles.png" />
+    <Image Include="..\Assets\sprites\alien.png" />
   </ItemGroup>
 </Project>

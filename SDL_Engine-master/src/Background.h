@@ -15,6 +15,7 @@ public:
 	void update() override;
 	void clean() override;
 private:
+	
 	Uint8 m_alpha;
 	std::string m_name;
 	bool m_isCentered;

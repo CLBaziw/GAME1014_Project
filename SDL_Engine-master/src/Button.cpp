@@ -1,6 +1,7 @@
 #include "Button.h"
 #include <utility>
 #include "TextureManager.h"
+#include "SoundManager.h"
 
 
 /**
@@ -71,4 +72,5 @@ void Button::setAlpha(const Uint8 alpha)
 void Button::setActive(const bool value)
 {
 	m_active = value;
+	SoundManager::Instance().playSound("button");
 }

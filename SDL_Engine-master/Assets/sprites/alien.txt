@@ -2,10 +2,10 @@ enemy-death-0 1 1 129 128
 enemy-death-1 129 1 129 128
 enemy-death-2 258 1 129 128
 enemy-death-3 387 1 129 128
-enemy-idle-0 1 129 127 127 
-enemy-idle-1 127 129 127 129
-enemy-idle-2 254 129 127 129
-enemy-idle-3 382 129 127 129
+enemy-idle-0 1 128 128 128 
+enemy-idle-1 128 128 128 128
+enemy-idle-2 256 128 128 128
+enemy-idle-3 384 128 128 128
 enemy-run-0 1 257 127 128
 enemy-run-1 128 257 127 128
 enemy-run-2 258 257 127 128 
