@@ -27,6 +27,7 @@ public:
 	void setAnimation(const Animation& animation);
 
 private:
+
 	// private utility functions
 	bool m_animationExists(const std::string& id);
 

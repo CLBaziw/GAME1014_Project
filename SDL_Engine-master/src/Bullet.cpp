@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 
 #define BULLETSPEED 10;
-#define EBULLETSPEED 7;
+#define EBULLETSPEED 5;
 
 Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bulletState)
 {
@@ -46,7 +46,7 @@ Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bul
 		setType(E_BULLET);
 
 		setWidth(70);
-		setHeight(46);
+		setHeight(41);
 
 
 		setAnimationState(bulletState);
