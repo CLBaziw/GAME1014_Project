@@ -146,7 +146,7 @@ void PlayScene::start()
 	m_objPool = new ObjectPool();
 
 	// Background
-	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
 	addChild(m_pBackground);
 
 	//Score Board
@@ -178,6 +178,46 @@ void PlayScene::start()
 	m_pPlayerBulletVec.reserve(10);
 	/*m_pEnemyBulletVec.reserve(30);*/
 
+	// Pause Button
+	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
+	m_pPauseButton->getTransform()->position = glm::vec2(80.0f, 80.0f);
+	m_pPauseButton->addEventListener(CLICK, [&]()-> void
+	{
+		m_pPauseButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+	});
+
+	m_pPauseButton->addEventListener(MOUSE_OVER, [&]()->void
+	{
+		m_pPauseButton->setAlpha(128);
+	});
+
+	m_pPauseButton->addEventListener(MOUSE_OUT, [&]()->void
+	{
+		m_pPauseButton->setAlpha(255);
+	});
+	addChild(m_pPauseButton);
+
+	// Continue Button
+	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
+	m_pContinueButton->getTransform()->position = glm::vec2(170.0f, 80.0f);
+	m_pContinueButton->addEventListener(CLICK, [&]()-> void
+	{
+		m_pContinueButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+	});
+
+	m_pContinueButton->addEventListener(MOUSE_OVER, [&]()->void
+	{
+		m_pContinueButton->setAlpha(128);
+	});
+
+	m_pContinueButton->addEventListener(MOUSE_OUT, [&]()->void
+	{
+		m_pContinueButton->setAlpha(255);
+	});
+
+	addChild(m_pContinueButton);
 }
 
 void PlayScene::checkCollision()

@@ -65,7 +65,7 @@ void EndScene::start()
 
 	// Restart Button
 	m_pRestartButton = new Button("../Assets/Menu Asset/play-again.png", "restartButton", RESTART_BUTTON);
-	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 350.0f);
+	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 500.0f);
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);
@@ -83,27 +83,6 @@ void EndScene::start()
 	});
 
 	addChild(m_pRestartButton);
-
-	//Exit button
-	m_pExitButton = new Button("../Assets/Menu Asset/Exit_BTN.png", "exitButton", EXIT_BUTTON);
-	m_pExitButton->getTransform()->position = glm::vec2(576.0f, 500.0f);
-	m_pExitButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pExitButton->setActive(false);
-		TheGame::Instance()->quit();
-	});
-
-	m_pExitButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pExitButton->setAlpha(128);
-	});
-
-	m_pExitButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pExitButton->setAlpha(255);
-	});
-
-	addChild(m_pExitButton);
 
 	SoundManager::Instance().playSound("endScreen");
 }
