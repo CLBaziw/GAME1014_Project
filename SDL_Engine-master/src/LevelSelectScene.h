@@ -1,17 +1,19 @@
 #pragma once
-#ifndef __END_SCENE__
-#define __END_SCENE__
+#ifndef __LEVELSELECT_SCENE__
+#define __LEVELSELECT_SCENE__
 
 #include "Scene.h"
 #include "Label.h"
+#include "ship.h"
 #include "Button.h"
 #include "Background.h"
+#include "SoundManager.h"
 
-class EndScene final : public Scene
+class LevelSelectScene final : public Scene
 {
 public:
-	EndScene();
-	~EndScene();
+	LevelSelectScene();
+	~LevelSelectScene();
 
 	// Inherited via Scene
 	virtual void draw() override;
@@ -21,12 +23,12 @@ public:
 	virtual void start() override;
 
 private:
-	Label* m_label{};
-
-	Button* m_pRestartButton;
-	Button* m_pExitButton;
-
+	Label* m_pLevelSelectLabel{};
+	
 	Background* m_pBackground;
+
+	Button* m_pLevelOneButton;
+	Button* m_pLevelTwoButton;
 };
 
-#endif /* defined (__END_SCENE__) */
+#endif /* defined (__LEVELSELECT_SCENE__) */
