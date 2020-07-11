@@ -33,17 +33,52 @@ void PlayScene::update()
 
 void PlayScene::clean()
 {
-	/*delete m_objPool;
+	// clean GameObject
+	delete m_pBackground;
+	m_pBackground = nullptr;
+
+	delete m_pScoreBoard;
+	m_pScoreBoard = nullptr;
+
+	delete m_pPlayer;
+	m_pPlayer = nullptr;
+
+	delete m_ground;
+	m_ground = nullptr;
+
+	delete m_objPool;
 	m_objPool = nullptr;
 
-	delete m_pPauseButton;
-	m_pPauseButton = nullptr;
-
+	for (int i = 0; i < m_vec.size(); i++)
+	{
+		delete m_vec[i];
+		m_vec[i] = nullptr;
+	}	
+	
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
 		delete m_pObstacles[i];
 		m_pObstacles[i] = nullptr;
-	}*/
+	}	
+	
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		delete m_pPlayerBulletVec[i];
+		m_pPlayerBulletVec[i] = nullptr;
+	}	
+	
+	for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+	{
+		delete m_pEnemyBulletVec[i];
+		m_pEnemyBulletVec[i] = nullptr;
+	}
+
+	// clean button
+	delete m_pPauseButton;
+	m_pPauseButton = nullptr;
+
+	delete m_pContinueButton;
+	m_pContinueButton = nullptr;
 
 	removeAllChildren();
 }
@@ -81,7 +116,6 @@ void PlayScene::handleEvents()
 			}
 		}
 	}
-
 
 	// handle player movement if no Game Controllers found
 	if (SDL_NumJoysticks() < 1)

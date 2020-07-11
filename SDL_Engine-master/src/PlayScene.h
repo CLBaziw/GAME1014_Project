@@ -39,11 +39,10 @@ public:
 private:
 	glm::vec2 m_mousePosition;
 
-	Player* m_pPlayer;
 	Background* m_pBackground;
-	ground* m_ground;
 	ScoreBoard* m_pScoreBoard;
-	Enemy* m_Enemy;
+	Player* m_pPlayer;
+	ground* m_ground;
 
 	// Boxes for scrolling
 	ObjectPool* m_objPool;
