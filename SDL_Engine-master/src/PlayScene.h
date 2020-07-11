@@ -13,6 +13,7 @@
 #include "ground.h"
 #include "Obstacle.h"
 #include "Scoreboard.h"
+#include "Enemy.h"
 #include "ObjectPool.h"
 
 class PlayScene : public Scene
@@ -33,6 +34,7 @@ public:
 	void PlayerShoot();
 	void MakeObstacles();
 	void EnemyShoot();
+	void PlayerDeath();
 
 private:
 	glm::vec2 m_mousePosition;
@@ -41,6 +43,7 @@ private:
 	Background* m_pBackground;
 	ground* m_ground;
 	ScoreBoard* m_pScoreBoard;
+	Enemy* m_Enemy;
 
 	// Boxes for scrolling
 	ObjectPool* m_objPool;

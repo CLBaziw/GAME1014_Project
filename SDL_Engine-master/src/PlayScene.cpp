@@ -33,7 +33,7 @@ void PlayScene::update()
 
 void PlayScene::clean()
 {
-	delete m_objPool;
+	/*delete m_objPool;
 	m_objPool = nullptr;
 
 	delete m_pPauseButton;
@@ -43,7 +43,7 @@ void PlayScene::clean()
 	{
 		delete m_pObstacles[i];
 		m_pObstacles[i] = nullptr;
-	}
+	}*/
 
 	removeAllChildren();
 }
@@ -195,7 +195,6 @@ void PlayScene::start()
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
 	/*m_pEnemyBulletVec.reserve(30);*/
-
 }
 
 void PlayScene::checkCollision()
@@ -216,7 +215,9 @@ void PlayScene::checkCollision()
 
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		if (m_pObstacles[i]->getType() == PLATFORM) // Platform check
+		switch (m_pObstacles[i]->getType())
+		{
+		case PLATFORM:
 		{
 			int platformX = m_pObstacles[i]->getTransform()->position.x;
 			int platformY = m_pObstacles[i]->getTransform()->position.y;
@@ -238,17 +239,17 @@ void PlayScene::checkCollision()
 				}
 			}
 		}
-		else if (m_pObstacles[i]->getType() == ENEMY) // Enemy check
+		break;
+		case ENEMY:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
 				std::cout << "Player and enemy collide" << std::endl;
-				// Kill player
-				TheGame::Instance()->changeSceneState(END_SCENE);
+				PlayerDeath();
 			}
 
 			// Check for bullet with enemy
-			/*for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
 			{
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
@@ -258,7 +259,29 @@ void PlayScene::checkCollision()
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
 				}
-			}*/
+			}
+		}
+		break;
+		case OBSTACLE1:
+		case OBSTACLE2:
+		case OBSTACLE3:
+		{
+			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
+			{
+				std::cout << "Player died to obstacle" << std::endl;
+				PlayerDeath();
+			}
+		}
+		break;
+		case E_BULLET:
+			for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+			{
+				if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemyBulletVec[i]))
+				{
+					std::cout << "Enemy shot player" << std::endl;
+					PlayerDeath();
+				}
+			}
 		}
 	}
 }
@@ -327,6 +350,7 @@ void PlayScene::MakeObstacles()
 		m_vec[col]->Update();
 	}
 }
+
 void PlayScene::EnemyShoot()
 {
 	for (int i = 0; i < m_pObstacles.size(); i++)
@@ -346,10 +370,11 @@ void PlayScene::EnemyShoot()
 				enemyX = m_pObstacles[i]->getTransform()->position.x - 85; 
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10; 
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
-				enemy->setAnimationState(ENEMY_RUN_LEFT);
+				//enemy->setAnimationState(ENEMY_RUN_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
@@ -361,14 +386,20 @@ void PlayScene::EnemyShoot()
 				enemyX = m_pObstacles[i]->getTransform()->position.x + 85;
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
-				enemy->setAnimationState(ENEMY_RUN_RIGHT);
+				//enemy->setAnimationState(ENEMY_RUN_RIGHT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
 			}
 		}
 	}
+}
+
+void PlayScene::PlayerDeath()
+{
+	TheGame::Instance()->changeSceneState(END_SCENE);
 }

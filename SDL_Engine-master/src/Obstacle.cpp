@@ -22,7 +22,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = NOT_ENEMY;
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->isColliding = false;
 		break;
 	case OBSTACLE2:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -38,7 +37,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = NOT_ENEMY;
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-
 		break;
 	case OBSTACLE3:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -54,7 +52,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = NOT_ENEMY;
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->isColliding = false;
 		break;
 	case PLATFORM:
 		// Copy from obstacle but make relevant for platform
@@ -135,17 +132,18 @@ void Obstacle::draw()
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
-		case ENEMY_RUN_RIGHT:
+		/*case ENEMY_RUN_RIGHT:
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 				x, y, 0.25f, 0, 255, true);
 			break;
 		case ENEMY_RUN_LEFT:
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 				x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-			break;
+			break;*/
 		default:
 			break;
 		}
+		break;
 	default:
 		break;
 	}

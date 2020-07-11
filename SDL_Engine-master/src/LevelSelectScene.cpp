@@ -111,12 +111,7 @@ void LevelSelectScene::start()
 
 	addChild(m_pLevelTwoButton);
 
-
-
-
 	SoundManager::Instance().playMusic("startScreen");
-
-	
 }
 
 
