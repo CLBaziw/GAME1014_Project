@@ -22,7 +22,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = NOT_ENEMY;
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->isColliding = false;
 		break;
 	case OBSTACLE2:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -38,7 +37,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = NOT_ENEMY;
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-
 		break;
 	case OBSTACLE3:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -54,7 +52,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = NOT_ENEMY;
 
 		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->isColliding = false;
 		break;
 	case PLATFORM:
 		// Copy from obstacle but make relevant for platform
@@ -79,7 +76,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 			"../Assets/sprites/alien.png",
 			"alien"
 		);
-
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
 
 		setWidth(128);
@@ -110,11 +106,11 @@ void Obstacle::draw()
 	switch (getType())
 	{
 	case OBSTACLE1:
-		TextureManager::Instance()->playAnimation("platsprites", getAnimation("hazard"),
+		TextureManager::Instance()->playAnimation("platsprites", getAnimation("spikes"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case OBSTACLE2:
-		TextureManager::Instance()->playAnimation("Fireball_Sheet", getAnimation("Fireball"),
+		TextureManager::Instance()->playAnimation("Fireball_Sheet", getAnimation("fireball-active"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case OBSTACLE3:
@@ -136,25 +132,18 @@ void Obstacle::draw()
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
-		case ENEMY_RUN_RIGHT:
+		/*case ENEMY_RUN_RIGHT:
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 				x, y, 0.25f, 0, 255, true);
 			break;
 		case ENEMY_RUN_LEFT:
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 				x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-			break;
-			/*case ENEMY_DIE_RIGHT:
-				TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
-					x, y, 0.30f, 0, 255, true);
-				break;
-			case ENEMY_DIE_LEFT:
-				TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
-					x, y, 0.30f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-				break;*/
+			break;*/
 		default:
 			break;
 		}
+		break;
 	default:
 		break;
 	}
@@ -187,14 +176,44 @@ void Obstacle::m_buildAnimations()
 {
 	switch (getType())
 	{
-	case OBSTACLE1:
+	case OBSTACLE1: {
 
+		Animation spikes = Animation();
+
+		spikes.name = "spikes";
+		spikes.frames.push_back(getSpriteSheet()->getFrame("hazard"));
+		setAnimation(spikes);
+	}
 		break;
-	case OBSTACLE2:
+	case OBSTACLE2: {
+		Animation fireball = Animation();
 
+		fireball.name = "fireball-active";
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-1"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-2"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-3"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-4"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-5"));
+		setAnimation(fireball);
+
+		Animation fireballDie = Animation();
+		fireballDie.name = "fireball-die";
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-1"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-2"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-3"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-4"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-5"));
+		setAnimation(fireballDie);
+
+	}
 		break;
-	case OBSTACLE3:
+	case OBSTACLE3: {
+		Animation spikeEnemy = Animation();
 
+		spikeEnemy.name = "green-spike-enemy";
+		spikeEnemy.frames.push_back(getSpriteSheet()->getFrame("Spike-Enemy-2"));
+		setAnimation(spikeEnemy);
+	}
 		break;
 	case PLATFORM: {
 		Animation platform = Animation();

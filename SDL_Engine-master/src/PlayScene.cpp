@@ -1,10 +1,11 @@
 #include "PlayScene.h"
+#include <algorithm>
 #include "Obstacle.h"
 #include "Game.h"
 #include "EventManager.h"
 #include "TextureManager.h"
 
-#define ENEMYSIGHT 250
+#define ENEMYSIGHT 280
 
 PlayScene::PlayScene()
 {
@@ -32,8 +33,52 @@ void PlayScene::update()
 
 void PlayScene::clean()
 {
+	// clean GameObject
+	delete m_pBackground;
+	m_pBackground = nullptr;
+
+	delete m_pScoreBoard;
+	m_pScoreBoard = nullptr;
+
+	delete m_pPlayer;
+	m_pPlayer = nullptr;
+
+	delete m_ground;
+	m_ground = nullptr;
+
+	delete m_objPool;
+	m_objPool = nullptr;
+
+	for (int i = 0; i < m_vec.size(); i++)
+	{
+		delete m_vec[i];
+		m_vec[i] = nullptr;
+	}	
+	
+	for (int i = 0; i < m_pObstacles.size(); i++)
+	{
+		delete m_pObstacles[i];
+		m_pObstacles[i] = nullptr;
+	}	
+	
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		delete m_pPlayerBulletVec[i];
+		m_pPlayerBulletVec[i] = nullptr;
+	}	
+	
+	for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+	{
+		delete m_pEnemyBulletVec[i];
+		m_pEnemyBulletVec[i] = nullptr;
+	}
+
+	// clean button
 	delete m_pPauseButton;
 	m_pPauseButton = nullptr;
+
+	delete m_pContinueButton;
+	m_pContinueButton = nullptr;
 
 	removeAllChildren();
 }
@@ -71,7 +116,6 @@ void PlayScene::handleEvents()
 			}
 		}
 	}
-
 
 	// handle player movement if no Game Controllers found
 	if (SDL_NumJoysticks() < 1)
@@ -141,12 +185,20 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-
+	//Differentiate between levels
+	if (TheGame::Instance()->getLevel() == 0)
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	}
+	else
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	}
+	
 	// Object Pool
 	m_objPool = new ObjectPool();
 
-	// Background
-	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
+	// Background 
 	addChild(m_pBackground);
 
 	//Score Board
@@ -171,53 +223,12 @@ void PlayScene::start()
 	m_pPlayer->SetJumping(false);
 
 	//Ground
-	m_ground = new ground(0, 587);
+	m_ground = new ground(0, 588);
 	addChild(m_ground);
 
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
 	/*m_pEnemyBulletVec.reserve(30);*/
-
-	// Pause Button
-	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
-	m_pPauseButton->getTransform()->position = glm::vec2(80.0f, 80.0f);
-	m_pPauseButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pPauseButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
-	});
-
-	m_pPauseButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pPauseButton->setAlpha(128);
-	});
-
-	m_pPauseButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pPauseButton->setAlpha(255);
-	});
-	addChild(m_pPauseButton);
-
-	// Continue Button
-	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
-	m_pContinueButton->getTransform()->position = glm::vec2(170.0f, 80.0f);
-	m_pContinueButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pContinueButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
-	});
-
-	m_pContinueButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pContinueButton->setAlpha(128);
-	});
-
-	m_pContinueButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pContinueButton->setAlpha(255);
-	});
-
-	addChild(m_pContinueButton);
 }
 
 void PlayScene::checkCollision()
@@ -238,7 +249,9 @@ void PlayScene::checkCollision()
 
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		if (m_pObstacles[i]->getType() == PLATFORM) // Platform check
+		switch (m_pObstacles[i]->getType())
+		{
+		case PLATFORM:
 		{
 			int platformX = m_pObstacles[i]->getTransform()->position.x;
 			int platformY = m_pObstacles[i]->getTransform()->position.y;
@@ -260,17 +273,17 @@ void PlayScene::checkCollision()
 				}
 			}
 		}
-		else if (m_pObstacles[i]->getType() == ENEMY) // Enemy check
+		break;
+		case ENEMY:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
 				std::cout << "Player and enemy collide" << std::endl;
-				// Kill player
-				TheGame::Instance()->changeSceneState(END_SCENE);
+				PlayerDeath();
 			}
 
 			// Check for bullet with enemy
-			/*for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
 			{
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
@@ -280,7 +293,29 @@ void PlayScene::checkCollision()
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
 				}
-			}*/
+			}
+		}
+		break;
+		case OBSTACLE1:
+		case OBSTACLE2:
+		case OBSTACLE3:
+		{
+			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
+			{
+				std::cout << "Player died to obstacle" << std::endl;
+				PlayerDeath();
+			}
+		}
+		break;
+		case E_BULLET:
+			for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+			{
+				if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemyBulletVec[i]))
+				{
+					std::cout << "Enemy shot player" << std::endl;
+					PlayerDeath();
+				}
+			}
 		}
 	}
 }
@@ -349,6 +384,7 @@ void PlayScene::MakeObstacles()
 		m_vec[col]->Update();
 	}
 }
+
 void PlayScene::EnemyShoot()
 {
 	for (int i = 0; i < m_pObstacles.size(); i++)
@@ -360,28 +396,44 @@ void PlayScene::EnemyShoot()
 			float enemyY = enemy->getTransform()->position.y;
 			float playerX = m_pPlayer->getTransform()->position.x;
 			float playerY = m_pPlayer->getTransform()->position.y;
-			if (playerX < enemyX && playerY >= enemyY)
+			//playerX = std::min((int)ENEMYSIGHT, (int)enemyX);
+			if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 			{
-				enemyX = m_pObstacles[i]->getTransform()->position.x - 48;
+				std::cout << "PlayerPos: " << playerX /*+ ENEMYSIGHT*/ << std::endl;
+				std::cout << "EnemyPos: " << enemyX << std::endl;
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 85; 
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10; 
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
+				//enemy->setAnimationState(ENEMY_RUN_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
 			}
-			if (playerX + ENEMYSIGHT > enemyX && playerX >= enemyY)
+			if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX && playerX >= enemyY)
 			{
-				enemyX = enemyX + 48;
+				std::cout << "PlayerPos: " << playerX /*+ ENEMYSIGHT*/ << std::endl;
+				std::cout << "EnemyPos: " << enemyX << std::endl;
+				enemyX = m_pObstacles[i]->getTransform()->position.x + 85;
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				//enemy->setAnimationState(ENEMY_RUN_RIGHT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
 			}
 		}
 	}
+}
+
+void PlayScene::PlayerDeath()
+{
+	TheGame::Instance()->changeSceneState(END_SCENE);
 }

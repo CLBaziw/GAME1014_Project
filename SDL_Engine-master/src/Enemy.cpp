@@ -19,7 +19,7 @@ Enemy::Enemy(int x, int y)
 	setHeight(128);
 
 	m_shooting = false;
-	getTransform()->position = glm::vec2(760.0f, 525.0f);
+	getTransform()->position = glm::vec2(760.0f, 100.0f);
 	getTransform()->position = glm::vec2(x, y);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
@@ -91,38 +91,6 @@ void Enemy::setPosition(int x, int y)
 	getTransform()->position.x = x ;
 	getTransform()->position.y = y;
 }
-//
-//
-//void Enemy::SetX(float x)
-//{
-//	//getTransform()->m_dst.x = x;
-//	getTransform()->position.x = x + 70;
-//}
-//
-//void Enemy::SetY(float y)
-//{
-//	//getTransform()->m_dst.y = y;
-//	getTransform()->position.y = y + 70;
-//}
-//
-//bool Enemy::isShooting() { return m_shooting; }
-//void Enemy::SetShooting(bool s) { m_shooting = s; }
-//
-//void Enemy::setDst()
-//{
-//	dst.x = getTransform()->position.x;
-//
-//	dst.y = getTransform()->position.y;
-//
-//	dst.w = getWidth();
-//
-//	dst.h = getHeight();
-//}
-//
-//SDL_FRect& Enemy::getDst()
-//{
-//	return dst;
-//}
 
 void Enemy::m_buildAnimations()
 {
@@ -155,4 +123,6 @@ void Enemy::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-3"));
 
 	setAnimation(deathAnimation);
+
+
 }
