@@ -35,7 +35,7 @@ public:
 	void MakeObstacles();
 	void EnemyShoot();
 	void PlayerDeath();
-
+	bool PlayerDead = false;
 private:
 	glm::vec2 m_mousePosition;
 

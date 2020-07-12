@@ -435,5 +435,10 @@ void PlayScene::EnemyShoot()
 
 void PlayScene::PlayerDeath()
 {
-	TheGame::Instance()->changeSceneState(END_SCENE);
+	m_pPlayer->setAnimationState(PLAYER_DEATH);
+	PlayerDead = true;
+	if (PlayerDead = true)
+	{
+		TheGame::Instance()->changeSceneState(END_SCENE);
+	}
 }
