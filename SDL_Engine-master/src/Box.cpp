@@ -48,7 +48,7 @@ Obstacle* Box::GetSprite()
 
 Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 {
-	int randNumber = (rand() % 2) + 1;
+	int randNumber = (rand() % 3) + 1;
 
 	Obstacle* sprite = nullptr;
 

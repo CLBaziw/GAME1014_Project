@@ -66,7 +66,6 @@ Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bul
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 
-
 	m_buildAnimations();
 }
 

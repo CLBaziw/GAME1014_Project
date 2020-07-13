@@ -34,6 +34,7 @@
     <ClCompile Include="..\src\Util.cpp" />
     <ClCompile Include="..\src\ObjectPool.cpp" />
     <ClCompile Include="..\src\Scoreboard.cpp" />
+    <ClCompile Include="..\src\LevelSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Animation.h" />
@@ -84,6 +85,7 @@
     <ClInclude Include="..\src\ObjectPool.h" />
     <ClInclude Include="..\src\ObstacleAnimationState.h" />
     <ClInclude Include="..\src\Scoreboard.h" />
+    <ClInclude Include="..\src\LevelSelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Assets\plat\platsprites.png" />
