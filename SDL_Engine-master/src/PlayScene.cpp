@@ -7,7 +7,6 @@
 
 #define ENEMYSIGHT 280
 
-
 PlayScene::PlayScene()
 {
 	PlayScene::start();
@@ -186,12 +185,20 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-
+	//Differentiate between levels
+	if (TheGame::Instance()->getLevel() == 0)
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	}
+	else
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+	}
+	
 	// Object Pool
 	m_objPool = new ObjectPool();
 
-	// Background
-	m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2 (0, 0), true);
+	// Background 
 	addChild(m_pBackground);
 
 	//Score Board
@@ -222,47 +229,6 @@ void PlayScene::start()
 	// Bullets
 	m_pPlayerBulletVec.reserve(10);
 	/*m_pEnemyBulletVec.reserve(30);*/
-
-	// Pause Button
-	m_pPauseButton = new Button("../Assets/Menu Asset/Pause_BTN_small.png", "pauseButton", PAUSE_BUTTON);
-	m_pPauseButton->getTransform()->position = glm::vec2(80.0f, 80.0f);
-	m_pPauseButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pPauseButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
-	});
-
-	m_pPauseButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pPauseButton->setAlpha(128);
-	});
-
-	m_pPauseButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pPauseButton->setAlpha(255);
-	});
-	addChild(m_pPauseButton);
-
-	// Continue Button
-	m_pContinueButton = new Button("../Assets/Menu Asset/Play_BTN_small.png", "continueButton", CONTINUE_BUTTON);
-	m_pContinueButton->getTransform()->position = glm::vec2(170.0f, 80.0f);
-	m_pContinueButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pContinueButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
-	});
-
-	m_pContinueButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pContinueButton->setAlpha(128);
-	});
-
-	m_pContinueButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pContinueButton->setAlpha(255);
-	});
-
-	addChild(m_pContinueButton);
 }
 
 void PlayScene::checkCollision()
@@ -283,7 +249,9 @@ void PlayScene::checkCollision()
 
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		if (m_pObstacles[i]->getType() == PLATFORM) // Platform check
+		switch (m_pObstacles[i]->getType())
+		{
+		case PLATFORM:
 		{
 			int platformX = m_pObstacles[i]->getTransform()->position.x;
 			int platformY = m_pObstacles[i]->getTransform()->position.y;
@@ -305,17 +273,17 @@ void PlayScene::checkCollision()
 				}
 			}
 		}
-		else if (m_pObstacles[i]->getType() == ENEMY) // Enemy check
+		break;
+		case PREDATOR:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
 				std::cout << "Player and enemy collide" << std::endl;
-				// Kill player
-				TheGame::Instance()->changeSceneState(END_SCENE);
+				PlayerDeath();
 			}
 
 			// Check for bullet with enemy
-			/*for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
 			{
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
@@ -325,7 +293,29 @@ void PlayScene::checkCollision()
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
 				}
-			}*/
+			}
+		}
+		break;
+		case OBSTACLE1:
+		case OBSTACLE2:
+		case OBSTACLE3:
+		{
+			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
+			{
+				std::cout << "Player died to obstacle" << std::endl;
+				PlayerDeath();
+			}
+		}
+		break;
+		case E_BULLET:
+			for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+			{
+				if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemyBulletVec[i]))
+				{
+					std::cout << "Enemy shot player" << std::endl;
+					PlayerDeath();
+				}
+			}
 		}
 	}
 }
@@ -393,17 +383,20 @@ void PlayScene::MakeObstacles()
 	{
 		m_vec[col]->Update();
 	}
-
 }
+
 void PlayScene::EnemyShoot()
 {
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		if (m_pObstacles[i]->getType() == ENEMY)
+		if (m_pObstacles[i]->getType() == ENEMY || m_pObstacles[i]->getType() == PREDATOR)
 		{
 			Obstacle* enemy = m_pObstacles[i];
+			Obstacle* predator = m_pObstacles[i];
 			float enemyX = enemy->getTransform()->position.x;
 			float enemyY = enemy->getTransform()->position.y;
+			float predatorX = predator->getTransform()->position.x;
+			float predatorY = predator->getTransform()->position.y;
 			float playerX = m_pPlayer->getTransform()->position.x;
 			float playerY = m_pPlayer->getTransform()->position.y;
 			//playerX = std::min((int)ENEMYSIGHT, (int)enemyX);
@@ -413,11 +406,15 @@ void PlayScene::EnemyShoot()
 				std::cout << "EnemyPos: " << enemyX << std::endl;
 				enemyX = m_pObstacles[i]->getTransform()->position.x - 85; 
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10; 
+				predatorX = m_pObstacles[i]->getTransform()->position.x - 85;
+				predatorY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
-				enemy->setAnimationState(ENEMY_RUN_LEFT);
+				enemy->setAnimationState(PREDATOR_IDLE_LEFT);
+				//enemy->setAnimationState(ENEMY_RUN_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
@@ -429,14 +426,22 @@ void PlayScene::EnemyShoot()
 				enemyX = m_pObstacles[i]->getTransform()->position.x + 85;
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
-				enemy->setAnimationState(ENEMY_RUN_RIGHT);
+				enemy->setAnimationState(PREDATOR_IDLE_RIGHT);
+
+				//enemy->setAnimationState(ENEMY_RUN_RIGHT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
 			}
 		}
 	}
+}
+
+void PlayScene::PlayerDeath()
+{
+	TheGame::Instance()->changeSceneState(END_SCENE);
 }

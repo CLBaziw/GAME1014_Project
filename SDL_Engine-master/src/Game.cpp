@@ -150,6 +150,10 @@ void Game::changeSceneState(const SceneState new_state)
 			m_currentScene = new StartScene();
 			std::cout << "start scene activated" << std::endl;
 			break;
+		case LEVELSELECT_SCENE:
+			m_currentScene = new LevelSelectScene();
+			std::cout << "level select scene activated" << std::endl;
+			break;
 		case PLAY_SCENE:
 			m_currentScene = new PlayScene();
 			std::cout << "play scene activated" << std::endl;
@@ -217,4 +221,14 @@ void Game::setWindowHeight(float height)
 float Game::getWindowHeight()
 {
 	return m_windowHeight;
+}
+
+void Game::setLevel(int level)
+{
+	m_level = level;
+}
+
+int Game::getLevel()
+{
+	return m_level;
 }

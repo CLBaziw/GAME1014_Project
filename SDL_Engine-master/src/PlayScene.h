@@ -13,6 +13,7 @@
 #include "ground.h"
 #include "Obstacle.h"
 #include "Scoreboard.h"
+#include "Enemy.h"
 #include "ObjectPool.h"
 
 class PlayScene : public Scene
@@ -33,6 +34,7 @@ public:
 	void PlayerShoot();
 	void MakeObstacles();
 	void EnemyShoot();
+	void PlayerDeath();
 
 private:
 	glm::vec2 m_mousePosition;
@@ -57,7 +59,6 @@ private:
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
 	
-
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
@@ -65,7 +66,6 @@ private:
 
 	int m_bulletTimer = 0,
 		m_timerMax = 35;
-
 };
 
 #endif /* defined (__PLAY_SCENE__) */

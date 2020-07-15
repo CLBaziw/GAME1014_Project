@@ -18,6 +18,7 @@
 #include "StartScene.h"
 #include "PlayScene.h"
 #include "EndScene.h"
+#include "LevelSelectScene.h"
 
 #include "Config.h"
 
@@ -58,6 +59,9 @@ public:
 	void setWindowHeight(float height);
 	float getWindowHeight();
 
+	void setLevel(int level);
+	int getLevel();
+
 private:
 	Game();
 	~Game();
@@ -77,6 +81,8 @@ private:
 
 	int m_windowWidth;
 	int m_windowHeight;
+
+	int m_level;
 };
 
 typedef Game TheGame;

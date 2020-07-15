@@ -91,38 +91,6 @@ void Enemy::setPosition(int x, int y)
 	getTransform()->position.x = x ;
 	getTransform()->position.y = y;
 }
-//
-//
-//void Enemy::SetX(float x)
-//{
-//	//getTransform()->m_dst.x = x;
-//	getTransform()->position.x = x + 70;
-//}
-//
-//void Enemy::SetY(float y)
-//{
-//	//getTransform()->m_dst.y = y;
-//	getTransform()->position.y = y + 70;
-//}
-//
-//bool Enemy::isShooting() { return m_shooting; }
-//void Enemy::SetShooting(bool s) { m_shooting = s; }
-//
-//void Enemy::setDst()
-//{
-//	dst.x = getTransform()->position.x;
-//
-//	dst.y = getTransform()->position.y;
-//
-//	dst.w = getWidth();
-//
-//	dst.h = getHeight();
-//}
-//
-//SDL_FRect& Enemy::getDst()
-//{
-//	return dst;
-//}
 
 void Enemy::m_buildAnimations()
 {

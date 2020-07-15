@@ -24,6 +24,7 @@ private:
 	Label* m_label{};
 
 	Button* m_pRestartButton;
+	Button* m_pExitButton;
 
 	Background* m_pBackground;
 };
