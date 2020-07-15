@@ -62,7 +62,7 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		break;
 	case 2:
 		std::cout << "Get Random Obstacle - Enemy" << std::endl;
-		sprite = objPool->GetObstacle(ENEMY);
+		sprite = objPool->GetObstacle(PREDATOR);
 		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = 524;
 		break;

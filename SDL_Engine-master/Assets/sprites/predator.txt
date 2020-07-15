@@ -1,0 +1,12 @@
+predator-death-0 1 1 129 128
+predator-death-1 129 1 129 128
+predator-death-2 258 1 129 128
+predator-death-3 387 1 129 128
+predator-idle-0 1 128 128 128 
+predator-idle-1 128 128 128 128
+predator-idle-2 256 128 128 128
+predatr-idle-3 384 128 128 128
+predator-run-0 1 257 127 128
+predator-run-1 128 257 127 128
+predator-run-2 258 257 127 128 
+predator-run-3 387 257 127 128
