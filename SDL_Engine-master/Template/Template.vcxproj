@@ -248,6 +248,7 @@
     <Image Include="..\Assets\sprites\Dobstacles.png" />
     <Image Include="..\Assets\sprites\enemybullet.png" />
     <Image Include="..\Assets\sprites\gamesprite.png" />
+    <Image Include="..\Assets\sprites\predator.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

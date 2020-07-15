@@ -274,7 +274,7 @@ void PlayScene::checkCollision()
 			}
 		}
 		break;
-		case ENEMY:
+		case PREDATOR:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
@@ -389,11 +389,14 @@ void PlayScene::EnemyShoot()
 {
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		if (m_pObstacles[i]->getType() == ENEMY)
+		if (m_pObstacles[i]->getType() == ENEMY || m_pObstacles[i]->getType() == PREDATOR)
 		{
 			Obstacle* enemy = m_pObstacles[i];
+			Obstacle* predator = m_pObstacles[i];
 			float enemyX = enemy->getTransform()->position.x;
 			float enemyY = enemy->getTransform()->position.y;
+			float predatorX = predator->getTransform()->position.x;
+			float predatorY = predator->getTransform()->position.y;
 			float playerX = m_pPlayer->getTransform()->position.x;
 			float playerY = m_pPlayer->getTransform()->position.y;
 			//playerX = std::min((int)ENEMYSIGHT, (int)enemyX);
@@ -403,7 +406,10 @@ void PlayScene::EnemyShoot()
 				std::cout << "EnemyPos: " << enemyX << std::endl;
 				enemyX = m_pObstacles[i]->getTransform()->position.x - 85; 
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10; 
+				predatorX = m_pObstacles[i]->getTransform()->position.x - 85;
+				predatorY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
+				enemy->setAnimationState(PREDATOR_IDLE_LEFT);
 				//enemy->setAnimationState(ENEMY_RUN_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
@@ -420,6 +426,8 @@ void PlayScene::EnemyShoot()
 				enemyX = m_pObstacles[i]->getTransform()->position.x + 85;
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10;
 				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				enemy->setAnimationState(PREDATOR_IDLE_RIGHT);
+
 				//enemy->setAnimationState(ENEMY_RUN_RIGHT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
