@@ -6,6 +6,8 @@
 #include "TextureManager.h"
 
 #define ENEMYSIGHT 280
+#define FPS 60
+#define BGSCROLL 2
 
 PlayScene::PlayScene()
 {
@@ -185,21 +187,28 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	//moveBackground();
+
 	//Differentiate between levels
 	if (TheGame::Instance()->getLevel() == 0)
 	{
-		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
 	}
 	else
 	{
-		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		
+
 	}
+
 	
 	// Object Pool
 	m_objPool = new ObjectPool();
 
 	// Background 
 	addChild(m_pBackground);
+	addChild(m_pBackground);
+
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
@@ -233,6 +242,20 @@ void PlayScene::start()
 
 void PlayScene::checkCollision()
 {
+	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
+
+	if (m_pBackground->getTransform()->position.x < -1600.f)
+	{
+		m_pBackground->getTransform()->position.x = 1600;
+	}
+
+	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
+
+	if (m_ground->getTransform()->position.x < -1600.f)
+	{
+		m_ground->getTransform()->position.x = 1600;
+	}
+
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
@@ -274,7 +297,7 @@ void PlayScene::checkCollision()
 			}
 		}
 		break;
-		case PREDATOR:
+		case ENEMY:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{

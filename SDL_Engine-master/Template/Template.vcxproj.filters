@@ -95,5 +95,6 @@
     <Image Include="..\Assets\sprites\Dobstacles.png" />
     <Image Include="..\Assets\sprites\alien.png" />
     <Image Include="..\Assets\sprites\predator.png" />
+    <Image Include="..\Assets\plat\hazard.png" />
   </ItemGroup>
 </Project>
