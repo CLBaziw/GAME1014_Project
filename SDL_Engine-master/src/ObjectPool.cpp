@@ -22,10 +22,10 @@ ObjectPool::ObjectPool()
 		m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
 	}
 
-	/*for (int i = 0; i < MAXENEMY; i++)
+	for (int i = 0; i < MAXENEMY; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(ENEMY));
-	}*/
+	}
 
 	for (int i = 0; i < MAXPREDATOR; i++)
 	{

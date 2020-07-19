@@ -1,11 +1,23 @@
 #include "ground.h"
+#include "Game.h"
 #include "TextureManager.h"
 
 ground::ground(float x, float y)
 {
-	TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
+	if (TheGame::Instance()->getLevel() == 0)
+	{
+		TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
+	}
+	else
+	{
+		TextureManager::Instance()->load("../Assets/plat/ground2.png", "ground");
+
+
+	}
+	//TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
 
 	auto size = TextureManager::Instance()->getTextureSize("ground");
+	//auto size = TextureManager::Instance()->getTextureSize("ground2");
 	setWidth(size.x);
 	setHeight(size.y);
 
