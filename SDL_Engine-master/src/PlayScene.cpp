@@ -272,14 +272,14 @@ void PlayScene::checkCollision()
 					m_pPlayer->SetJumping(false);
 				}
 			}
+			break;
 		}
-		break;
 		case PREDATOR:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
 				std::cout << "Player and enemy collide" << std::endl;
-				PlayerDeath();
+				//PlayerDeath();
 			}
 
 			// Check for bullet with enemy
@@ -294,19 +294,41 @@ void PlayScene::checkCollision()
 					m_pObstacles.erase(m_pObstacles.begin() + i);
 				}
 			}
+			break;
 		}
-		break;
+		case ENEMY:
+		{
+			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
+			{
+				std::cout << "Player and enemy collide" << std::endl;
+				//PlayerDeath();
+			}
+
+			// Check for bullet with enemy
+			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+			{
+				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
+				{
+					std::cout << "Player killed enemy" << std::endl;
+
+					m_pObstacles[i]->setActive(false);
+					m_pObstacles[i] = nullptr;
+					m_pObstacles.erase(m_pObstacles.begin() + i);
+				}
+			}
+			break;
+		}
 		case OBSTACLE1:
 		case OBSTACLE2:
 		case OBSTACLE3:
-		{
-			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
-			{
-				std::cout << "Player died to obstacle" << std::endl;
-				PlayerDeath();
-			}
-		}
-		break;
+		//{
+		//	if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
+		//	{
+		//		std::cout << "Player died to obstacle" << std::endl;
+		//		PlayerDeath();
+		//	}
+		//	break;
+		//}
 		case E_BULLET:
 			for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
 			{
@@ -316,6 +338,7 @@ void PlayScene::checkCollision()
 					PlayerDeath();
 				}
 			}
+			break;
 		}
 	}
 }
@@ -338,7 +361,7 @@ void PlayScene::PlayerShoot()
 		x = m_pPlayer->getTransform()->position.x - 10;
 	}
 
-	m_pPlayerBulletVec.push_back(new Bullet(x, y, true, bState));
+	m_pPlayerBulletVec.push_back(new Bullet(x, y, /*true*/PLAYER_BULLET, bState));
 	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
 
 	SoundManager::Instance().playSound("shot");
@@ -389,49 +412,73 @@ void PlayScene::EnemyShoot()
 {
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		if (m_pObstacles[i]->getType() == ENEMY || m_pObstacles[i]->getType() == PREDATOR)
+		if (m_pObstacles[i]->getType() == PREDATOR)
 		{
 			Obstacle* enemy = m_pObstacles[i];
-			Obstacle* predator = m_pObstacles[i];
 			float enemyX = enemy->getTransform()->position.x;
 			float enemyY = enemy->getTransform()->position.y;
-			float predatorX = predator->getTransform()->position.x;
-			float predatorY = predator->getTransform()->position.y;
 			float playerX = m_pPlayer->getTransform()->position.x;
 			float playerY = m_pPlayer->getTransform()->position.y;
-			//playerX = std::min((int)ENEMYSIGHT, (int)enemyX);
 			if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 			{
-				std::cout << "PlayerPos: " << playerX /*+ ENEMYSIGHT*/ << std::endl;
-				std::cout << "EnemyPos: " << enemyX << std::endl;
-				enemyX = m_pObstacles[i]->getTransform()->position.x - 85; 
-				enemyY = m_pObstacles[i]->getTransform()->position.y - 10; 
-				predatorX = m_pObstacles[i]->getTransform()->position.x - 85;
-				predatorY = m_pObstacles[i]->getTransform()->position.y - 10;
-				enemy->setAnimationState(ENEMY_IDLE_LEFT);
-				enemy->setAnimationState(PREDATOR_IDLE_LEFT);
-				//enemy->setAnimationState(ENEMY_RUN_LEFT);
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f; 
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+			
+				enemy->setAnimationState(PREDATOR_IDLE_LEFT);	
+	
+				
 				if (m_bulletTimer++ == m_timerMax)
 				{
-					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, BULLET_MOVE_LEFT));
 					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
 				}
 			}
-			if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX && playerX >= enemyY)
+			else if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX && playerX >= enemyY)
 			{
-				std::cout << "PlayerPos: " << playerX /*+ ENEMYSIGHT*/ << std::endl;
-				std::cout << "EnemyPos: " << enemyX << std::endl;
-				enemyX = m_pObstacles[i]->getTransform()->position.x + 85;
-				enemyY = m_pObstacles[i]->getTransform()->position.y - 10;
-				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				enemyX = m_pObstacles[i]->getTransform()->position.x + 85.0f;
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+				
 				enemy->setAnimationState(PREDATOR_IDLE_RIGHT);
-
-				//enemy->setAnimationState(ENEMY_RUN_RIGHT);
+			
 				if (m_bulletTimer++ == m_timerMax)
 				{
-					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, false, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
+					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+					m_bulletTimer = 0;
+				}
+			}
+		}
+		else if (m_pObstacles[i]->getType() == ENEMY)
+		{
+			Obstacle* enemy = m_pObstacles[i];
+			float enemyX = enemy->getTransform()->position.x;
+			float enemyY = enemy->getTransform()->position.y;
+			float playerX = m_pPlayer->getTransform()->position.x;
+			float playerY = m_pPlayer->getTransform()->position.y;
+			if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
+			{
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f; 
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+				enemy->setAnimationState(ENEMY_IDLE_LEFT);
+				if (m_bulletTimer++ == m_timerMax)
+				{
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ENEMY_BULLET, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
+					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+					m_bulletTimer = 0;
+				}
+			}
+			else if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX && playerX >= enemyY)
+			{
+				enemyX = m_pObstacles[i]->getTransform()->position.x + 85.0f;
+				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+				if (m_bulletTimer++ == m_timerMax)
+				{
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ENEMY_BULLET, BULLET_MOVE_RIGHT));
 					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;

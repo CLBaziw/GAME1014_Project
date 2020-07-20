@@ -74,7 +74,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 
 		break;
 	
-	/*case ENEMY:
+	case ENEMY:
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/alien.txt",
 			"../Assets/sprites/alien.png",
@@ -86,7 +86,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(128);
 		m_currentAnimationState = ENEMY_IDLE_LEFT;
           
-		break;*/
+		break;
 	
 	
 	case PREDATOR:
@@ -154,6 +154,8 @@ void Obstacle::draw()
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
+		}
+		break;
     case PREDATOR:
 		switch (m_currentAnimationState)
 		{
@@ -162,19 +164,8 @@ void Obstacle::draw()
 				x, y, 0.12f, 0, 255, true);
 			break;
 		case PREDATOR_IDLE_LEFT:
-		TextureManager::Instance()->playAnimation("predator", getAnimation("predator-idle"),
-			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		 break;
-		 }
-		/*case ENEMY_RUN_RIGHT:
-			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
-				x, y, 0.25f, 0, 255, true);
-			break;
-		case ENEMY_RUN_LEFT:
-			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
-				x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-			break;*/
-		default:
+			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-idle"),
+				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
 		}
 		break;
@@ -189,10 +180,10 @@ void Obstacle::update()
 	{
 		// Update enemy
 	}
-	//else if (getType() == PREDATOR)
-	//{
-	//	// Update predator
-	//}
+	else if (getType() == PREDATOR)
+	{
+		// Update predator
+	}
 }
 
 void Obstacle::clean()
@@ -221,8 +212,8 @@ void Obstacle::m_buildAnimations()
 		spikes.name = "spikes";
 		spikes.frames.push_back(getSpriteSheet()->getFrame("hazard"));
 		setAnimation(spikes);
-	}
 		break;
+	}
 	case OBSTACLE2: {
 		Animation fireball = Animation();
 
@@ -242,17 +233,16 @@ void Obstacle::m_buildAnimations()
 		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-4"));
 		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-5"));
 		setAnimation(fireballDie);
-
-	}
 		break;
+	}
 	case OBSTACLE3: {
 		Animation spikeEnemy = Animation();
 
 		spikeEnemy.name = "green-spike-enemy";
 		spikeEnemy.frames.push_back(getSpriteSheet()->getFrame("Spike-Enemy-2"));
 		setAnimation(spikeEnemy);
-	}
 		break;
+	}
 	case PLATFORM: {
 		Animation platform = Animation();
 
@@ -260,8 +250,8 @@ void Obstacle::m_buildAnimations()
 		platform.frames.push_back(getSpriteSheet()->getFrame("plas"));
 
 		setAnimation(platform);
+		break;
 	}
-				 break;
 	case ENEMY: {
 		Animation idleAnimation = Animation();
 
@@ -280,22 +270,15 @@ void Obstacle::m_buildAnimations()
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-1"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-2"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-3"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-4"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-5"));
 
 		setAnimation(runAnimation);
-
-		Animation deathAnimation = Animation();
-
-		runAnimation.name = "enemy-death";
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-0"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-1"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-2"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-3"));
-
-		setAnimation(deathAnimation);
+		break;
 	}
-			  break;
 
-	case PREDATOR: {
+	case PREDATOR:
+	{
 		Animation idleAnimation = Animation();
 
 		idleAnimation.name = "predator-idle";
@@ -313,20 +296,13 @@ void Obstacle::m_buildAnimations()
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-1"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-2"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-3"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-4"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-5"));
 
 		setAnimation(runAnimation);
-
-		Animation deathAnimation = Animation();
-
-		runAnimation.name = "predator-death";
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-death-0"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-death-1"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-death-2"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-death-3"));
-
-		setAnimation(deathAnimation);
+		break;
 	}
-			  break;
+		
 	default:
 		break;
 	}
