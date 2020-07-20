@@ -1,10 +1,9 @@
 #include "ObjectPool.h"
 #include <iostream>
-
 #define MAXPLATFORM 4
 #define MAXOBSTACLE 4
-#define MAXENEMY 6
-#define MAXPREDATOR 6
+#define MAXENEMY 3
+#define MAXPREDATOR 3
 
 
 ObjectPool::ObjectPool()
@@ -18,8 +17,8 @@ ObjectPool::ObjectPool()
 	for (int i = 0; i < MAXOBSTACLE; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(OBSTACLE1));
-		m_poolObstacles.push_back(new Obstacle(OBSTACLE2));
-		m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
+		//m_poolObstacles.push_back(new Obstacle(OBSTACLE2));
+		//m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
 	}
 
 	for (int i = 0; i < MAXENEMY; i++)
@@ -27,10 +26,12 @@ ObjectPool::ObjectPool()
 		m_poolObstacles.push_back(new Obstacle(ENEMY));
 	}
 
+	
 	for (int i = 0; i < MAXPREDATOR; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(PREDATOR));
 	}
+
 }
 
 ObjectPool::~ObjectPool() = default;
