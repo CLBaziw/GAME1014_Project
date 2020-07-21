@@ -34,6 +34,9 @@ void LevelSelectScene::clean()
 	delete m_pLevelTwoButton;
 	m_pLevelTwoButton = nullptr;
 
+	delete m_pLevelThreeButton;
+	m_pLevelThreeButton = nullptr;
+
 	removeAllChildren();
 }
 
@@ -68,7 +71,7 @@ void LevelSelectScene::start()
 
 	// Level 1 Button
 	m_pLevelOneButton = new Button("../Assets/Menu Asset/level-1.png", "LevelOneButton", LEVEL1_BUTTON);
-	m_pLevelOneButton->getTransform()->position = glm::vec2(576.0f, 350.0f);
+	m_pLevelOneButton->getTransform()->position = glm::vec2(576.0f, 300.0f);
 	m_pLevelOneButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelOneButton->setActive(false);
@@ -90,7 +93,7 @@ void LevelSelectScene::start()
 
 	// Level 2 Button
 	m_pLevelTwoButton = new Button("../Assets/Menu Asset/level-2.png", "LevelTwoButton", LEVEL2_BUTTON);
-	m_pLevelTwoButton->getTransform()->position = glm::vec2(576.0f, 540.0f);
+	m_pLevelTwoButton->getTransform()->position = glm::vec2(576.0f, 440.0f);
 	m_pLevelTwoButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelTwoButton->setActive(false);
@@ -109,7 +112,26 @@ void LevelSelectScene::start()
 
 	addChild(m_pLevelTwoButton);
 
+	// Level 3 Button
+	m_pLevelThreeButton = new Button("../Assets/Menu Asset/level-3.png", "LevelThreeButton", LEVEL3_BUTTON);
+	m_pLevelThreeButton->getTransform()->position = glm::vec2(576.0f, 580.0f);
+	m_pLevelThreeButton->addEventListener(CLICK, [&]()-> void
+	{
+		m_pLevelThreeButton->setActive(false);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+	});
 
+	m_pLevelThreeButton->addEventListener(MOUSE_OVER, [&]()->void
+	{
+		m_pLevelThreeButton->setAlpha(128);
+	});
+
+	m_pLevelThreeButton->addEventListener(MOUSE_OUT, [&]()->void
+	{
+		m_pLevelThreeButton->setAlpha(255);
+	});
+
+	addChild(m_pLevelThreeButton);
 
 
 	SoundManager::Instance().playMusic("startScreen");

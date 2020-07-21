@@ -32,9 +32,7 @@ void ScoreBoard::draw()
 
 void ScoreBoard::update()
 {
-	std::string Score = std::to_string(PLayerScore);
-	Score = "Score: " + Score;
-	const char* tmpText = Score.c_str();
+	
 
 
 }
@@ -46,6 +44,10 @@ void ScoreBoard::clean()
 
 void ScoreBoard::setText(const std::string & new_text)
 {
+	std::string Score = std::to_string(PLayerScore);
+	Score = "Score: " + Score;
+	const char* tmpText = Score.c_str();
+
 
 	m_text = new_text;
 
