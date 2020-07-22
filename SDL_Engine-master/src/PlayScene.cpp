@@ -400,10 +400,6 @@ void PlayScene::MakeObstacles()
 	if ((m_vec[0])->GetX() <= -128) // Fully off-screen.
 	{
 		m_numSpaces++;
-		// Remove front element.
-		delete m_vec[0];
-		m_vec[0] = nullptr;
-		m_vec.erase(m_vec.begin());
 
 		// Add new box.
 		if (m_numSpaces >= 3) // Add new sprite if there has been enough spaces.
@@ -426,6 +422,11 @@ void PlayScene::MakeObstacles()
 		{
 			m_vec.push_back(new Box(128 * m_vec.size(), 536));
 		}
+
+		// Remove front element.
+		delete m_vec[0];
+		m_vec[0] = nullptr;
+		m_vec.erase(m_vec.begin());
 	}
 
 	// Scroll the boxes.
