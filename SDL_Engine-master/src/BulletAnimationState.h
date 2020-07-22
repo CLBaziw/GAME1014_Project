@@ -11,4 +11,11 @@ enum BulletAnimationState
 	NUM_OF_BULLET_ANIMATION_STATES
 };
 
+enum BulletType
+{
+	ENEMY_BULLET,
+	PLAYER_BULLET,
+	PLAYER_BULLET2,
+	NUM_OF_BULLET_TYPE
+};
 #endif
