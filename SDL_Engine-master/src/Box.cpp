@@ -1,5 +1,6 @@
 #include "Box.h"
 #include "Obstacle.h"
+#include"Background.h"
 
 #include <iostream>
 
@@ -30,6 +31,7 @@ void Box::Update()
 		m_obstacle->getTransform()->position = glm::vec2(m_x, m_y);
 	}
 
+	
 }
 
 void Box::Render()
@@ -76,6 +78,7 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		std::cout << "Get Random Obstacle - Obstacle1" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE1);
 		sprite->getTransform()->position = glm::vec2(x, y);
+		m_y = 578;
 		break;
 	case 5:
 		std::cout << "Get Random Obstacle - Obstacle2" << std::endl;

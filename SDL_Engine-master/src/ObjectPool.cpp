@@ -25,6 +25,7 @@ ObjectPool::ObjectPool()
 	{
 		m_poolObstacles.push_back(new Obstacle(ENEMY));
 	}
+
 	
 	for (int i = 0; i < MAXPREDATOR; i++)
 	{

@@ -1,5 +1,8 @@
 #include "Background.h"
 #include "TextureManager.h"
+#include "Box.h"
+
+#define SCROLLSPD 2
 
 Background::Background(const std::string& image_path, std::string background_name, GameObjectType type, glm::vec2 position, bool is_cenetered):
 	m_alpha(255), m_name(std::move(background_name)), m_isCentered(is_cenetered), m_active(true)
@@ -28,6 +31,10 @@ void Background::draw()
 
 void Background::update()
 {
+	 SCROLLSPD;
+
+	
+
 }
 
 void Background::clean()

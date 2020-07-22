@@ -4,6 +4,7 @@
 #include "Game.h"
 
 
+
 Obstacle::Obstacle(GameObjectType obsType)
 {
 	setType(obsType);
@@ -12,18 +13,18 @@ Obstacle::Obstacle(GameObjectType obsType)
 	{
 	case OBSTACLE1:
 		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/plat/platsprites.txt",
-			"../Assets/plat/platsprites.png",
-			"platsprites"
+			"../Assets/plat/hazard.txt",
+			"../Assets/plat/hazard.png",
+			"hazard"
 		);
 
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platsprites"));
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("hazard"));
 
 		setWidth(36);
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 		break;
 	case OBSTACLE2:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -38,7 +39,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 		break;
 	case OBSTACLE3:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -53,9 +54,9 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 		break;
-		
+
 	case PLATFORM:
 		// Copy from obstacle but make relevant for platform
 		TextureManager::Instance()->loadSpriteSheet(
@@ -70,7 +71,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(128);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 
 		break;
 	
@@ -87,8 +88,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		m_currentAnimationState = ENEMY_IDLE_LEFT;
           
 		break;
-	
-	
 	case PREDATOR:
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/predator.txt",
@@ -101,8 +100,8 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(128);
 		m_currentAnimationState = PREDATOR_IDLE_LEFT;
 		break;
-	
-	
+
+
 	default:
 		break;
 	}
@@ -127,7 +126,7 @@ void Obstacle::draw()
 	switch (getType())
 	{
 	case OBSTACLE1:
-		TextureManager::Instance()->playAnimation("platsprites", getAnimation("spikes"),
+		TextureManager::Instance()->playAnimation("hazard", getAnimation("spikes"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case OBSTACLE2:
@@ -142,7 +141,7 @@ void Obstacle::draw()
 		TextureManager::Instance()->playAnimation("platform", getAnimation("stationary-platform"),
 			x, y, 0.12f, 0, 255, true);
 		break;
-		
+
 	case ENEMY:
 		switch (m_currentAnimationState)
 		{
@@ -212,8 +211,8 @@ void Obstacle::m_buildAnimations()
 		spikes.name = "spikes";
 		spikes.frames.push_back(getSpriteSheet()->getFrame("hazard"));
 		setAnimation(spikes);
-		break;
 	}
+	break;
 	case OBSTACLE2: {
 		Animation fireball = Animation();
 
@@ -233,16 +232,16 @@ void Obstacle::m_buildAnimations()
 		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-4"));
 		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-5"));
 		setAnimation(fireballDie);
-		break;
 	}
+	break;
 	case OBSTACLE3: {
 		Animation spikeEnemy = Animation();
 
 		spikeEnemy.name = "green-spike-enemy";
 		spikeEnemy.frames.push_back(getSpriteSheet()->getFrame("Spike-Enemy-2"));
 		setAnimation(spikeEnemy);
-		break;
 	}
+	break;
 	case PLATFORM: {
 		Animation platform = Animation();
 

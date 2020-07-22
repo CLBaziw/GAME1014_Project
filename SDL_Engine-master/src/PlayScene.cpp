@@ -6,6 +6,8 @@
 #include "TextureManager.h"
 
 #define ENEMYSIGHT 280
+#define FPS 60
+#define BGSCROLL 2
 
 PlayScene::PlayScene()
 {
@@ -57,7 +59,7 @@ void PlayScene::clean()
 	
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		delete m_pObstacles[i];
+		// delete m_pObstacles[i];
 		m_pObstacles[i] = nullptr;
 	}	
 	
@@ -185,14 +187,18 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	//moveBackground();
+
 	//Differentiate between levels
 	if (TheGame::Instance()->getLevel() == 0)
 	{
-		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
 	}
 	else
 	{
-		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, 0), true);
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		
+
 	}
 	
 	// Object Pool
@@ -200,6 +206,8 @@ void PlayScene::start()
 
 	// Background 
 	addChild(m_pBackground);
+	addChild(m_pBackground);
+
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
@@ -233,20 +241,38 @@ void PlayScene::start()
 
 void PlayScene::checkCollision()
 {
+	#pragma region // Background & ground scrolling
+	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
+
+	if (m_pBackground->getTransform()->position.x < -1600.f)
+	{
+		m_pBackground->getTransform()->position.x = 1600;
+	}
+
+	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
+
+	if (m_ground->getTransform()->position.x < -1600.f)
+	{
+		m_ground->getTransform()->position.x = 1600;
+	}
+#pragma endregion 
+
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
 	int halfPlayerHeight = m_pPlayer->getHeight() * 0.5;
 	int groundY = m_ground->getTransform()->position.y;
 
-	// Ground check
-	if (playerY > groundY - halfPlayerHeight - 20)
-	{
-		m_pPlayer->SetJumping(true);
-		m_pPlayer->StopY();
-		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
-	}
+	#pragma region // Ground check
+		if (playerY > groundY - halfPlayerHeight - 20)
+		{
+			m_pPlayer->SetJumping(true);
+			m_pPlayer->StopY();
+			m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
+		}
+	#pragma endregion
 
+	#pragma region // Obstacles check
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
 		switch (m_pObstacles[i]->getType())
@@ -341,6 +367,7 @@ void PlayScene::checkCollision()
 			break;
 		}
 	}
+	#pragma endregion 
 }
 
 void PlayScene::PlayerShoot()
