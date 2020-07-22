@@ -59,7 +59,7 @@ void PlayScene::clean()
 	
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
-		delete m_pObstacles[i];
+		// delete m_pObstacles[i];
 		m_pObstacles[i] = nullptr;
 	}	
 	
@@ -200,7 +200,6 @@ void PlayScene::start()
 		
 
 	}
-
 	
 	// Object Pool
 	m_objPool = new ObjectPool();
@@ -242,6 +241,7 @@ void PlayScene::start()
 
 void PlayScene::checkCollision()
 {
+	#pragma region // Background & ground scrolling
 	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
 
 	if (m_pBackground->getTransform()->position.x < -1600.f)
@@ -255,6 +255,7 @@ void PlayScene::checkCollision()
 	{
 		m_ground->getTransform()->position.x = 1600;
 	}
+#pragma endregion 
 
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
@@ -262,14 +263,16 @@ void PlayScene::checkCollision()
 	int halfPlayerHeight = m_pPlayer->getHeight() * 0.5;
 	int groundY = m_ground->getTransform()->position.y;
 
-	// Ground check
-	if (playerY > groundY - halfPlayerHeight - 20)
-	{
-		m_pPlayer->SetJumping(true);
-		m_pPlayer->StopY();
-		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
-	}
+	#pragma region // Ground check
+		if (playerY > groundY - halfPlayerHeight - 20)
+		{
+			m_pPlayer->SetJumping(true);
+			m_pPlayer->StopY();
+			m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
+		}
+	#pragma endregion
 
+	#pragma region // Obstacles check
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
 		switch (m_pObstacles[i]->getType())
@@ -364,6 +367,7 @@ void PlayScene::checkCollision()
 			break;
 		}
 	}
+	#pragma endregion 
 }
 
 void PlayScene::PlayerShoot()
