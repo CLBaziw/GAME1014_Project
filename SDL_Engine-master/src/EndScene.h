@@ -6,6 +6,8 @@
 #include "Label.h"
 #include "Button.h"
 #include "Background.h"
+#include "ScoreBoard.h"
+
 
 class EndScene final : public Scene
 {
@@ -27,6 +29,8 @@ private:
 	Button* m_pExitButton;
 
 	Background* m_pBackground;
+
+	ScoreBoard* m_pScoreBoard;
 };
 
 #endif /* defined (__END_SCENE__) */

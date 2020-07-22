@@ -7,6 +7,7 @@
 #include "Obstacle.h"
 #include <vector>
 
+
 class ObjectPool
 {
 public:
