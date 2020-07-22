@@ -1,6 +1,9 @@
 #include "Obstacle.h"
 #include "TextureManager.h"
 #include "Animation.h"
+#include "Game.h"
+
+
 
 Obstacle::Obstacle(GameObjectType obsType)
 {
@@ -10,19 +13,18 @@ Obstacle::Obstacle(GameObjectType obsType)
 	{
 	case OBSTACLE1:
 		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/plat/platsprites.txt",
-			"../Assets/plat/platsprites.png",
-			"platsprites"
+			"../Assets/plat/hazard.txt",
+			"../Assets/plat/hazard.png",
+			"hazard"
 		);
 
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("platsprites"));
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("hazard"));
 
 		setWidth(36);
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->isColliding = false;
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 		break;
 	case OBSTACLE2:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -37,8 +39,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
-
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 		break;
 	case OBSTACLE3:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -53,9 +54,9 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
-		getRigidBody()->isColliding = false;
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 		break;
+
 	case PLATFORM:
 		// Copy from obstacle but make relevant for platform
 		TextureManager::Instance()->loadSpriteSheet(
@@ -70,21 +71,36 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setHeight(128);
 		m_currentAnimationState = NOT_ENEMY;
 
-		getTransform()->position = glm::vec2(760.0f, 550.0f);
+		getTransform()->position = glm::vec2(560.0f, 550.0f);
 
 		break;
+	
 	case ENEMY:
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/alien.txt",
 			"../Assets/sprites/alien.png",
 			"alien"
 		);
-
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("alien"));
 
 		setWidth(128);
 		setHeight(128);
 		m_currentAnimationState = ENEMY_IDLE_LEFT;
+          
+		break;
+	case PREDATOR:
+		TextureManager::Instance()->loadSpriteSheet(
+			"../Assets/sprites/predator.txt",
+			"../Assets/sprites/predator.png",
+			"predator"
+		);
+		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("predator"));
+
+		setWidth(128);
+		setHeight(128);
+		m_currentAnimationState = PREDATOR_IDLE_LEFT;
+		break;
+
 
 	default:
 		break;
@@ -110,11 +126,11 @@ void Obstacle::draw()
 	switch (getType())
 	{
 	case OBSTACLE1:
-		TextureManager::Instance()->playAnimation("platsprites", getAnimation("hazard"),
+		TextureManager::Instance()->playAnimation("hazard", getAnimation("spikes"),
 			x, y, 0.12f, 0, 255, true);
 		break;
 	case OBSTACLE2:
-		TextureManager::Instance()->playAnimation("Fireball_Sheet", getAnimation("Fireball"),
+		TextureManager::Instance()->playAnimation("Fireball_Sheet", getAnimation("fireball-active"),
 			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case OBSTACLE3:
@@ -125,6 +141,7 @@ void Obstacle::draw()
 		TextureManager::Instance()->playAnimation("platform", getAnimation("stationary-platform"),
 			x, y, 0.12f, 0, 255, true);
 		break;
+
 	case ENEMY:
 		switch (m_currentAnimationState)
 		{
@@ -136,25 +153,21 @@ void Obstacle::draw()
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
-		case ENEMY_RUN_RIGHT:
-			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
-				x, y, 0.25f, 0, 255, true);
+		}
+		break;
+    case PREDATOR:
+		switch (m_currentAnimationState)
+		{
+		case PREDATOR_IDLE_RIGHT:
+			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-idle"),
+				x, y, 0.12f, 0, 255, true);
 			break;
-		case ENEMY_RUN_LEFT:
-			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
-				x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-			break;
-			/*case ENEMY_DIE_RIGHT:
-				TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
-					x, y, 0.30f, 0, 255, true);
-				break;
-			case ENEMY_DIE_LEFT:
-				TextureManager::Instance()->playAnimation("enemy-sprite", getAnimation("enemy-dead"),
-					x, y, 0.30f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-				break;*/
-		default:
+		case PREDATOR_IDLE_LEFT:
+			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-idle"),
+				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
 		}
+		break;
 	default:
 		break;
 	}
@@ -165,6 +178,10 @@ void Obstacle::update()
 	if (getType() == ENEMY)
 	{
 		// Update enemy
+	}
+	else if (getType() == PREDATOR)
+	{
+		// Update predator
 	}
 }
 
@@ -187,15 +204,44 @@ void Obstacle::m_buildAnimations()
 {
 	switch (getType())
 	{
-	case OBSTACLE1:
+	case OBSTACLE1: {
 
-		break;
-	case OBSTACLE2:
+		Animation spikes = Animation();
 
-		break;
-	case OBSTACLE3:
+		spikes.name = "spikes";
+		spikes.frames.push_back(getSpriteSheet()->getFrame("hazard"));
+		setAnimation(spikes);
+	}
+	break;
+	case OBSTACLE2: {
+		Animation fireball = Animation();
 
-		break;
+		fireball.name = "fireball-active";
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-1"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-2"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-3"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-4"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-5"));
+		setAnimation(fireball);
+
+		Animation fireballDie = Animation();
+		fireballDie.name = "fireball-die";
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-1"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-2"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-3"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-4"));
+		fireball.frames.push_back(getSpriteSheet()->getFrame("Fireball-die-5"));
+		setAnimation(fireballDie);
+	}
+	break;
+	case OBSTACLE3: {
+		Animation spikeEnemy = Animation();
+
+		spikeEnemy.name = "green-spike-enemy";
+		spikeEnemy.frames.push_back(getSpriteSheet()->getFrame("Spike-Enemy-2"));
+		setAnimation(spikeEnemy);
+	}
+	break;
 	case PLATFORM: {
 		Animation platform = Animation();
 
@@ -203,8 +249,8 @@ void Obstacle::m_buildAnimations()
 		platform.frames.push_back(getSpriteSheet()->getFrame("plas"));
 
 		setAnimation(platform);
+		break;
 	}
-				 break;
 	case ENEMY: {
 		Animation idleAnimation = Animation();
 
@@ -223,20 +269,39 @@ void Obstacle::m_buildAnimations()
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-1"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-2"));
 		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-3"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-4"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-run-5"));
 
 		setAnimation(runAnimation);
-
-		Animation deathAnimation = Animation();
-
-		runAnimation.name = "enemy-death";
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-0"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-1"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-2"));
-		runAnimation.frames.push_back(getSpriteSheet()->getFrame("enemy-death-3"));
-
-		setAnimation(deathAnimation);
+		break;
 	}
-			  break;
+
+	case PREDATOR:
+	{
+		Animation idleAnimation = Animation();
+
+		idleAnimation.name = "predator-idle";
+		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-idle-0"));
+		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-idle-1"));
+		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-idle-2"));
+		idleAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-idle-3"));
+
+		setAnimation(idleAnimation);
+
+		Animation runAnimation = Animation();
+
+		runAnimation.name = "predator-run";
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-0"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-1"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-2"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-3"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-4"));
+		runAnimation.frames.push_back(getSpriteSheet()->getFrame("predator-run-5"));
+
+		setAnimation(runAnimation);
+		break;
+	}
+		
 	default:
 		break;
 	}

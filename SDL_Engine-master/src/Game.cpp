@@ -222,3 +222,13 @@ float Game::getWindowHeight()
 {
 	return m_windowHeight;
 }
+
+void Game::setLevel(int level)
+{
+	m_level = level;
+}
+
+int Game::getLevel()
+{
+	return m_level;
+}

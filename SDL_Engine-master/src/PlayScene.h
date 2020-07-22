@@ -13,6 +13,7 @@
 #include "ground.h"
 #include "Obstacle.h"
 #include "Scoreboard.h"
+#include "Enemy.h"
 #include "ObjectPool.h"
 
 class PlayScene : public Scene
@@ -27,20 +28,23 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
- 
 	void checkCollision();
 
 	void PlayerShoot();
 	void MakeObstacles();
 	void EnemyShoot();
+	void PlayerDeath();
+	//void moveBackground();
 
 private:
 	glm::vec2 m_mousePosition;
 
-	Player* m_pPlayer;
 	Background* m_pBackground;
-	ground* m_ground;
+	Background* m_pBackground2;
 	ScoreBoard* m_pScoreBoard;
+	Player* m_pPlayer;
+	ground* m_ground;
+	ground* m_ground2;
 
 	// Boxes for scrolling
 	ObjectPool* m_objPool;
@@ -57,7 +61,6 @@ private:
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
 	
-
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
@@ -65,7 +68,8 @@ private:
 
 	int m_bulletTimer = 0,
 		m_timerMax = 35;
-
+	float x;
+	float y;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

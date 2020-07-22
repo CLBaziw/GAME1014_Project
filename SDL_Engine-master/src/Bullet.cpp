@@ -2,62 +2,70 @@
 #include "TextureManager.h"
 
 #define BULLETSPEED 10;
-#define EBULLETSPEED 7;
+#define EBULLETSPEED 5;
 
-Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bulletState)
+Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType, BulletAnimationState bulletState)
 {
-	m_playerBullet = bulletType; // If we decide different enemies will have different colour/shape bullets then we will need to make an enum
-	if (m_playerBullet) 
+	//m_playerBullet = bulletType; // If we decide different enemies will have different colour/shape bullets then we will need to make an enum
+	this->m_BulletType = bulletType;
+	switch(m_BulletType)//if (m_playerBullet)
 	{
-		std::cout << "Player bullet created " << std::endl;
-		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/beams.txt",
-			"../Assets/sprites/beams.png",
-			"player-bullet-sprite"
-		);
-
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("player-bullet-sprite"));
-		setType(P_BULLET);
-
-		setWidth(20);
-		setHeight(10);
-
-		setAnimationState(bulletState);
-		if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+		case PLAYER_BULLET:
 		{
-			m_speed = BULLETSPEED;
+			std::cout << "Player bullet created " << std::endl;
+			TextureManager::Instance()->loadSpriteSheet(
+				"../Assets/sprites/beams.txt",
+				"../Assets/sprites/beams.png",
+				"player-bullet-sprite"
+			);
+
+			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("player-bullet-sprite"));
+			setType(P_BULLET);
+
+			setWidth(20);
+			setHeight(10);
+
+			setAnimationState(bulletState);
+			if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+			{
+				m_speed = BULLETSPEED;
+			}
+			else if (m_currentAnimationState == BULLET_MOVE_LEFT)
+			{
+				m_speed = -BULLETSPEED;
+			}
+			break;
 		}
-		else if (m_currentAnimationState == BULLET_MOVE_LEFT)
+		case ENEMY_BULLET://else
 		{
-			m_speed = -BULLETSPEED;
+			// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
+			std::cout << "Enemy bullet created " << std::endl;
+			TextureManager::Instance()->loadSpriteSheet(
+				"../Assets/sprites/enemybullet.txt",
+				"../Assets/sprites/enemybullet.png",
+				"enemy-bullet-sprite"
+			);
+
+			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-bullet-sprite"));
+			setType(E_BULLET);
+
+			setWidth(70);
+			setHeight(41);
+
+
+			setAnimationState(bulletState);
+			if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+			{
+				m_speed = EBULLETSPEED;
+			}
+			else if (m_currentAnimationState == BULLET_MOVE_LEFT)
+			{
+				m_speed = -EBULLETSPEED;
+			}
+			break;
 		}
-	}
-	else
-	{
-		// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
-		std::cout << "Enemy bullet created " << std::endl;
-		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/enemybullet.txt",
-			"../Assets/sprites/enemybullet.png",
-			"enemy-bullet-sprite"
-		);
-
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-bullet-sprite"));
-		setType(E_BULLET);
-
-		setWidth(70);
-		setHeight(46);
-
-
-		setAnimationState(bulletState);
-		if (m_currentAnimationState == BULLET_MOVE_RIGHT)
-		{
-			m_speed = EBULLETSPEED;
-		}
-		else if (m_currentAnimationState == BULLET_MOVE_LEFT)
-		{
-			m_speed = -EBULLETSPEED;
-		}
+		default:
+			break;
 	}
 
 
@@ -65,7 +73,6 @@ Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bul
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
-
 
 	m_buildAnimations();
 }
@@ -80,11 +87,27 @@ void Bullet::draw()
 
 	// Check if bullet is player's or enemy's to change appearance of bullet
 	std::string sprite;
-	if (m_playerBullet) {
-		sprite = "player-bullet-sprite";
-	}
-	else {
-		sprite = "enemy-bullet-sprite";
+	
+	//if (m_playerBullet) {
+	//	sprite = "player-bullet-sprite";
+	//}
+	//else {
+	//	sprite = "enemy-bullet-sprite";
+	//}
+	switch (m_BulletType)
+	{
+		case PLAYER_BULLET:
+		{
+			sprite = "player-bullet-sprite";
+			break;			
+		}
+		case ENEMY_BULLET:
+		{
+			sprite = "enemy-bullet-sprite";
+			break;		
+		}
+		default:
+			break;
 	}
 
 	//draw the bullet according to animation state
