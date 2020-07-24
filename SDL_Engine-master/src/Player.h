@@ -24,7 +24,7 @@ public:
 	// setters
 	void setAnimationState(PlayerAnimationState new_state);
 	void setPosition(float x, float y);
-
+	int Playerscore;
 	// Movement
 	void Stop();
 	void StopX();
