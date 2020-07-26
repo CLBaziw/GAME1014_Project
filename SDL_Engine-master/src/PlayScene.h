@@ -30,7 +30,7 @@ public:
 	virtual void start() override;
 	void checkCollision();
 
-	void PlayerShoot();
+	void PlayerShoot(BulletType bulletType);
 	void MakeObstacles();
 	void EnemyShoot();
 	void PlayerDeath();
@@ -70,6 +70,7 @@ private:
 		m_timerMax = 35;
 	float x;
 	float y;
+	int cooldown_specialskill =0;
 };
 
 #endif /* defined (__PLAY_SCENE__) */
