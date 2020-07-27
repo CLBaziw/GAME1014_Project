@@ -5,6 +5,7 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 
+
 #define ENEMYSIGHT 280
 #define FPS 60
 #define BGSCROLL 2
@@ -155,15 +156,25 @@ void PlayScene::handleEvents()
 			SoundManager::Instance().playSound("jump");
 		}
 
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_LSHIFT) && !m_pPlayer->isShooting())
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_X) && !m_pPlayer->isShooting())
 		{
 			m_pPlayer->SetShooting(true);
-			PlayerShoot();
+			if(cooldown_specialskill < 3)
+			{
+				PlayerShoot(PLAYER_BULLET);
+				cooldown_specialskill++;
+			}
+			else
+			{
+				PlayerShoot(PLAYER_BULLET2);
+				cooldown_specialskill = 0;
+			}
 		}
-		else if (EventManager::Instance().isKeyUp(SDL_SCANCODE_LSHIFT) && m_pPlayer->isShooting())
+		else if (EventManager::Instance().isKeyUp(SDL_SCANCODE_X) && m_pPlayer->isShooting())
 		{
 			m_pPlayer->SetShooting(false);
 		}
+
 	}
 
 	m_pPlayer->update();
@@ -384,7 +395,7 @@ void PlayScene::checkCollision()
 				//PlayerDeath();
 			}
 
-			// Check for bullet with enemy
+			 //Check for bullet with enemy
 			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
 			{
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
@@ -447,28 +458,58 @@ void PlayScene::checkCollision()
 	#pragma endregion 
 }
 
-void PlayScene::PlayerShoot()
+void PlayScene::PlayerShoot(BulletType bulletType)
 {
 	float x;
 	float y = m_pPlayer->getTransform()->position.y;
 
-	BulletAnimationState bState;
-
-	if (m_playerFacingRight)
+	switch (bulletType)
 	{
-		bState = BULLET_MOVE_RIGHT;
-		x = m_pPlayer->getTransform()->position.x + 20;
-	}
-	else
-	{
-		bState = BULLET_MOVE_LEFT;
-		x = m_pPlayer->getTransform()->position.x - 10;
-	}
+	case PLAYER_BULLET:
+		{
+			BulletAnimationState bState;
 
-	m_pPlayerBulletVec.push_back(new Bullet(x, y, /*true*/PLAYER_BULLET, bState));
-	addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+			if (m_playerFacingRight)
+			{
+				bState = P_BULLET_MOVE_RIGHT;
+				x = m_pPlayer->getTransform()->position.x + 30;
+			}
+			else
+			{
+				bState = P_BULLET_MOVE_LEFT;
+				x = m_pPlayer->getTransform()->position.x - 90;
+			}
 
-	SoundManager::Instance().playSound("shot");
+			m_pPlayerBulletVec.push_back(new Bullet(x, y, PLAYER_BULLET, bState));
+			addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+
+			SoundManager::Instance().playSound("shot");	
+		}
+		break;
+	case PLAYER_BULLET2:
+		{
+			BulletAnimationState bState;
+
+			if (m_playerFacingRight)
+			{
+				bState = P2_BULLET_MOVE_RIGHT;
+				x = m_pPlayer->getTransform()->position.x + 30;
+			}
+			else
+			{
+				bState = P2_BULLET_MOVE_LEFT;
+				x = m_pPlayer->getTransform()->position.x - 90;
+			}
+
+			m_pPlayerBulletVec.push_back(new Bullet(x, y, PLAYER_BULLET2, bState));
+			addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+
+			SoundManager::Instance().playSound("fire");
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void PlayScene::MakeObstacles()
@@ -534,7 +575,7 @@ void PlayScene::EnemyShoot()
 
 				if (m_bulletTimer++ == m_timerMax)
 				{
-					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, E_BULLET_MOVE_LEFT));
 					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
@@ -549,7 +590,7 @@ void PlayScene::EnemyShoot()
 
 				if (m_bulletTimer++ == m_timerMax)
 				{
-					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, E_BULLET_MOVE_RIGHT));
 					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
@@ -570,7 +611,7 @@ void PlayScene::EnemyShoot()
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
-					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ENEMY_BULLET, BULLET_MOVE_LEFT));
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ENEMY_BULLET, E_BULLET_MOVE_LEFT));
 					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
@@ -583,7 +624,7 @@ void PlayScene::EnemyShoot()
 				enemy->setAnimationState(ENEMY_IDLE_RIGHT);
 				if (m_bulletTimer++ == m_timerMax)
 				{
-					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ENEMY_BULLET, BULLET_MOVE_RIGHT));
+					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ENEMY_BULLET, E_BULLET_MOVE_RIGHT));
 					m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
 					addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 					m_bulletTimer = 0;
