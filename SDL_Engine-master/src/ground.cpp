@@ -11,9 +11,8 @@ ground::ground(float x, float y)
 	else
 	{
 		TextureManager::Instance()->load("../Assets/plat/ground2.png", "ground");
-
-
 	}
+
 	//TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
 
 	auto size = TextureManager::Instance()->getTextureSize("ground");

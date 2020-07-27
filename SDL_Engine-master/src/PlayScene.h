@@ -34,6 +34,8 @@ public:
 	void MakeObstacles();
 	void EnemyShoot();
 	void PlayerDeath();
+	void gameOver();
+	void MenuScene();
 	//void moveBackground();
 
 private:
@@ -42,16 +44,21 @@ private:
 	Background* m_pBackground;
 	Background* m_pBackground2;
 	ScoreBoard* m_pScoreBoard;
+	ScoreBoard* Health;
+	ScoreBoard* GameOverText;
 	Player* m_pPlayer;
 	ground* m_ground;
 	ground* m_ground2;
 
+	float GameOverTimer;
 	// Boxes for scrolling
 	ObjectPool* m_objPool;
 	std::vector<Box*> m_vec;
 	std::vector<Obstacle*> m_pObstacles;
 	int m_numSpaces;
+	int PlayerHealth;
 
+	bool GameOver;
 	bool m_playerFacingRight;
 	/*bool m_enemyFacingRight;*/
 
@@ -60,13 +67,14 @@ private:
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
-	
+
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
 	int moveSpeed = 10;
-
-	int m_bulletTimer = 0,
+	int PlayerScore;
+	bool CanFire;
+	float m_bulletTimer = 0,
 		m_timerMax = 35;
 	float x;
 	float y;

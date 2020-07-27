@@ -74,7 +74,6 @@ Obstacle::Obstacle(GameObjectType obsType)
 		getTransform()->position = glm::vec2(560.0f, 550.0f);
 
 		break;
-	
 	case ENEMY:
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/alien.txt",
@@ -86,7 +85,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setWidth(128);
 		setHeight(128);
 		m_currentAnimationState = ENEMY_IDLE_LEFT;
-          
+
 		break;
 	case PREDATOR:
 		TextureManager::Instance()->loadSpriteSheet(
@@ -301,7 +300,6 @@ void Obstacle::m_buildAnimations()
 		setAnimation(runAnimation);
 		break;
 	}
-		
 	default:
 		break;
 	}

@@ -56,20 +56,20 @@ void PlayScene::clean()
 	{
 		delete m_vec[i];
 		m_vec[i] = nullptr;
-	}	
-	
+	}
+
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
 		// delete m_pObstacles[i];
 		m_pObstacles[i] = nullptr;
-	}	
-	
+	}
+
 	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
 	{
 		delete m_pPlayerBulletVec[i];
 		m_pPlayerBulletVec[i] = nullptr;
-	}	
-	
+	}
+
 	for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
 	{
 		delete m_pEnemyBulletVec[i];
@@ -184,16 +184,29 @@ void PlayScene::handleEvents()
 		TheGame::Instance()->quit();
 	}
 
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
+	if (!GameOver)
 	{
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
+		{
+			TheGame::Instance()->changeSceneState(START_SCENE);
+		}
+
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
+		{
+			TheGame::Instance()->changeSceneState(END_SCENE);
+		}
+		if (EventManager::Instance().getMouseButton(LEFT))
+		{
+			if (CanFire)
+			{
+				CanFire = false;
+				PlayerShoot(PLAYER_BULLET);
+
+			}
+		}
+		EnemyShoot();
 	}
 
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
-	{
-		TheGame::Instance()->changeSceneState(END_SCENE);
-	}
-	EnemyShoot();
 }
 
 void PlayScene::start()
@@ -208,10 +221,11 @@ void PlayScene::start()
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
-		
+
 
 	}
-	
+
+
 	// Object Pool
 	m_objPool = new ObjectPool();
 
@@ -219,6 +233,11 @@ void PlayScene::start()
 	addChild(m_pBackground);
 	addChild(m_pBackground);
 
+	//Health
+	PlayerHealth = 100;
+	const SDL_Color yellow1 = { 255, 255, 0, 255 };
+	Health = new ScoreBoard("Health:" + std::to_string(PlayerHealth), "Playbill", 60, yellow1, glm::vec2(100.0f, 80.0f));;
+	addChild(Health);
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
@@ -252,13 +271,30 @@ void PlayScene::start()
 
 void PlayScene::checkCollision()
 {
-	#pragma region // Background & ground scrolling
+	if (!CanFire)
+	{
+
+		m_bulletTimer += .1f;
+		if (m_bulletTimer > 10)
+		{
+			CanFire = true;
+		}
+	}
 	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
+	if (GameOver)
+	{
+		GameOverTimer += .1f;
+		if (GameOverTimer > 1.0f)
+		{
+			MenuScene();
+		}
+	}
 
 	if (m_pBackground->getTransform()->position.x < -1600.f)
 	{
 		m_pBackground->getTransform()->position.x = 1600;
 	}
+	m_pScoreBoard->PLayerScore += 1;
 
 	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
 
@@ -316,6 +352,15 @@ void PlayScene::checkCollision()
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
 				std::cout << "Player and enemy collide" << std::endl;
+				if (PlayerHealth > 0)
+				{
+					PlayerHealth -= 100 / 4;
+					Health->setText("Score:" + std::to_string(PlayerHealth));
+				}
+				else if (PlayerHealth == 0)
+				{
+					gameOver();
+				}
 				//PlayerDeath();
 			}
 
@@ -338,6 +383,15 @@ void PlayScene::checkCollision()
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
 				std::cout << "Player and enemy collide" << std::endl;
+				if (PlayerHealth > 0)
+				{
+					PlayerHealth -= 100 / 4;
+					Health->setText("Score:" + std::to_string(PlayerHealth));
+				}
+				else if (PlayerHealth == 0)
+				{
+					gameOver();
+				}
 				//PlayerDeath();
 			}
 
@@ -347,25 +401,48 @@ void PlayScene::checkCollision()
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
 					std::cout << "Player killed enemy" << std::endl;
-
+					PlayerScore += 1;
+					m_pScoreBoard->PLayerScore = PlayerScore;
+					m_pScoreBoard->setText("Score:" + std::to_string(PlayerScore));
 					m_pObstacles[i]->setActive(false);
-					m_pObstacles[i] = nullptr;
-					m_pObstacles.erase(m_pObstacles.begin() + i);
+					m_pScoreBoard->PLayerScore++;
+					if (m_pObstacles[i] != nullptr)
+					{
+						m_pObstacles[i] = nullptr;
+						m_pObstacles.erase(m_pObstacles.begin() + i);
+					}
+
+
 				}
 			}
 			break;
 		}
 		case OBSTACLE1:
+			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
+			{
+				std::cout << "Player died to obstacle" << std::endl;
+				if (PlayerHealth > 0)
+				{
+					PlayerHealth -= 100 / 4;
+					Health->setText("Score:" + std::to_string(PlayerHealth));
+				}
+				else if (PlayerHealth == 0)
+				{
+					gameOver();
+				}
+
+			}
+			break;
 		case OBSTACLE2:
 		case OBSTACLE3:
-		//{
-		//	if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
-		//	{
-		//		std::cout << "Player died to obstacle" << std::endl;
-		//		PlayerDeath();
-		//	}
-		//	break;
-		//}
+			//{
+			//	if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
+			//	{
+			//		std::cout << "Player died to obstacle" << std::endl;
+			//		PlayerDeath();
+			//	}
+			//	break;
+			//}
 		case E_BULLET:
 			for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
 			{
@@ -490,12 +567,12 @@ void PlayScene::EnemyShoot()
 			float playerY = m_pPlayer->getTransform()->position.y;
 			if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 			{
-				enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f; 
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f;
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
-			
-				enemy->setAnimationState(PREDATOR_IDLE_LEFT);	
-	
-				
+
+				enemy->setAnimationState(PREDATOR_IDLE_LEFT);
+
+
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, E_BULLET_MOVE_LEFT));
@@ -508,9 +585,9 @@ void PlayScene::EnemyShoot()
 			{
 				enemyX = m_pObstacles[i]->getTransform()->position.x + 85.0f;
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
-				
+
 				enemy->setAnimationState(PREDATOR_IDLE_RIGHT);
-			
+
 				if (m_bulletTimer++ == m_timerMax)
 				{
 					m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, E_BULLET_MOVE_RIGHT));
@@ -529,7 +606,7 @@ void PlayScene::EnemyShoot()
 			float playerY = m_pPlayer->getTransform()->position.y;
 			if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 			{
-				enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f; 
+				enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f;
 				enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
 				enemy->setAnimationState(ENEMY_IDLE_LEFT);
 				if (m_bulletTimer++ == m_timerMax)
@@ -559,5 +636,18 @@ void PlayScene::EnemyShoot()
 
 void PlayScene::PlayerDeath()
 {
-	TheGame::Instance()->changeSceneState(END_SCENE);
+	/*TheGame::Instance()->changeSceneState(END_SCENE);*/
+}
+
+void PlayScene::gameOver()
+{
+	const SDL_Color yellow1 = { 255, 255, 0, 255 };
+	GameOverText = new ScoreBoard("Game Over", "Playbill", 90, yellow1, glm::vec2(500.0f, 300.0f));;
+	addChild(GameOverText);
+	GameOver = true;
+}
+
+void PlayScene::MenuScene()
+{
+	TheGame::Instance()->changeSceneState(PLAY_SCENE);
 }
