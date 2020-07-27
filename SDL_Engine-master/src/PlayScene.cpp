@@ -200,7 +200,7 @@ void PlayScene::handleEvents()
 			if (CanFire)
 			{
 				CanFire = false;
-				PlayerShoot();
+				PlayerShoot(PLAYER_BULLET);
 
 			}
 		}
