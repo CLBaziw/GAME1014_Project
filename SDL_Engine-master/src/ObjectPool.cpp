@@ -8,7 +8,6 @@
 
 ObjectPool::ObjectPool()
 {
-	m_activeObstacles.reserve(5);
 	for (int i = 0; i < MAXPLATFORM; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(PLATFORM));
@@ -38,27 +37,22 @@ ObjectPool::~ObjectPool() = default;
 
 void ObjectPool::UpdateActiveSprites()
 {
-	for (int i = 0; i < m_activeObstacles.size(); i++)
+	for (int i = 0; i < m_poolObstacles.size(); i++)
 	{
-		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
+		if (m_poolObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
-			m_activeObstacles[i]->update();
-		}
-		else
-		{
-			std::cout << "Remove inactive sprite from list of active sprites" << std::endl;
-			m_activeObstacles.erase(m_activeObstacles.begin() + i);
+			m_poolObstacles[i]->update();
 		}
 	}
 }
 
 void ObjectPool::DrawActiveSprites()
 {
-	for (int i = 0; i < m_activeObstacles.size(); i++)
+	for (int i = 0; i < m_poolObstacles.size(); i++)
 	{
-		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
+		if (m_poolObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
-			m_activeObstacles[i]->draw();
+			m_poolObstacles[i]->draw();
 		}
 	}
 }
@@ -73,7 +67,6 @@ Obstacle* ObjectPool::GetObstacle(GameObjectType newObj)
 		{
 			temp = m_poolObstacles[i];
 			temp->setActive(true);
-			m_activeObstacles.push_back(temp);
 			return temp;
 		}
 	}
