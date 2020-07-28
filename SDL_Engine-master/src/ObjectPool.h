@@ -17,6 +17,7 @@ public:
 
 	void UpdateActiveSprites();
 	void DrawActiveSprites();
+	void DisplayActiveList();
 	Obstacle* GetObstacle(GameObjectType newObj);
 	Bullet* GetBullet(BulletType bullType);
 private:

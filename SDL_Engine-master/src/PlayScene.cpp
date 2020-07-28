@@ -338,16 +338,14 @@ void PlayScene::checkCollision()
 					std::cout << "Player killed enemy" << std::endl;
 
 					// Remove enemy
-					m_pObstacles[i]->setActive(false);
+					m_pObstacles[i]->DeactivateSprite();
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
-					i--;
 
 					// Remove bullet
-					m_pPlayerBulletVec[j]->setActive(false);
+					m_pPlayerBulletVec[j]->DeactivateSprite();
 					m_pPlayerBulletVec[j] = nullptr;
 					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
-					j--;
 				}
 			}
 			break;
@@ -381,7 +379,7 @@ void PlayScene::checkCollision()
 		if (m_pPlayerBulletVec[i]->getTransform()->position.x <= -50 ||
 			m_pPlayerBulletVec[i]->getTransform()->position.x >= TheGame::Instance()->getWindowWidth())
 		{
-			m_pPlayerBulletVec[i]->setActive(false);
+			m_pPlayerBulletVec[i]->DeactivateSprite();
 			m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + i);
 			i--;
 		}
@@ -513,9 +511,11 @@ void PlayScene::MakeObstacles()
 			if (m_pObstacles.size() > 4 && m_pObstacles[0] != nullptr)
 			{
 				std::cout << "Remove obstacle" << std::endl;
-				m_pObstacles[0]->setActive(false);
+				m_pObstacles[0]->DeactivateSprite();
 				m_pObstacles[0] = nullptr;
 				m_pObstacles.erase(m_pObstacles.begin());
+
+				m_objPool->DisplayActiveList();
 			}
 
 			m_numSpaces = 0;

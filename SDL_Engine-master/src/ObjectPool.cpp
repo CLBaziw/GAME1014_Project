@@ -97,6 +97,70 @@ void ObjectPool::DrawActiveSprites()
 	}
 }
 
+void ObjectPool::DisplayActiveList()
+{
+	int plat = 0;
+	int obs = 0;
+	int enemy = 0;
+	int pred = 0;
+	int bulletP = 0;
+	int bulletP2 = 0;
+	int bulletE = 0;
+
+	for (int i = 0; i < m_poolObstacles.size(); i++)
+	{
+		if (m_poolObstacles[i]->getActive())
+		{
+			switch (m_poolObstacles[i]->getType())
+			{
+			case PLATFORM:
+				plat++;
+				break;
+			case OBSTACLE1:
+				obs++;
+				break;
+			case ENEMY:
+				enemy++;
+				break;
+			case PREDATOR:
+				pred++;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < m_poolPlayerBullets.size(); i++)
+	{
+		if (m_poolPlayerBullets[i]->getActive())
+		{
+			if (m_poolPlayerBullets[i]->getType() == P_BULLET)
+			{
+				bulletP++;
+			}
+			if (m_poolPlayerBullets[i]->getType() == P2_BULLET)
+			{
+				bulletP2++;
+			}
+		}
+	}
+
+	for (int i = 0; i < m_poolEnemyBullets.size(); i++)
+	{
+		if (m_poolEnemyBullets[i]->getActive())
+		{
+			bulletE++;
+		}
+	}
+
+	std::cout << "Platform: " << plat << std::endl;
+	std::cout << "Obstacle: " << obs << std::endl;
+	std::cout << "Enemy: " << enemy << std::endl;
+	std::cout << "Predator " << pred << std::endl;
+	std::cout << "Player Bullet 1: " << bulletP << std::endl;
+	std::cout << "Player Bullet 2: " << bulletP2 << std::endl;
+	std::cout << "Enemy Bullet: " << bulletE << std::endl;
+}
+
 Obstacle* ObjectPool::GetObstacle(GameObjectType newObj)
 {
 	Obstacle* temp;
