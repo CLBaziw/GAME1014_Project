@@ -28,10 +28,18 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
+	if (PlayerHealth <= 0)
+	{
+		gameOver();
+		return;
+	}
+	
 	m_objPool->UpdateActiveSprites();
 	updateDisplayList();
 	MakeObstacles();
+	ScrollBgGround();
 	checkCollision();
+	EnemyShoot();
 }
 
 void PlayScene::clean()
@@ -66,14 +74,20 @@ void PlayScene::clean()
 
 	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
 	{
-		delete m_pPlayerBulletVec[i];
-		m_pPlayerBulletVec[i] = nullptr;
+		if (!m_pPlayerBulletVec.empty())
+		{
+			delete m_pPlayerBulletVec[i];
+			m_pPlayerBulletVec[i] = nullptr;
+		}
 	}
 
 	for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
 	{
-		delete m_pEnemyBulletVec[i];
-		m_pEnemyBulletVec[i] = nullptr;
+		if (!m_pEnemyBulletVec.empty())
+		{
+			delete m_pEnemyBulletVec[i];
+			m_pEnemyBulletVec[i] = nullptr;
+		}
 	}
 
 	// clean button
@@ -159,7 +173,7 @@ void PlayScene::handleEvents()
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_X) && !m_pPlayer->isShooting())
 		{
 			m_pPlayer->SetShooting(true);
-			if(cooldown_specialskill < 3)
+			if (cooldown_specialskill < 3)
 			{
 				PlayerShoot(PLAYER_BULLET);
 				cooldown_specialskill++;
@@ -184,29 +198,16 @@ void PlayScene::handleEvents()
 		TheGame::Instance()->quit();
 	}
 
-	if (!GameOver)
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
-		{
-			TheGame::Instance()->changeSceneState(START_SCENE);
-		}
-
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
-		{
-			TheGame::Instance()->changeSceneState(END_SCENE);
-		}
-		if (EventManager::Instance().getMouseButton(LEFT))
-		{
-			if (CanFire)
-			{
-				CanFire = false;
-				PlayerShoot(PLAYER_BULLET);
-
-			}
-		}
-		EnemyShoot();
+		TheGame::Instance()->changeSceneState(START_SCENE);
 	}
 
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
+	{
+		TheGame::Instance()->changeSceneState(END_SCENE);
+	}
+	
 }
 
 void PlayScene::start()
@@ -221,17 +222,14 @@ void PlayScene::start()
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
-
-
 	}
-
-
-	// Object Pool
-	m_objPool = new ObjectPool();
 
 	// Background 
 	addChild(m_pBackground);
 	addChild(m_pBackground);
+
+	// Object Pool
+	m_objPool = new ObjectPool();
 
 	//Health
 	PlayerHealth = 100;
@@ -241,7 +239,7 @@ void PlayScene::start()
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
-	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
+	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0) , "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
 
@@ -265,46 +263,12 @@ void PlayScene::start()
 	addChild(m_ground);
 
 	// Bullets
-	m_pPlayerBulletVec.reserve(10);
-	/*m_pEnemyBulletVec.reserve(30);*/
+	m_pPlayerBulletVec.reserve(30);
+	m_pEnemyBulletVec.reserve(30);
 }
 
 void PlayScene::checkCollision()
 {
-	if (!CanFire)
-	{
-
-		m_bulletTimer += .1f;
-		if (m_bulletTimer > 10)
-		{
-			CanFire = true;
-		}
-	}
-	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
-	
-	if (GameOver)
-	{
-		GameOverTimer += .1f;
-		if (GameOverTimer > 1.0f)
-		{
-			MenuScene();
-		}
-	}
-
-	if (m_pBackground->getTransform()->position.x < -1600.f)
-	{
-		m_pBackground->getTransform()->position.x = 1600;
-	}
-	m_pScoreBoard->setPlayerScore(m_pScoreBoard->getPlayerScore() + 1);
-
-	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
-
-	if (m_ground->getTransform()->position.x < -1600.f)
-	{
-		m_ground->getTransform()->position.x = 1600;
-	}
-#pragma endregion 
-
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
@@ -312,12 +276,12 @@ void PlayScene::checkCollision()
 	int groundY = m_ground->getTransform()->position.y;
 
 	#pragma region // Ground check
-		if (playerY > groundY - halfPlayerHeight - 20)
-		{
-			m_pPlayer->SetJumping(true);
-			m_pPlayer->StopY();
-			m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
-		}
+	if (playerY > groundY - halfPlayerHeight - 20)
+	{
+		m_pPlayer->SetJumping(true);
+		m_pPlayer->StopY();
+		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
+	}
 	#pragma endregion
 
 	#pragma region // Obstacles check
@@ -349,6 +313,7 @@ void PlayScene::checkCollision()
 			break;
 		}
 		case PREDATOR:
+		case ENEMY:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
 			{
@@ -372,50 +337,21 @@ void PlayScene::checkCollision()
 				{
 					std::cout << "Player killed enemy" << std::endl;
 
-					m_pObstacles[i]->setActive(false);
+					// Remove enemy
+					m_pObstacles[i]->DeactivateSprite();
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
-				}
-			}
-			break;
-		}
-		case ENEMY:
-		{
-			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i])) // Player and enemy collide
-			{
-				std::cout << "Player and enemy collide" << std::endl;
-				if (PlayerHealth > 0)
-				{
-					PlayerHealth -= 100 / 4;
-					Health->setText("Score:" + std::to_string(PlayerHealth));
-				}
-				else if (PlayerHealth == 0)
-				{
-					gameOver();
-				}
-				//PlayerDeath();
-			}
 
-			 //Check for bullet with enemy
-			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
-			{
-				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
-				{
-					std::cout << "Player killed enemy" << std::endl;
-					m_pScoreBoard->setPlayerScore(m_pScoreBoard->getPlayerScore() + 1);
-					m_pScoreBoard->setText("Score:" + std::to_string(m_pScoreBoard->getPlayerScore()));
-					m_pObstacles[i]->setActive(false);
-					//m_pScoreBoard->setPlayerScore(PlayerScore++);
-					if (m_pObstacles[i] != nullptr)
-					{
-						m_pObstacles[i] = nullptr;
-						m_pObstacles.erase(m_pObstacles.begin() + i);
-					}
+					// Remove bullet
+					m_pPlayerBulletVec[j]->DeactivateSprite();
+					m_pPlayerBulletVec[j] = nullptr;
+					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
 				}
 			}
 			break;
 		}
 		case OBSTACLE1:
+		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
 			{
 				if (PlayerHealth > 0)
@@ -429,35 +365,76 @@ void PlayScene::checkCollision()
 				}
 
 			}
+
 			break;
-		case OBSTACLE2:
-		case OBSTACLE3:
-		case E_BULLET:
-			for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
-			{
-				if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemyBulletVec[i]))
-				{
-					if (PlayerHealth > 25)
-					{
-						PlayerHealth -= 25;
-						Health->setText("Score:" + std::to_string(PlayerHealth));
-					}
-					else if (PlayerHealth <= 25)
-					{
-						gameOver();
-					}
-				}
-			}
-			break;
+		}
 		}
 	}
 	#pragma endregion 
+
+	#pragma region // Player Bullet Check
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		// Player bullet leaves screen
+		if (m_pPlayerBulletVec[i]->getTransform()->position.x <= -50 ||
+			m_pPlayerBulletVec[i]->getTransform()->position.x >= TheGame::Instance()->getWindowWidth())
+		{
+			m_pPlayerBulletVec[i]->DeactivateSprite();
+			m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + i);
+			i--;
+		}
+	}
+	#pragma endregion
+
+	#pragma region // Enemy Bullet Check
+	for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+	{
+		if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemyBulletVec[i]))
+		{
+			std::cout << "Enemy shot player" << std::endl;
+			if (PlayerHealth > 0)
+			{
+				PlayerHealth -= 100 / 4;
+				Health->setText("Score:" + std::to_string(PlayerHealth));
+			}
+			// Remove bullet
+			m_pEnemyBulletVec[i]->setActive(false);
+			m_pEnemyBulletVec[i] = nullptr;
+			m_pEnemyBulletVec.erase(m_pEnemyBulletVec.begin() + i);
+		}
+		// Enemy bullet leaves screen
+		else if (m_pEnemyBulletVec[i]->getTransform()->position.x <= -50 ||
+			m_pEnemyBulletVec[i]->getTransform()->position.x >= TheGame::Instance()->getWindowWidth())
+		{
+			m_pEnemyBulletVec[i]->setActive(false);
+			m_pEnemyBulletVec.erase(m_pEnemyBulletVec.begin() + i);
+			i--;
+		}
+	}
+	#pragma endregion
+}
+
+void PlayScene::ScrollBgGround()
+{
+	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
+	if (m_pBackground->getTransform()->position.x < -1600.f)
+	{
+		m_pBackground->getTransform()->position.x = 1600;
+	}
+	m_pScoreBoard->setPlayerScore(m_pScoreBoard->getPlayerScore() + 1);
+
+	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
+
+	if (m_ground->getTransform()->position.x < -1600.f)
+	{
+		m_ground->getTransform()->position.x = 1600;
+	}
 }
 
 void PlayScene::PlayerShoot(BulletType bulletType)
 {
 	float x;
-	float y = m_pPlayer->getTransform()->position.y;
+	float y = m_pPlayer->getTransform()->position.y + 24;
 
 	switch (bulletType)
 	{
@@ -468,16 +445,20 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 			if (m_playerFacingRight)
 			{
 				bState = P_BULLET_MOVE_RIGHT;
-				x = m_pPlayer->getTransform()->position.x + 30;
+				x = m_pPlayer->getTransform()->position.x + 80;
 			}
 			else
 			{
 				bState = P_BULLET_MOVE_LEFT;
-				x = m_pPlayer->getTransform()->position.x - 90;
+				x = m_pPlayer->getTransform()->position.x - 80;
 			}
 
-			m_pPlayerBulletVec.push_back(new Bullet(x, y, PLAYER_BULLET, bState));
-			addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+			m_pPlayerBulletVec.push_back(m_objPool->GetBullet(PLAYER_BULLET));
+
+			int bulletPos = m_pPlayerBulletVec.size() - 1;
+			m_pPlayerBulletVec[bulletPos]->setType(P_BULLET);
+			m_pPlayerBulletVec[bulletPos]->setPosition(x, y);
+			m_pPlayerBulletVec[bulletPos]->setAnimationState(bState);
 
 			SoundManager::Instance().playSound("shot");	
 		}
@@ -497,8 +478,12 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 				x = m_pPlayer->getTransform()->position.x - 90;
 			}
 
-			m_pPlayerBulletVec.push_back(new Bullet(x, y, PLAYER_BULLET2, bState));
-			addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
+			m_pPlayerBulletVec.push_back(m_objPool->GetBullet(PLAYER_BULLET2));
+
+			int bulletPos = m_pPlayerBulletVec.size() - 1;
+			m_pPlayerBulletVec[bulletPos]->setType(P2_BULLET);
+			m_pPlayerBulletVec[bulletPos]->setPosition(x, y);
+			m_pPlayerBulletVec[bulletPos]->setAnimationState(bState);
 
 			SoundManager::Instance().playSound("fire");
 		}
@@ -506,6 +491,7 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 	default:
 		break;
 	}
+	#pragma endregion 
 }
 
 void PlayScene::MakeObstacles()
@@ -522,12 +508,14 @@ void PlayScene::MakeObstacles()
 
 			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
 
-			if (m_pObstacles.size() > 4)
+			if (m_pObstacles.size() > 4 && m_pObstacles[0] != nullptr)
 			{
 				std::cout << "Remove obstacle" << std::endl;
-				m_pObstacles[0]->setActive(false);
+				m_pObstacles[0]->DeactivateSprite();
 				m_pObstacles[0] = nullptr;
 				m_pObstacles.erase(m_pObstacles.begin());
+
+				m_objPool->DisplayActiveList();
 			}
 
 			m_numSpaces = 0;
@@ -570,7 +558,7 @@ void PlayScene::EnemyShoot()
 				if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 				{
 					enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f;
-					enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+					enemyY = m_pObstacles[i]->getTransform()->position.y + 10.0f;
 					bulletAnim = E_BULLET_MOVE_LEFT;
 
 					if (enemyType == PREDATOR)
@@ -584,16 +572,22 @@ void PlayScene::EnemyShoot()
 
 					if (m_bulletTimer++ == m_timerMax)
 					{
-						m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
-						m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
-						addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+						//m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
+
+						m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+
+						int bulletPos = m_pEnemyBulletVec.size() - 1;
+						m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						m_pEnemyBulletVec[bulletPos]->setPosition(enemyX, enemyY);
+						m_pEnemyBulletVec[bulletPos]->setAnimationState(bulletAnim);
+						//addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 						m_bulletTimer = 0;
 					}
 				}
 				else if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX&& playerX >= enemyY)
 				{
 					enemyX = m_pObstacles[i]->getTransform()->position.x + 85.0f;
-					enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+					enemyY = m_pObstacles[i]->getTransform()->position.y + 10.0f;
 					bulletAnim = E_BULLET_MOVE_RIGHT;
 
 					if (enemyType == PREDATOR)
@@ -607,9 +601,15 @@ void PlayScene::EnemyShoot()
 
 					if (m_bulletTimer++ == m_timerMax)
 					{
-						m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
-						m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
-						addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+						//m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
+
+						m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+
+						int bulletPos = m_pEnemyBulletVec.size() - 1;
+						m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						m_pEnemyBulletVec[bulletPos]->setPosition(enemyX, enemyY);
+						m_pEnemyBulletVec[bulletPos]->setAnimationState(bulletAnim);
+						//addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 						m_bulletTimer = 0;
 					}
 				}
@@ -629,9 +629,4 @@ void PlayScene::gameOver()
 	GameOver = true;
 
 	TheGame::Instance()->changeSceneState(END_SCENE);
-}
-
-void PlayScene::MenuScene()
-{
-	TheGame::Instance()->changeSceneState(PLAY_SCENE);
 }

@@ -18,6 +18,8 @@ public:
 	virtual void update() = 0;
 	virtual void clean() = 0;
 
+	void DeactivateSprite();
+
 	// getters
 	SpriteSheet* getSpriteSheet();
 	Animation& getAnimation(const std::string& name);
