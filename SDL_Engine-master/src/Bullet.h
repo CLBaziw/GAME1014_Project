@@ -29,7 +29,5 @@ private:
 
 	void m_buildAnimations();
 	BulletAnimationState m_currentAnimationState;
-
-	
 };
 #endif

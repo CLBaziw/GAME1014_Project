@@ -101,6 +101,8 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 
+	setActive(false);
+
 	m_buildAnimations();
 }
 
@@ -187,7 +189,15 @@ void Bullet::draw()
 
 void Bullet::update()
 {
-	getTransform()->position.x += m_speed;
+	if (m_currentAnimationState == P_BULLET_MOVE_RIGHT || m_currentAnimationState == E_BULLET_MOVE_RIGHT)
+	{
+		getTransform()->position.x += m_speed;
+	}
+	else
+	{
+		getTransform()->position.x -= m_speed;
+	}
+	
 }
 
 void Bullet::clean()

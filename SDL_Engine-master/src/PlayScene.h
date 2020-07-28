@@ -29,6 +29,7 @@ public:
 	virtual void start() override;
 	void checkCollision();
 
+	void ScrollBgGround();
 	void PlayerShoot(BulletType bulletType);
 	void MakeObstacles();
 	void EnemyShoot();
@@ -46,7 +47,6 @@ private:
 	ScoreBoard* GameOverText;
 	Player* m_pPlayer;
 	ground* m_ground;
-	ground* m_ground2;
 
 	float GameOverTimer;
 	// Boxes for scrolling

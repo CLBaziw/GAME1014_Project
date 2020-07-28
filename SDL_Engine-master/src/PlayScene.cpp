@@ -28,9 +28,29 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
+	if (GameOver)
+	{
+		GameOverTimer += .1f;
+		if (GameOverTimer > 1.0f)
+		{
+			MenuScene();
+		}
+	}
+
+	if (!CanFire)
+	{
+
+		m_bulletTimer += .1f;
+		if (m_bulletTimer > 10)
+		{
+			CanFire = true;
+		}
+	}
+	
 	m_objPool->UpdateActiveSprites();
 	updateDisplayList();
 	MakeObstacles();
+	ScrollBgGround();
 	checkCollision();
 }
 
@@ -221,17 +241,14 @@ void PlayScene::start()
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
-
-
 	}
-
-
-	// Object Pool
-	m_objPool = new ObjectPool();
 
 	// Background 
 	addChild(m_pBackground);
 	addChild(m_pBackground);
+
+	// Object Pool
+	m_objPool = new ObjectPool();
 
 	//Health
 	PlayerHealth = 100;
@@ -241,7 +258,7 @@ void PlayScene::start()
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
-	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
+	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0) , "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
 
@@ -265,46 +282,12 @@ void PlayScene::start()
 	addChild(m_ground);
 
 	// Bullets
-	m_pPlayerBulletVec.reserve(10);
-	/*m_pEnemyBulletVec.reserve(30);*/
+	m_pPlayerBulletVec.reserve(30);
+	m_pEnemyBulletVec.reserve(30);
 }
 
 void PlayScene::checkCollision()
 {
-	if (!CanFire)
-	{
-
-		m_bulletTimer += .1f;
-		if (m_bulletTimer > 10)
-		{
-			CanFire = true;
-		}
-	}
-	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
-	
-	if (GameOver)
-	{
-		GameOverTimer += .1f;
-		if (GameOverTimer > 1.0f)
-		{
-			MenuScene();
-		}
-	}
-
-	if (m_pBackground->getTransform()->position.x < -1600.f)
-	{
-		m_pBackground->getTransform()->position.x = 1600;
-	}
-	m_pScoreBoard->setPlayerScore(m_pScoreBoard->getPlayerScore() + 1);
-
-	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
-
-	if (m_ground->getTransform()->position.x < -1600.f)
-	{
-		m_ground->getTransform()->position.x = 1600;
-	}
-#pragma endregion 
-
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
@@ -454,6 +437,23 @@ void PlayScene::checkCollision()
 	#pragma endregion 
 }
 
+void PlayScene::ScrollBgGround()
+{
+	m_pBackground->getTransform()->position.x = m_pBackground->getTransform()->position.x - .5f;
+	if (m_pBackground->getTransform()->position.x < -1600.f)
+	{
+		m_pBackground->getTransform()->position.x = 1600;
+	}
+	m_pScoreBoard->setPlayerScore(m_pScoreBoard->getPlayerScore() + 1);
+
+	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
+
+	if (m_ground->getTransform()->position.x < -1600.f)
+	{
+		m_ground->getTransform()->position.x = 1600;
+	}
+}
+
 void PlayScene::PlayerShoot(BulletType bulletType)
 {
 	float x;
@@ -570,7 +570,7 @@ void PlayScene::EnemyShoot()
 				if (playerX > enemyX - ENEMYSIGHT - m_pPlayer->getWidth() && playerX < enemyX && playerY >= enemyY)
 				{
 					enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f;
-					enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+					enemyY = m_pObstacles[i]->getTransform()->position.y + 10.0f;
 					bulletAnim = E_BULLET_MOVE_LEFT;
 
 					if (enemyType == PREDATOR)
@@ -584,16 +584,22 @@ void PlayScene::EnemyShoot()
 
 					if (m_bulletTimer++ == m_timerMax)
 					{
-						m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
-						m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
-						addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+						//m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
+
+						m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+
+						int bulletPos = m_pEnemyBulletVec.size() - 1;
+						m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						m_pEnemyBulletVec[bulletPos]->setPosition(enemyX, enemyY);
+						m_pEnemyBulletVec[bulletPos]->setAnimationState(bulletAnim);
+						//addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 						m_bulletTimer = 0;
 					}
 				}
 				else if (playerX < enemyX + ENEMYSIGHT + m_pPlayer->getWidth() && playerX > enemyX&& playerX >= enemyY)
 				{
 					enemyX = m_pObstacles[i]->getTransform()->position.x + 85.0f;
-					enemyY = m_pObstacles[i]->getTransform()->position.y - 10.0f;
+					enemyY = m_pObstacles[i]->getTransform()->position.y + 10.0f;
 					bulletAnim = E_BULLET_MOVE_RIGHT;
 
 					if (enemyType == PREDATOR)
@@ -607,9 +613,15 @@ void PlayScene::EnemyShoot()
 
 					if (m_bulletTimer++ == m_timerMax)
 					{
-						m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
-						m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]->setType(E_BULLET);
-						addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
+						//m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
+
+						m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+
+						int bulletPos = m_pEnemyBulletVec.size() - 1;
+						m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						m_pEnemyBulletVec[bulletPos]->setPosition(enemyX, enemyY);
+						m_pEnemyBulletVec[bulletPos]->setAnimationState(bulletAnim);
+						//addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
 						m_bulletTimer = 0;
 					}
 				}
