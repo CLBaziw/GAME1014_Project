@@ -34,7 +34,6 @@ public:
 	void MakeObstacles();
 	void EnemyShoot();
 	void gameOver();
-	void MenuScene();
 	//void moveBackground();
 
 private:
