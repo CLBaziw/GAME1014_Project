@@ -6,7 +6,6 @@
 #include "Player.h"
 #include "Button.h"
 #include "Bullet.h"
-//#include "EnemyBullet.h"
 #include "Background.h"
 #include "Box.h"
 #include <vector>
@@ -30,12 +29,11 @@ public:
 	virtual void start() override;
 	void checkCollision();
 
+	void ScrollBgGround();
 	void PlayerShoot(BulletType bulletType);
 	void MakeObstacles();
 	void EnemyShoot();
-	void PlayerDeath();
 	void gameOver();
-	void MenuScene();
 	//void moveBackground();
 
 private:
@@ -48,7 +46,6 @@ private:
 	ScoreBoard* GameOverText;
 	Player* m_pPlayer;
 	ground* m_ground;
-	ground* m_ground2;
 
 	float GameOverTimer;
 	// Boxes for scrolling
@@ -72,10 +69,9 @@ private:
 	int moveX = 0;
 	int moveY = 0;
 	int moveSpeed = 10;
-	int PlayerScore;
 	bool CanFire;
 	float m_bulletTimer = 0,
-		m_timerMax = 35;
+		m_timerMax = 100;
 	float x;
 	float y;
 	int cooldown_specialskill =0;
