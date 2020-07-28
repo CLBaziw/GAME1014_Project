@@ -297,7 +297,8 @@ void PlayScene::start()
 	m_pPlayerBulletVec.reserve(30);
 	m_pEnemyBulletVec.reserve(30);
 }
-
+void PlayScene::checkCollision()
+{
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
