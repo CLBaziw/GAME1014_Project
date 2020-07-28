@@ -19,7 +19,7 @@ int main(int argc, char * args[])
 	freopen("CON", "w", stdout);
 
 
-	TheGame::Instance()->init("SDLEngine 0.21", 100, 100, 1152, 768, false);
+	TheGame::Instance()->init("M.E.T. Entity", 100, 100, 1152, 768, false);
 
 	while (TheGame::Instance()->isRunning())
 	{

@@ -7,6 +7,12 @@ Sprite::Sprite()
 Sprite::~Sprite()
        = default;
 
+void Sprite::DeactivateSprite()
+{
+	setActive(false);
+	getTransform()->position = glm::vec2(0, 0);
+}
+
 SpriteSheet* Sprite::getSpriteSheet()
 {
 	return m_pSpriteSheet;

@@ -9,6 +9,7 @@ enum GameObjectType {
 	ENEMY,
 	PREDATOR,
 	P_BULLET,
+	P2_BULLET,
 	E_BULLET,
 	OBSTACLE1,
 	OBSTACLE2,

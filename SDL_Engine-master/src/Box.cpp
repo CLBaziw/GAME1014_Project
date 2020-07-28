@@ -15,11 +15,11 @@ Box::Box(float x, float y)
 
 Box::~Box()
 {
-	if (m_obstacle != nullptr)
-	{
-		delete m_obstacle;
-		m_obstacle = nullptr;
-	}
+	//if (m_obstacle != nullptr)
+	//{
+	//	m_obstacle->DeactivateSprite();
+	//	m_obstacle = nullptr;
+	//}
 }
 
 void Box::Update()
@@ -63,6 +63,8 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		m_y = 420;
 		break;
 	case 2:
+		// std::cout << "Get Random Obstacle - Enemy" << std::endl;
+		// sprite = objPool->GetObstacle(ENEMY);
 		std::cout << "Get Random Obstacle - Predator" << std::endl;
 		sprite = objPool->GetObstacle(PREDATOR);
 		sprite->getTransform()->position = glm::vec2(x, y);
