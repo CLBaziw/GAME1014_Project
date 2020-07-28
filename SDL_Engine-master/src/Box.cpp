@@ -15,11 +15,11 @@ Box::Box(float x, float y)
 
 Box::~Box()
 {
-	if (m_obstacle != nullptr)
-	{
-		delete m_obstacle;
-		m_obstacle = nullptr;
-	}
+	//if (m_obstacle != nullptr)
+	//{
+	//	m_obstacle->DeactivateSprite();
+	//	m_obstacle = nullptr;
+	//}
 }
 
 void Box::Update()

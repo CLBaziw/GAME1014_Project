@@ -43,6 +43,9 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 		// if succeeded create our window
 		m_pWindow = (Config::make_resource(SDL_CreateWindow(title, x, y, width, height, flags)));
 
+		m_windowHeight = height;
+		m_windowWidth = width;
+
 		// if window creation successful create our renderer
 		if (m_pWindow != nullptr)
 		{

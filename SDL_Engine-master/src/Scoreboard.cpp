@@ -44,7 +44,7 @@ void ScoreBoard::clean()
 
 void ScoreBoard::setText(const std::string & new_text)
 {
-	std::string Score = std::to_string(PLayerScore);
+	std::string Score = std::to_string(m_pPlayerScore);
 	Score = "more: " + Score;
 	const char* tmpText = Score.c_str();
 
@@ -77,6 +77,16 @@ void ScoreBoard::setSize(const int new_size)
 	const auto size = TextureManager::Instance()->getTextureSize(m_fontID);
 	setWidth(size.x);
 	setHeight(size.y);
+}
+
+void ScoreBoard::setPlayerScore(int score)
+{
+	m_pPlayerScore = score;
+}
+
+int ScoreBoard::getPlayerScore()
+{
+	return m_pPlayerScore;
 }
 
 void ScoreBoard::m_buildFontID()
