@@ -18,6 +18,7 @@
 #include "StartScene.h"
 #include "PlayScene.h"
 #include "EndScene.h"
+#include "LevelSelectScene.h"
 
 #include "Config.h"
 

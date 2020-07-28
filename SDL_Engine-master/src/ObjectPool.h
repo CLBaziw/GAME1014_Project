@@ -7,6 +7,7 @@
 #include "Obstacle.h"
 #include <vector>
 
+
 class ObjectPool
 {
 public:
@@ -17,7 +18,6 @@ public:
 	void DrawActiveSprites();
 	Obstacle* GetObstacle(GameObjectType newObj);
 private:
-	std::vector<Obstacle*> m_activeObstacles;
 	std::vector<Obstacle*> m_poolObstacles;
 };
 

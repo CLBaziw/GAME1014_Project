@@ -9,6 +9,7 @@ SoundManager::SoundManager()
 	load("../Assets/audio/playscreenbackgroundaudio.mp3", "playScreen", SOUND_MUSIC);
 	load("../Assets/audio/game-over-sound-effect.mp3", "endScreen", SOUND_SFX);
 	load("../Assets/audio/laser_shot.wav", "shot", SOUND_SFX);
+	load("../Assets/audio/iceball.wav", "fire", SOUND_SFX);
 	load("../Assets/audio/jump.mp3", "jump", SOUND_SFX);
 	load("../Assets/audio/button.wav", "button", SOUND_SFX);
 }

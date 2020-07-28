@@ -4,6 +4,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "EventManager.h"
 
+
 EndScene::EndScene()
 {
 	EndScene::start();
@@ -63,9 +64,15 @@ void EndScene::start()
 	m_label->setParent(this);
 	addChild(m_label);
 
+	//Score Board
+	const SDL_Color color = { 225, 180, 0, 225 };
+	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 150, color, glm::vec2(576.0f, 250.0f));;
+	m_pScoreBoard->setParent(this);
+	addChild(m_pScoreBoard);
+
 	// Restart Button
 	m_pRestartButton = new Button("../Assets/Menu Asset/play-again.png", "restartButton", RESTART_BUTTON);
-	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 500.0f);
+	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 400.0f);
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);
@@ -83,6 +90,27 @@ void EndScene::start()
 	});
 
 	addChild(m_pRestartButton);
+
+	//Exit button
+	m_pExitButton = new Button("../Assets/Menu Asset/Exit_BTN.png", "exitButton", EXIT_BUTTON);
+	m_pExitButton->getTransform()->position = glm::vec2(576.0f, 550.0f);
+	m_pExitButton->addEventListener(CLICK, [&]()-> void
+	{
+		m_pExitButton->setActive(false);
+		TheGame::Instance()->quit();
+	});
+
+	m_pExitButton->addEventListener(MOUSE_OVER, [&]()->void
+	{
+		m_pExitButton->setAlpha(128);
+	});
+
+	m_pExitButton->addEventListener(MOUSE_OUT, [&]()->void
+	{
+		m_pExitButton->setAlpha(255);
+	});
+
+	addChild(m_pExitButton);
 
 	SoundManager::Instance().playSound("endScreen");
 }
