@@ -4,60 +4,95 @@
 #define BULLETSPEED 10;
 #define EBULLETSPEED 5;
 
-Bullet::Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bulletState)
+Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType, BulletAnimationState bulletState)
 {
-	m_playerBullet = bulletType; // If we decide different enemies will have different colour/shape bullets then we will need to make an enum
-	if (m_playerBullet) 
+	//m_playerBullet = bulletType; // If we decide different enemies will have different colour/shape bullets then we will need to make an enum
+	this->m_BulletType = bulletType;
+	switch(m_BulletType)//if (m_playerBullet)
 	{
-		std::cout << "Player bullet created " << std::endl;
-		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/beams.txt",
-			"../Assets/sprites/beams.png",
-			"player-bullet-sprite"
-		);
-
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("player-bullet-sprite"));
-		setType(P_BULLET);
-
-		setWidth(20);
-		setHeight(10);
-
-		setAnimationState(bulletState);
-		if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+		case PLAYER_BULLET:
 		{
-			m_speed = BULLETSPEED;
+			std::cout << "Player shoot laser" << std::endl;
+			TextureManager::Instance()->loadSpriteSheet(
+				"../Assets/sprites/beams.txt",
+				"../Assets/sprites/beams.png",
+				"player-bullet-sprite"
+			);
+
+			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("player-bullet-sprite"));
+			setType(P_BULLET);
+
+			setWidth(20);
+			setHeight(10);
+
+			setAnimationState(bulletState);
+			if (m_currentAnimationState == P_BULLET_MOVE_RIGHT)
+			{
+				m_speed = BULLETSPEED;
+			}
+			else if (m_currentAnimationState == P_BULLET_MOVE_LEFT)
+			{
+				m_speed = -BULLETSPEED;
+			}
+			break;
 		}
-		else if (m_currentAnimationState == BULLET_MOVE_LEFT)
+		case PLAYER_BULLET2:
 		{
-			m_speed = -BULLETSPEED;
+			std::cout << "Player shoot fire" << std::endl;
+			TextureManager::Instance()->loadSpriteSheet(
+				"../Assets/sprites/Fireball.txt",
+				"../Assets/sprites/Fireball.png",
+				"Fireball"
+			);
+			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Fireball"));
+			setType(P_BULLET);
+
+			setWidth(46);
+			setHeight(46);
+
+
+			setAnimationState(bulletState);
+			if (m_currentAnimationState == P2_BULLET_MOVE_RIGHT)
+			{
+				m_speed = BULLETSPEED;
+			}
+			else if (m_currentAnimationState == P2_BULLET_MOVE_LEFT)
+			{
+				m_speed = -BULLETSPEED;
+			}
+			break;
+			
 		}
-	}
-	else
-	{
-		// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
-		std::cout << "Enemy bullet created " << std::endl;
-		TextureManager::Instance()->loadSpriteSheet(
-			"../Assets/sprites/enemybullet.txt",
-			"../Assets/sprites/enemybullet.png",
-			"enemy-bullet-sprite"
-		);
-
-		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-bullet-sprite"));
-		setType(E_BULLET);
-
-		setWidth(70);
-		setHeight(41);
-
-
-		setAnimationState(bulletState);
-		if (m_currentAnimationState == BULLET_MOVE_RIGHT)
+		case ENEMY_BULLET://else
 		{
-			m_speed = EBULLETSPEED;
+			// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
+			std::cout << "Enemy bullet created " << std::endl;
+			TextureManager::Instance()->loadSpriteSheet(
+				"../Assets/sprites/enemybullet.txt",
+				"../Assets/sprites/enemybullet.png",
+				"enemy-bullet-sprite"
+			);
+
+			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-bullet-sprite"));
+			setType(E_BULLET);
+
+			setWidth(70);
+			setHeight(41);
+
+
+			setAnimationState(bulletState);
+			if (m_currentAnimationState == E_BULLET_MOVE_RIGHT)
+			{
+				m_speed = EBULLETSPEED;
+			}
+			else if (m_currentAnimationState == E_BULLET_MOVE_LEFT)
+			{
+				m_speed = -EBULLETSPEED;
+			}
+			break;
 		}
-		else if (m_currentAnimationState == BULLET_MOVE_LEFT)
-		{
-			m_speed = -EBULLETSPEED;
-		}
+		default:
+			break;
 	}
 
 
@@ -78,36 +113,76 @@ void Bullet::draw()
 	const auto y = getTransform()->position.y;
 
 	// Check if bullet is player's or enemy's to change appearance of bullet
-	std::string sprite;
-	if (m_playerBullet) {
-		sprite = "player-bullet-sprite";
-	}
-	else {
-		sprite = "enemy-bullet-sprite";
+
+
+	switch (m_BulletType)
+	{
+		case PLAYER_BULLET:
+		{
+			switch (m_currentAnimationState)
+			{
+				case P_BULLET_MOVE_RIGHT:
+				{
+					TextureManager::Instance()->playAnimation("player-bullet-sprite", getAnimation("p_bullet-moving"),
+						x, y, 0.12f, 0, 200, true);
+					break;
+
+				}
+				case P_BULLET_MOVE_LEFT:
+				{
+					TextureManager::Instance()->playAnimation("player-bullet-sprite", getAnimation("p_bullet-moving"),
+						x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+			}
+			break;			
+		}
+		case PLAYER_BULLET2:
+		{
+			switch (m_currentAnimationState)
+			{
+				case P2_BULLET_MOVE_RIGHT:
+				{
+					TextureManager::Instance()->playAnimation("Fireball", getAnimation("p2_bullet-moving"),
+						x, y, 0.12f, 0, 200, true);
+					break;
+
+				}
+				case P2_BULLET_MOVE_LEFT:
+				{
+					TextureManager::Instance()->playAnimation("Fireball", getAnimation("p2_bullet-moving"),
+						x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+			}
+			break;
+		}
+		case ENEMY_BULLET:
+		{
+			switch (m_currentAnimationState)
+			{
+				case E_BULLET_MOVE_RIGHT:
+				{
+					TextureManager::Instance()->playAnimation("enemy-bullet-sprite", getAnimation("e_bullet-moving"),
+						x, y, 0.12f, 0, 200, true);
+					break;
+
+				}
+				case E_BULLET_MOVE_LEFT:
+				{
+					TextureManager::Instance()->playAnimation("enemy-bullet-sprite", getAnimation("e_bullet-moving"),
+						x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+			}
+			break;		
+		}
+		default:
+			break;
 	}
 
 	//draw the bullet according to animation state
-	switch (m_currentAnimationState)
-	{
-	case BULLET_MOVE_RIGHT:
-		TextureManager::Instance()->playAnimation(sprite, getAnimation("bullet-moving"),
-			x, y, 0.12f, 0, 200, true);
-		break;
-	case BULLET_MOVE_LEFT:
-		TextureManager::Instance()->playAnimation(sprite, getAnimation("bullet-moving"),
-			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	case BULLET_CRASH_RIGHT:
-		TextureManager::Instance()->playAnimation(sprite, getAnimation("bullet-colliding"),
-			x, y, 0.25f, 0, 255, true);
-		break;
-	case BULLET_CRASH_LEFT:
-		TextureManager::Instance()->playAnimation(sprite, getAnimation("bullet-colliding"),
-			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	default:
-		break;
-	}
+
 }
 
 void Bullet::update()
@@ -132,23 +207,54 @@ void Bullet::setPosition(int x, int y)
 
 void Bullet::m_buildAnimations()
 {
-	Animation bMovingAnimation = Animation();
+	switch(m_BulletType)
+	{
+		case PLAYER_BULLET:
+			{
+				Animation bMovingAnimation = Animation();
 
-	bMovingAnimation.name = "bullet-moving";
-	bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-0"));
-	//bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-1"));
-	//bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-2"));
-	//bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-3"));
+				bMovingAnimation.name = "p_bullet-moving";
+				bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-0"));
 
-	setAnimation(bMovingAnimation);
 
-	Animation bCollidingAnimation = Animation();
+				setAnimation(bMovingAnimation);
 
-	bCollidingAnimation.name = "bullet-colliding";
-	bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-0"));
-	//bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-1"));
-	//bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-2"));
-	//bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-3"));
+				Animation bCollidingAnimation = Animation();
 
-	setAnimation(bCollidingAnimation);
+				bCollidingAnimation.name = "p_bullet-colliding";
+				bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-0"));
+
+
+				setAnimation(bCollidingAnimation);
+				break;
+			}
+		case PLAYER_BULLET2:
+			{
+				Animation b2MovingAnimation = Animation();
+
+				b2MovingAnimation.name = "p2_bullet-moving";
+				b2MovingAnimation.frames.push_back(getSpriteSheet()->getFrame("fire-0"));
+
+
+				setAnimation(b2MovingAnimation);
+				break;
+			}
+		case ENEMY_BULLET:
+			{
+				Animation bMovingAnimation = Animation();
+
+				bMovingAnimation.name = "e_bullet-moving";
+				bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-0"));
+
+				setAnimation(bMovingAnimation);
+
+				Animation bCollidingAnimation = Animation();
+
+				bCollidingAnimation.name = "e_bullet-colliding";
+				bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-0"));
+
+				setAnimation(bCollidingAnimation);
+				break;
+			}
+		}
 }

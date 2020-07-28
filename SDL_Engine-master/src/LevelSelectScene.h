@@ -29,6 +29,7 @@ private:
 
 	Button* m_pLevelOneButton;
 	Button* m_pLevelTwoButton;
+	Button* m_pLevelThreeButton;
 };
 
 #endif /* defined (__LEVELSELECT_SCENE__) */

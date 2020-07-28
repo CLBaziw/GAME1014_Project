@@ -1,13 +1,13 @@
 #include "ObjectPool.h"
 #include <iostream>
-
 #define MAXPLATFORM 4
 #define MAXOBSTACLE 4
-#define MAXENEMY 6
+#define MAXENEMY 3
+#define MAXPREDATOR 3
+
 
 ObjectPool::ObjectPool()
 {
-	m_activeObstacles.reserve(5);
 	for (int i = 0; i < MAXPLATFORM; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(PLATFORM));
@@ -16,41 +16,43 @@ ObjectPool::ObjectPool()
 	for (int i = 0; i < MAXOBSTACLE; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(OBSTACLE1));
-		m_poolObstacles.push_back(new Obstacle(OBSTACLE2));
-		m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
+		//m_poolObstacles.push_back(new Obstacle(OBSTACLE2));
+		//m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
 	}
 
 	for (int i = 0; i < MAXENEMY; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(ENEMY));
 	}
+
+	
+	for (int i = 0; i < MAXPREDATOR; i++)
+	{
+		m_poolObstacles.push_back(new Obstacle(PREDATOR));
+	}
+
 }
 
 ObjectPool::~ObjectPool() = default;
 
 void ObjectPool::UpdateActiveSprites()
 {
-	for (int i = 0; i < m_activeObstacles.size(); i++)
+	for (int i = 0; i < m_poolObstacles.size(); i++)
 	{
-		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
+		if (m_poolObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
-			m_activeObstacles[i]->update();
-		}
-		else
-		{
-			std::cout << "Remove inactive sprite from list of active sprites" << std::endl;
-			m_activeObstacles.erase(m_activeObstacles.begin() + i);
+			m_poolObstacles[i]->update();
 		}
 	}
 }
 
 void ObjectPool::DrawActiveSprites()
 {
-	for (int i = 0; i < m_activeObstacles.size(); i++)
+	for (int i = 0; i < m_poolObstacles.size(); i++)
 	{
-		if (m_activeObstacles[i]->getActive()) // Deactivate Inactive Sprites
+		if (m_poolObstacles[i]->getActive()) // Deactivate Inactive Sprites
 		{
-			m_activeObstacles[i]->draw();
+			m_poolObstacles[i]->draw();
 		}
 	}
 }
@@ -65,7 +67,6 @@ Obstacle* ObjectPool::GetObstacle(GameObjectType newObj)
 		{
 			temp = m_poolObstacles[i];
 			temp->setActive(true);
-			m_activeObstacles.push_back(temp);
 			return temp;
 		}
 	}
