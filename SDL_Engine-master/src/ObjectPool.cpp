@@ -34,7 +34,15 @@ ObjectPool::ObjectPool()
 
 	for (int i = 0; i < MAXBULLETS; i++)
 	{
-		m_poolPlayerBullets.push_back(new Bullet(0, 0, PLAYER_BULLET, P_BULLET_MOVE_RIGHT));
+		if (i < 24)
+		{
+			m_poolPlayerBullets.push_back(new Bullet(0, 0, PLAYER_BULLET, P_BULLET_MOVE_RIGHT));
+		}
+		else
+		{
+			m_poolPlayerBullets.push_back(new Bullet(0, 0, PLAYER_BULLET2, P2_BULLET_MOVE_RIGHT));
+		}
+
 		m_poolEnemyBullets.push_back(new Bullet(0, 0, ENEMY_BULLET, E_BULLET_MOVE_RIGHT));
 	}
 }
@@ -114,7 +122,16 @@ Bullet* ObjectPool::GetBullet(BulletType bullType)
 	{
 		if (bullType == PLAYER_BULLET)
 		{
-			if (!m_poolPlayerBullets[i]->getActive())
+			if (!m_poolPlayerBullets[i]->getActive() && m_poolPlayerBullets[i]->getType() == P_BULLET)
+			{
+				temp = m_poolPlayerBullets[i];
+				temp->setActive(true);
+				return temp;
+			}
+		}
+		else if (bullType == PLAYER_BULLET2)
+		{
+			if (!m_poolPlayerBullets[i]->getActive() && m_poolPlayerBullets[i]->getType() == P2_BULLET)
 			{
 				temp = m_poolPlayerBullets[i];
 				temp->setActive(true);

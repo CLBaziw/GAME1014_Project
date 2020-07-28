@@ -45,7 +45,7 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 				"Fireball"
 			);
 			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Fireball"));
-			setType(P_BULLET);
+			setType(P2_BULLET);
 
 			setWidth(46);
 			setHeight(46);
@@ -94,7 +94,6 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 		default:
 			break;
 	}
-
 
 	getTransform()->position = glm::vec2(xPos + 30, yPos + 27);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
@@ -189,7 +188,8 @@ void Bullet::draw()
 
 void Bullet::update()
 {
-	if (m_currentAnimationState == P_BULLET_MOVE_RIGHT || m_currentAnimationState == E_BULLET_MOVE_RIGHT)
+	if (m_currentAnimationState == P_BULLET_MOVE_RIGHT || m_currentAnimationState == E_BULLET_MOVE_RIGHT
+		|| m_currentAnimationState == P2_BULLET_MOVE_RIGHT)
 	{
 		getTransform()->position.x += m_speed;
 	}

@@ -28,29 +28,10 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
-	/*if (GameOver)
-	{
-		GameOverTimer += .1f;
-		if (GameOverTimer > 1.0f)
-		{
-		
-		}
-	}*/
-
 	if (PlayerHealth <= 0)
 	{
 		gameOver();
 		return;
-	}
-
-	if (!CanFire)
-	{
-
-		m_bulletTimer += .1f;
-		if (m_bulletTimer > 10)
-		{
-			CanFire = true;
-		}
 	}
 	
 	m_objPool->UpdateActiveSprites();
@@ -58,6 +39,7 @@ void PlayScene::update()
 	MakeObstacles();
 	ScrollBgGround();
 	checkCollision();
+	EnemyShoot();
 }
 
 void PlayScene::clean()
@@ -191,7 +173,7 @@ void PlayScene::handleEvents()
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_X) && !m_pPlayer->isShooting())
 		{
 			m_pPlayer->SetShooting(true);
-			if(cooldown_specialskill < 3)
+			if (cooldown_specialskill < 3)
 			{
 				PlayerShoot(PLAYER_BULLET);
 				cooldown_specialskill++;
@@ -216,29 +198,16 @@ void PlayScene::handleEvents()
 		TheGame::Instance()->quit();
 	}
 
-	if (!GameOver)
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
-		{
-			TheGame::Instance()->changeSceneState(START_SCENE);
-		}
-
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
-		{
-			TheGame::Instance()->changeSceneState(END_SCENE);
-		}
-		if (EventManager::Instance().getMouseButton(LEFT))
-		{
-			if (CanFire)
-			{
-				CanFire = false;
-				PlayerShoot(PLAYER_BULLET);
-
-			}
-		}
-		EnemyShoot();
+		TheGame::Instance()->changeSceneState(START_SCENE);
 	}
 
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
+	{
+		TheGame::Instance()->changeSceneState(END_SCENE);
+	}
+	
 }
 
 void PlayScene::start()
@@ -297,6 +266,7 @@ void PlayScene::start()
 	m_pPlayerBulletVec.reserve(30);
 	m_pEnemyBulletVec.reserve(30);
 }
+
 void PlayScene::checkCollision()
 {
 	int playerX = m_pPlayer->getTransform()->position.x;
@@ -485,9 +455,6 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 				x = m_pPlayer->getTransform()->position.x - 80;
 			}
 
-			//m_pPlayerBulletVec.push_back(new Bullet(x, y, PLAYER_BULLET, bState));
-			//addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
-
 			m_pPlayerBulletVec.push_back(m_objPool->GetBullet(PLAYER_BULLET));
 
 			int bulletPos = m_pPlayerBulletVec.size() - 1;
@@ -513,13 +480,10 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 				x = m_pPlayer->getTransform()->position.x - 90;
 			}
 
-			//m_pPlayerBulletVec.push_back(new Bullet(x, y, PLAYER_BULLET2, bState));
-			//addChild(m_pPlayerBulletVec[m_pPlayerBulletVec.size() - 1]);
-
-			m_pPlayerBulletVec.push_back(m_objPool->GetBullet(PLAYER_BULLET));
+			m_pPlayerBulletVec.push_back(m_objPool->GetBullet(PLAYER_BULLET2));
 
 			int bulletPos = m_pPlayerBulletVec.size() - 1;
-			m_pPlayerBulletVec[bulletPos]->setType(P_BULLET);
+			m_pPlayerBulletVec[bulletPos]->setType(P2_BULLET);
 			m_pPlayerBulletVec[bulletPos]->setPosition(x, y);
 			m_pPlayerBulletVec[bulletPos]->setAnimationState(bState);
 
