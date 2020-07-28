@@ -416,6 +416,33 @@ void PlayScene::checkCollision()
 		}
 	}
 	#pragma endregion
+
+	#pragma region // Enemy Bullet Check
+	for (int i = 0; i < m_pEnemyBulletVec.size(); i++)
+	{
+		if (COMA::squaredRadiusCheck(m_pPlayer, m_pEnemyBulletVec[i]))
+		{
+			std::cout << "Enemy shot player" << std::endl;
+			if (PlayerHealth > 0)
+			{
+				PlayerHealth -= 100 / 4;
+				Health->setText("Score:" + std::to_string(PlayerHealth));
+			}
+			// Remove bullet
+			m_pEnemyBulletVec[i]->setActive(false);
+			m_pEnemyBulletVec[i] = nullptr;
+			m_pEnemyBulletVec.erase(m_pEnemyBulletVec.begin() + i);
+		}
+		// Enemy bullet leaves screen
+		else if (m_pEnemyBulletVec[i]->getTransform()->position.x <= -50 ||
+			m_pEnemyBulletVec[i]->getTransform()->position.x >= TheGame::Instance()->getWindowWidth())
+		{
+			m_pEnemyBulletVec[i]->setActive(false);
+			m_pEnemyBulletVec.erase(m_pEnemyBulletVec.begin() + i);
+			i--;
+		}
+	}
+	#pragma endregion
 }
 
 void PlayScene::ScrollBgGround()
