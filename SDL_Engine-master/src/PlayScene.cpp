@@ -372,11 +372,13 @@ void PlayScene::checkCollision()
 					m_pObstacles[i]->setActive(false);
 					m_pObstacles[i] = nullptr;
 					m_pObstacles.erase(m_pObstacles.begin() + i);
+					i--;
 
 					// Remove bullet
 					m_pPlayerBulletVec[j]->setActive(false);
 					m_pPlayerBulletVec[j] = nullptr;
 					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
+					j--;
 				}
 			}
 			break;
