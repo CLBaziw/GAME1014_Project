@@ -70,7 +70,6 @@ private:
 	int moveX = 0;
 	int moveY = 0;
 	int moveSpeed = 10;
-	int PlayerScore;
 	bool CanFire;
 	float m_bulletTimer = 0,
 		m_timerMax = 100;

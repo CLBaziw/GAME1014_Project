@@ -21,9 +21,11 @@ public:
 	void setText(const std::string& new_text);
 	void setColour(SDL_Color new_colour) const;
 	void setSize(int new_size);
-	int PLayerScore = 0;
-private:
 
+	void setPlayerScore(int score);
+	int getPlayerScore();
+private:
+	int m_pPlayerScore = 0;
 
 	std::string m_fontPath;
 	std::string m_fontID;
