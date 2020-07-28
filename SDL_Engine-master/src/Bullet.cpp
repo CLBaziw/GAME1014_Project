@@ -197,7 +197,6 @@ void Bullet::update()
 	{
 		getTransform()->position.x -= m_speed;
 	}
-	
 }
 
 void Bullet::clean()

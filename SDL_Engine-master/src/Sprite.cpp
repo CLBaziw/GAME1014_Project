@@ -5,7 +5,7 @@ Sprite::Sprite()
 }
 
 Sprite::~Sprite()
-       = default;
+        = default;
 
 SpriteSheet* Sprite::getSpriteSheet()
 {

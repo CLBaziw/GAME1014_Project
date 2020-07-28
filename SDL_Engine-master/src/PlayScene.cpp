@@ -374,9 +374,9 @@ void PlayScene::checkCollision()
 					m_pObstacles.erase(m_pObstacles.begin() + i);
 
 					// Remove bullet
-					/*m_pPlayerBulletVec[i]->setActive(false);
-					m_pPlayerBulletVec[i] = nullptr;
-					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + i);*/
+					m_pPlayerBulletVec[j]->setActive(false);
+					m_pPlayerBulletVec[j] = nullptr;
+					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
 				}
 			}
 			break;
@@ -404,18 +404,17 @@ void PlayScene::checkCollision()
 	#pragma endregion 
 
 	#pragma region // Player Bullet Check
-	//for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
-	//{
-	//	// Player bullet leaves screen
-	//	if (m_pPlayerBulletVec[i]->getTransform()->position.x <= -50 ||
-	//		m_pPlayerBulletVec[i]->getTransform()->position.x >= TheGame::Instance()->getWindowWidth())
-	//	{
-	//		std::cout << "Bullet off screen" << std::endl;
-	//		m_pPlayerBulletVec[i]->setActive(false);
-	//		m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + i);
-	//		i--;
-	//	}
-	//}
+	for (int i = 0; i < m_pPlayerBulletVec.size(); i++)
+	{
+		// Player bullet leaves screen
+		if (m_pPlayerBulletVec[i]->getTransform()->position.x <= -50 ||
+			m_pPlayerBulletVec[i]->getTransform()->position.x >= TheGame::Instance()->getWindowWidth())
+		{
+			m_pPlayerBulletVec[i]->setActive(false);
+			m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + i);
+			i--;
+		}
+	}
 	#pragma endregion
 }
 
@@ -518,7 +517,7 @@ void PlayScene::MakeObstacles()
 
 			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
 
-			if (m_pObstacles.size() > 4)
+			if (m_pObstacles.size() > 4 && m_pObstacles[0] != nullptr)
 			{
 				std::cout << "Remove obstacle" << std::endl;
 				m_pObstacles[0]->setActive(false);
