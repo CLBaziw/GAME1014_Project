@@ -99,18 +99,7 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		sprite = objPool->GetObstacle(OBSTACLE6);
 		sprite->getTransform()->position = glm::vec2(x, y);
 		break;
-	//case 5:
-	//	std::cout << "Get Random Obstacle - Obstacle2" << std::endl;
-	//	sprite = objPool->GetObstacle(OBSTACLE2);
-	//	sprite->getTransform()->position = glm::vec2(x, y);
-	//	break;
-	//case 6:
-	//	std::cout << "Get Random Obstacle - Obstacle3" << std::endl;
-	//	sprite = objPool->GetObstacle(OBSTACLE3);
-	//	sprite->getTransform()->position = glm::vec2(x, y);
-	//	break;
 	}
-
 	m_obstacle = sprite;
 	return sprite;
 }
