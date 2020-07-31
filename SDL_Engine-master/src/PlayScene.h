@@ -34,6 +34,7 @@ public:
 	void MakeObstacles();
 	void EnemyShoot();
 	void gameOver();
+	bool Shoted;
 	//void moveBackground();
 
 private:
@@ -74,7 +75,7 @@ private:
 		m_timerMax = 100;
 	float x;
 	float y;
-	int cooldown_specialskill =0;
+	int cooldown_specialskill = 0;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

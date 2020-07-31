@@ -28,7 +28,10 @@ public:
 	bool isKeyDown(SDL_Scancode key) const;
 	bool isKeyUp(SDL_Scancode key) const;
 	bool KeyPressed(const SDL_Scancode c);
-
+	void onMouseMove(SDL_Event& event);
+	void onMouseButtonDown(SDL_Event& event);
+	void onMouseButtonUp(SDL_Event& event);
+	void onMouseWheel(SDL_Event& event);
 	// mouse events
 	bool getMouseButton(int button_number) const;
 	glm::vec2 getMousePosition() const;
@@ -36,7 +39,7 @@ public:
 
 	// gamecontroller events
 	GameController* getGameController(int controller_number);
-	
+
 private:
 	// Hide Constructor and Destructor 
 	EventManager();
@@ -45,23 +48,20 @@ private:
 	EventManager& operator=(const EventManager&) = delete;
 
 	/*------- PRIVATE MEMBER FUNCTIONS -------*/
-	
+
 	// handle keyboard events
 	void onKeyDown();
 	void onKeyUp();
 
 
 	// handle mouse events
-	void onMouseMove(SDL_Event& event);
-	void onMouseButtonDown(SDL_Event& event);
-	void onMouseButtonUp(SDL_Event& event);
-	void onMouseWheel(SDL_Event& event);
+
 
 	// game controller functions
 	void m_initializeControllers();
 
 	/*------- PRIVATE MEMBER VARIABLES -------*/
-	
+
 	// keyboard states array
 	const Uint8* m_keyStates;
 
@@ -72,7 +72,7 @@ private:
 
 	// GameControllers
 	std::vector<GameController*> m_pGameControllers;
-	
+
 	// is the Event Manager active
 	bool m_isActive;
 };

@@ -52,7 +52,7 @@ Obstacle* Box::GetSprite()
 
 Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 {
-	int randNumber = (rand() % 4) + 1;
+	int randNumber = 1 + (rand() % 7);
 
 	Obstacle* sprite = nullptr;
 
@@ -83,6 +83,21 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		sprite = objPool->GetObstacle(OBSTACLE1);
 		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = SPIKEY;
+		break;
+	case 5:
+		std::cout << "Get Random Obstacle - Obstacle4" << std::endl;
+		sprite = objPool->GetObstacle(OBSTACLE4);
+		sprite->getTransform()->position = glm::vec2(x, y);
+		break;
+	case 6:
+		std::cout << "Get Random Obstacle - Obstacle5" << std::endl;
+		sprite = objPool->GetObstacle(OBSTACLE5);
+		sprite->getTransform()->position = glm::vec2(x, y);
+		break;
+	case 7:
+		std::cout << "Get Random Obstacle - Obstacle6" << std::endl;
+		sprite = objPool->GetObstacle(OBSTACLE6);
+		sprite->getTransform()->position = glm::vec2(x, y);
 		break;
 	//case 5:
 	//	std::cout << "Get Random Obstacle - Obstacle2" << std::endl;
