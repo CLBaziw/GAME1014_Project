@@ -39,7 +39,7 @@ public:
 	// Shooting
 	bool isShooting();
 	void SetShooting(bool s);
-
+	bool Shoted;
 	void setDst();
 	SDL_FRect& getDst();
 
