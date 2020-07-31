@@ -4,7 +4,11 @@
 
 #include <iostream>
 
-#define SCROLLSPD 2
+#define SCROLLSPD 2.6
+
+#define PLATFORMY 600
+#define ENEMYY 715
+#define SPIKEY 725
 
 Box::Box(float x, float y)
 {
@@ -30,7 +34,6 @@ void Box::Update()
 	{
 		m_obstacle->getTransform()->position = glm::vec2(m_x, m_y);
 	}
-
 
 }
 
@@ -60,7 +63,7 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		std::cout << "Get Random Obstacle - Platform" << std::endl;
 		sprite = objPool->GetObstacle(PLATFORM);
 		sprite->getTransform()->position = glm::vec2(x, y);
-		m_y = 420;
+		m_y = PLATFORMY;
 		break;
 	case 2:
 		// std::cout << "Get Random Obstacle - Enemy" << std::endl;
@@ -68,13 +71,13 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		std::cout << "Get Random Obstacle - Predator" << std::endl;
 		sprite = objPool->GetObstacle(PREDATOR);
 		sprite->getTransform()->position = glm::vec2(x, y);
-		m_y = 524;
+		m_y = ENEMYY;
 		break;
 	case 3:
 		std::cout << "Get Random Obstacle - Alien" << std::endl;
 		sprite = objPool->GetObstacle(ENEMY);
 		sprite->getTransform()->position = glm::vec2(x, y);
-		m_y = 524;
+		m_y = ENEMYY;
 		break;
 	case 4:
 		std::cout << "Get Random Obstacle - Obstacle1" << std::endl;
@@ -96,8 +99,7 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		std::cout << "Get Random Obstacle - Obstacle6" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE6);
 		sprite->getTransform()->position = glm::vec2(x, y);
-		break;
-	}
+	
 
 	m_obstacle = sprite;
 	return sprite;

@@ -59,20 +59,23 @@ void EndScene::start()
 	m_pBackground = new Background("../Assets/backgrounds/startscene.png", "startscene-background", BACKGROUND, glm::vec2(0, 0), true);
 	addChild(m_pBackground);
 
+	int windowWidth = TheGame::Instance()->getWindowWidth();
+	int windowHeight = TheGame::Instance()->getWindowHeight();
+
 	const SDL_Color Metallicgold = { 212,175, 55, 0 };
-	m_label = new Label("END SCENE", "galaxy_1", 100, Metallicgold, glm::vec2(576.0f, 120.0f));
+	m_label = new Label("END SCENE", "galaxy_1", 100, Metallicgold, glm::vec2(windowWidth/2, windowHeight / 6));
 	m_label->setParent(this);
 	addChild(m_label);
 
 	//Score Board
 	const SDL_Color color = { 225, 180, 0, 225 };
-	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 150, color, glm::vec2(576.0f, 250.0f));;
+	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 150, color, glm::vec2(windowWidth / 2, windowHeight / 3));;
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
 
 	// Restart Button
 	m_pRestartButton = new Button("../Assets/Menu Asset/play-again.png", "restartButton", RESTART_BUTTON);
-	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 400.0f);
+	m_pRestartButton->getTransform()->position = glm::vec2(windowWidth/2, windowHeight / 2 + 50);
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);
@@ -93,7 +96,7 @@ void EndScene::start()
 
 	//Exit button
 	m_pExitButton = new Button("../Assets/Menu Asset/Exit_BTN.png", "exitButton", EXIT_BUTTON);
-	m_pExitButton->getTransform()->position = glm::vec2(576.0f, 550.0f);
+	m_pExitButton->getTransform()->position = glm::vec2(windowWidth / 2, windowHeight / 2 + 200);
 	m_pExitButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pExitButton->setActive(false);

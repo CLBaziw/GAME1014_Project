@@ -234,6 +234,8 @@ void PlayScene::start()
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
 	}
 
+	int windowHeight = TheGame::Instance()->getWindowHeight();
+
 	// Background 
 	addChild(m_pBackground);
 	// Object Pool
@@ -247,7 +249,7 @@ void PlayScene::start()
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
-	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0), "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));;
+	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0), "Playbill", 60, yellow, glm::vec2(1000.0f, 80.0f));
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
 
@@ -262,12 +264,12 @@ void PlayScene::start()
 	m_numSpaces = 3;
 	for (int i = 0; i < 10; i++)
 	{
-		m_vec.push_back(new Box(128 * i, 520));
+		m_vec.push_back(new Box(128 * i, windowHeight - 180));
 	}
 	m_pPlayer->SetJumping(false);
 
 	//Ground
-	m_ground = new ground(0, 588);
+	m_ground = new ground(0, windowHeight - 120);
 	addChild(m_ground);
 
 	// Bullets
@@ -640,7 +642,7 @@ void PlayScene::MakeObstacles()
 		m_numSpaces++;
 
 		// Add new box.
-		if (m_numSpaces >= 3) // Add new sprite if there has been enough spaces.
+		if (m_numSpaces >= 4) // Add new sprite if there has been enough spaces.
 		{
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 
