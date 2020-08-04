@@ -123,6 +123,7 @@ void LevelSelectScene::start()
 	m_pLevelThreeButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelThreeButton->setActive(false);
+		TheGame::Instance()->setLevel(2);
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
