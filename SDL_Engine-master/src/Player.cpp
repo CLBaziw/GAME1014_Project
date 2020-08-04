@@ -21,7 +21,7 @@ Player::Player() : m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	getTransform()->m_dst.h = 70.0f;*/
 
 
-	getTransform()->position = glm::vec2(100.0f, 500.0f);
+	getTransform()->position = glm::vec2(100.0f, 720.0f);
 	//getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	//getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 

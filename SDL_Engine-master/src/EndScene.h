@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Background.h"
 #include "ScoreBoard.h"
+#include "PlayScene.h"
 
 
 class EndScene final : public Scene
