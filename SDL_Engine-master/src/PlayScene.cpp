@@ -224,8 +224,6 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-	//moveBackground();
-
 	//Differentiate between levels
 	if (TheGame::Instance()->getLevel() == 0)
 	{
@@ -237,9 +235,9 @@ void PlayScene::start()
 	}
 
 	int windowHeight = TheGame::Instance()->getWindowHeight();
-
 	// Background 
 	addChild(m_pBackground);
+
 	// Object Pool
 	m_objPool = new ObjectPool();
 
@@ -277,6 +275,9 @@ void PlayScene::start()
 	// Bullets
 	m_pPlayerBulletVec.reserve(30);
 	m_pEnemyBulletVec.reserve(30);
+
+	// Reset Score for New Level
+	TheGame::Instance()->setScore(0);
 }
 
 void PlayScene::checkCollision()
