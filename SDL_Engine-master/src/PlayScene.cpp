@@ -284,8 +284,6 @@ void PlayScene::checkCollision()
 	}
 	#pragma endregion
 
-	m_pScoreBoard->PLayerScore += 1;
-
 	#pragma region // Obstacles check
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
@@ -338,11 +336,6 @@ void PlayScene::checkCollision()
 				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]))
 				{
 					std::cout << "Player killed enemy" << std::endl;
-
-					PlayerScore += 1;
-					m_pScoreBoard->PLayerScore = PlayerScore;
-					m_pScoreBoard->setText("Score:" + std::to_string(PlayerScore));
-					m_pScoreBoard->PLayerScore++;
 
 					// Remove enemy
 					m_pObstacles[i]->DeactivateSprite();
@@ -428,7 +421,7 @@ void PlayScene::ScrollBgGround()
 	{
 		m_pBackground->getTransform()->position.x = 1600;
 	}
-	
+	m_pScoreBoard->setPlayerScore(m_pScoreBoard->getPlayerScore() + 1);
 
 	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
 

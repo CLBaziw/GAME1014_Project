@@ -75,7 +75,6 @@ private:
 	float x;
 	float y;
 	int cooldown_specialskill =0;
-	int PlayerScore;
 };
 
 #endif /* defined (__PLAY_SCENE__) */
