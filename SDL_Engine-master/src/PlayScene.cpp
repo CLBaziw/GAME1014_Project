@@ -5,6 +5,9 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 
+#include <iostream>
+#include <fstream>
+#include <string>
 
 #define ENEMYSIGHT 320
 #define FPS 60
@@ -222,22 +225,27 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-	//moveBackground();
+	int windowHeight = TheGame::Instance()->getWindowHeight();
+	m_level = TheGame::Instance()->getLevel();
 
 	//Differentiate between levels
-	if (TheGame::Instance()->getLevel() == 0)
+	if (m_level == 0)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		// ReadObstacleFile();
+	}
+	else if(m_level == 1)
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		// ReadObstacleFile();
 	}
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
 	}
-
-	int windowHeight = TheGame::Instance()->getWindowHeight();
-
 	// Background 
 	addChild(m_pBackground);
+	
 	// Object Pool
 	m_objPool = new ObjectPool();
 
@@ -653,7 +661,8 @@ void PlayScene::MakeObstacles()
 		{
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 
-			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
+			m_pObstacles.push_back(m_vec.back()->GetObstacle(m_objPool, m_vec.back()->GetX(), 536, m_level, m_numObstacles, m_pReadObstacles));
+			m_numObstacles++;
 
 			if (m_pObstacles.size() > 4 && m_pObstacles[0] != nullptr)
 			{
@@ -775,4 +784,40 @@ void PlayScene::gameOver()
 	GameOver = true;
 
 	TheGame::Instance()->changeSceneState(END_SCENE);
+}
+
+void PlayScene::ReadObstacleFile()
+{
+	int i = 0;
+	if (m_level == 0)
+	{
+		std::ifstream FileOne("../Assets/obstacles1.txt");
+
+		if (!FileOne.is_open())
+		{
+			std::cout << "Open file has been errored!" << std::endl;
+		}
+
+		while (!FileOne.eof())
+		{
+			FileOne >> m_pReadObstacles[i];
+			i++;
+
+			std::cout << m_pReadObstacles[i] << std::endl;
+		}
+	}
+	else
+	{
+		std::ifstream FileTwo("../Assets/obstacles2.txt");
+
+		while (!FileTwo.eof())
+		{
+			FileTwo >> m_pReadObstacles[i];
+			i++;
+
+			std::cout << m_pReadObstacles[i] << std::endl;
+		}
+	}
+
+	
 }

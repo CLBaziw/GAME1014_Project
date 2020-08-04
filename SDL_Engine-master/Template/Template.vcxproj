@@ -252,6 +252,9 @@
     <Image Include="..\Assets\sprites\gamesprite.png" />
     <Image Include="..\Assets\sprites\predator.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\src\obstacles1.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

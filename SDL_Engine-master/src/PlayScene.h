@@ -34,6 +34,7 @@ public:
 	void MakeObstacles();
 	void EnemyShoot();
 	void gameOver();
+	void ReadObstacleFile();
 	bool Shoted;
 	//void moveBackground();
 
@@ -54,6 +55,9 @@ private:
 	std::vector<Box*> m_vec;
 	std::vector<Obstacle*> m_pObstacles;
 	int m_numSpaces;
+	std::vector<int> m_pReadObstacles;
+	int m_numObstacles;
+
 	int PlayerHealth;
 
 	bool GameOver;
@@ -65,6 +69,8 @@ private:
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
+
+	int m_level;
 
 	// movement for character
 	int moveX = 0;
