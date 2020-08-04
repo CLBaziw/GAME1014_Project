@@ -12,6 +12,7 @@
 #define ENEMYSIGHT 320
 #define FPS 60
 #define BGSCROLL 2
+#define KILLENEMYSCORE 10
 
 PlayScene::PlayScene()
 {
@@ -43,6 +44,7 @@ void PlayScene::update()
 	ScrollBgGround();
 	checkCollision();
 	EnemyShoot();
+	UpdateScoreBoard();
 }
 
 void PlayScene::clean()
@@ -239,6 +241,10 @@ void PlayScene::start()
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
 		// ReadObstacleFile();
 	}
+	else if(TheGame::Instance()->getLevel() == 1)
+	{
+		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+	}
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
@@ -252,8 +258,8 @@ void PlayScene::start()
 	//Health
 	PlayerHealth = 100;
 	const SDL_Color yellow1 = { 255, 255, 0, 255 };
-	Health = new ScoreBoard("Health:" + std::to_string(PlayerHealth), "Playbill", 60, yellow1, glm::vec2(100.0f, 80.0f));;
-	addChild(Health);
+	m_pHealth = new ScoreBoard("Health:" + std::to_string(PlayerHealth), "Playbill", 60, yellow1, glm::vec2(100.0f, 80.0f));;
+	addChild(m_pHealth);
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
@@ -283,10 +289,15 @@ void PlayScene::start()
 	// Bullets
 	m_pPlayerBulletVec.reserve(30);
 	m_pEnemyBulletVec.reserve(30);
+
+	// Reset Score for New Level
+	TheGame::Instance()->setScore(0);
 }
 
 void PlayScene::checkCollision()
 {
+	int score = TheGame::Instance()->getScore();
+
 	int playerX = m_pPlayer->getTransform()->position.x;
 	int playerY = m_pPlayer->getTransform()->position.y;
 	int halfPlayerWidth = m_pPlayer->getWidth() * 0.5;
@@ -301,8 +312,6 @@ void PlayScene::checkCollision()
 		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
 	}
 #pragma endregion
-
-	m_pScoreBoard->PLayerScore += 1;
 
 	#pragma region // Obstacles check
 	for (int i = 0; i < m_pObstacles.size(); i++)
@@ -341,37 +350,14 @@ void PlayScene::checkCollision()
 				if (PlayerHealth > 0)
 				{
 					PlayerHealth -= 100 / 4;
-					Health->setText("Score:" + std::to_string(PlayerHealth));
 				}
 				else if (PlayerHealth == 0)
 				{
 					gameOver();
 				}
-				//PlayerDeath();
 			}
 
-			// Check for bullet with enemy
-			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
-			{
-
-				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]) && m_pObstacles[i]->getActive())
-				{
-					std::cout << "Player killed enemy" << std::endl;
-
-					// Remove enemy
-
-					/*m_pObstacles[i]->setAnimationState(ENEMY_DIE_RIGHT);*/
-					m_pObstacles[i]->DeactivateSprite();
-					m_pObstacles[i] = nullptr;
-					m_pObstacles.erase(m_pObstacles.begin() + i);
-					// Remove bullet
-
-					m_pPlayerBulletVec[j]->DeactivateSprite();
-					m_pPlayerBulletVec[j] = nullptr;
-					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
-
-				}
-			}
+			BulletCheck(i, score);
 			break;
 		}
 		case OBSTACLE4:
@@ -382,7 +368,6 @@ void PlayScene::checkCollision()
 				if (PlayerHealth > 0)
 				{
 					PlayerHealth -= 100 / 4;
-					Health->setText("Score:" + std::to_string(PlayerHealth));
 				}
 				else if (PlayerHealth == 0)
 				{
@@ -391,28 +376,7 @@ void PlayScene::checkCollision()
 				//PlayerDeath();
 			}
 
-			// Check for bullet with enemy
-			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
-			{
-
-				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]) && m_pObstacles[i]->getActive())
-				{
-					std::cout << "Player killed enemy" << std::endl;
-
-					// Remove enemy
-
-					/*m_pObstacles[i]->setAnimationState(ENEMY_DIE_RIGHT);*/
-					m_pObstacles[i]->DeactivateSprite();
-					m_pObstacles[i] = nullptr;
-					m_pObstacles.erase(m_pObstacles.begin() + i);
-					// Remove bullet
-
-					m_pPlayerBulletVec[j]->DeactivateSprite();
-					m_pPlayerBulletVec[j] = nullptr;
-					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
-
-				}
-			}
+			BulletCheck(i, score);
 			break;
 		}
 		case OBSTACLE5:
@@ -423,7 +387,7 @@ void PlayScene::checkCollision()
 				if (PlayerHealth > 0)
 				{
 					PlayerHealth -= 100 / 4;
-					Health->setText("Score:" + std::to_string(PlayerHealth));
+					m_pHealth->setText("Score:" + std::to_string(PlayerHealth));
 				}
 				else if (PlayerHealth == 0)
 				{
@@ -432,33 +396,7 @@ void PlayScene::checkCollision()
 				//PlayerDeath();
 			}
 
-			// Check for bullet with enemy
-			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
-			{
-
-				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]) && m_pObstacles[i]->getActive())
-				{
-					std::cout << "Player killed enemy" << std::endl;
-
-					PlayerScore += 1;
-					m_pScoreBoard->PLayerScore = PlayerScore;
-					m_pScoreBoard->setText("Score:" + std::to_string(PlayerScore));
-					m_pScoreBoard->PLayerScore++;
-
-					// Remove enemy
-
-					/*m_pObstacles[i]->setAnimationState(ENEMY_DIE_RIGHT);*/
-					m_pObstacles[i]->DeactivateSprite();
-					m_pObstacles[i] = nullptr;
-					m_pObstacles.erase(m_pObstacles.begin() + i);
-					// Remove bullet
-
-					m_pPlayerBulletVec[j]->DeactivateSprite();
-					m_pPlayerBulletVec[j] = nullptr;
-					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
-
-				}
-			}
+			BulletCheck(i, score);
 			break;
 		}
 		case OBSTACLE6:
@@ -469,7 +407,6 @@ void PlayScene::checkCollision()
 				if (PlayerHealth > 0)
 				{
 					PlayerHealth -= 100 / 4;
-					Health->setText("Score:" + std::to_string(PlayerHealth));
 				}
 				else if (PlayerHealth == 0)
 				{
@@ -478,28 +415,7 @@ void PlayScene::checkCollision()
 				//PlayerDeath();
 			}
 
-			// Check for bullet with enemy
-			for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
-			{
-
-				if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]) && m_pObstacles[i]->getActive())
-				{
-					std::cout << "Player killed enemy" << std::endl;
-
-					// Remove enemy
-
-					/*m_pObstacles[i]->setAnimationState(ENEMY_DIE_RIGHT);*/
-					m_pObstacles[i]->DeactivateSprite();
-					m_pObstacles[i] = nullptr;
-					m_pObstacles.erase(m_pObstacles.begin() + i);
-					// Remove bullet
-
-					m_pPlayerBulletVec[j]->DeactivateSprite();
-					m_pPlayerBulletVec[j] = nullptr;
-					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
-
-				}
-			}
+			BulletCheck(i, score);
 			break;
 		}
 		case OBSTACLE1:
@@ -509,7 +425,6 @@ void PlayScene::checkCollision()
 				if (PlayerHealth > 0)
 				{
 					PlayerHealth -= 100 / 4;
-					Health->setText("Score:" + std::to_string(PlayerHealth));
 				}
 				else if (PlayerHealth == 0)
 				{
@@ -547,7 +462,6 @@ void PlayScene::checkCollision()
 			if (PlayerHealth > 0)
 			{
 				PlayerHealth -= 100 / 4;
-				Health->setText("Score:" + std::to_string(PlayerHealth));
 			}
 			// Remove bullet
 			m_pEnemyBulletVec[i]->setActive(false);
@@ -647,6 +561,12 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 		}
 	}
 #pragma endregion 
+}
+
+void PlayScene::UpdateScoreBoard()
+{
+	m_pHealth->setText("Health:" + std::to_string(PlayerHealth));
+	m_pScoreBoard->setText("Score:" + std::to_string(TheGame::Instance()->getScore()));
 }
 
 void PlayScene::MakeObstacles()
@@ -779,8 +699,8 @@ void PlayScene::EnemyShoot()
 void PlayScene::gameOver()
 {
 	const SDL_Color yellow1 = { 255, 255, 0, 255 };
-	GameOverText = new ScoreBoard("Game Over", "Playbill", 90, yellow1, glm::vec2(500.0f, 300.0f));;
-	addChild(GameOverText);
+	m_pGameOverText = new ScoreBoard("Game Over", "Playbill", 90, yellow1, glm::vec2(500.0f, 300.0f));;
+	addChild(m_pGameOverText);
 	GameOver = true;
 
 	TheGame::Instance()->changeSceneState(END_SCENE);
@@ -820,4 +740,27 @@ void PlayScene::ReadObstacleFile()
 	}
 
 	
+void PlayScene::BulletCheck(int i, int score)
+{
+	// Check for bullet with enemy
+	for (int j = 0; j < m_pPlayerBulletVec.size(); j++)
+	{
+
+		if (COMA::squaredRadiusCheck(m_pObstacles[i], m_pPlayerBulletVec[j]) && m_pObstacles[i]->getActive())
+		{
+			// Score
+			TheGame::Instance()->setScore(score + KILLENEMYSCORE);
+
+			// Remove enemy
+			m_pObstacles[i]->DeactivateSprite();
+			m_pObstacles[i] = nullptr;
+			m_pObstacles.erase(m_pObstacles.begin() + i);
+
+			// Remove bullet
+			m_pPlayerBulletVec[j]->DeactivateSprite();
+			m_pPlayerBulletVec[j] = nullptr;
+			m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
+
+		}
+	}
 }
