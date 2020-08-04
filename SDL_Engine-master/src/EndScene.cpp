@@ -67,9 +67,10 @@ void EndScene::start()
 	m_label->setParent(this);
 	addChild(m_label);
 
+
 	//Score Board
 	const SDL_Color color = { 225, 180, 0, 225 };
-	m_pScoreBoard = new ScoreBoard("Score:", "Playbill", 150, color, glm::vec2(windowWidth / 2, windowHeight / 3));;
+	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(PlayerScore), "Playbill", 150, color, glm::vec2(576.0f, 250.0f));
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
 
@@ -79,7 +80,7 @@ void EndScene::start()
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(LEVELSELECT_SCENE);
 	});
 
 	m_pRestartButton->addEventListener(MOUSE_OVER, [&]()->void
