@@ -8,7 +8,7 @@
 class Bullet : public Sprite
 {
 public:
-	Bullet(float xPos, float yPos, bool bulletType, BulletAnimationState bulletState);
+	Bullet(float xPos, float yPos, /*bool bulletType*/ BulletType bulletType, BulletAnimationState bulletState);
 	~Bullet();
 
 	// Life Cycle Methods
@@ -22,11 +22,14 @@ public:
 private: 
 	int m_speed;
 	bool m_active;
-	bool m_playerBullet;
+	//bool m_playerBullet;
+	BulletType m_BulletType;
 
 	SDL_Rect m_rDst;
 
 	void m_buildAnimations();
 	BulletAnimationState m_currentAnimationState;
+
+	
 };
 #endif

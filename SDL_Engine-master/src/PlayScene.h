@@ -6,13 +6,13 @@
 #include "Player.h"
 #include "Button.h"
 #include "Bullet.h"
-//#include "EnemyBullet.h"
 #include "Background.h"
 #include "Box.h"
 #include <vector>
 #include "ground.h"
 #include "Obstacle.h"
 #include "Scoreboard.h"
+#include "Enemy.h"
 #include "ObjectPool.h"
 
 class PlayScene : public Scene
@@ -27,27 +27,35 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
- 
 	void checkCollision();
 
-	void PlayerShoot();
+	void ScrollBgGround();
+	void PlayerShoot(BulletType bulletType);
 	void MakeObstacles();
 	void EnemyShoot();
+	void gameOver();
+	//void moveBackground();
 
 private:
 	glm::vec2 m_mousePosition;
 
-	Player* m_pPlayer;
 	Background* m_pBackground;
-	ground* m_ground;
+	Background* m_pBackground2;
 	ScoreBoard* m_pScoreBoard;
+	ScoreBoard* Health;
+	ScoreBoard* GameOverText;
+	Player* m_pPlayer;
+	ground* m_ground;
 
+	float GameOverTimer;
 	// Boxes for scrolling
 	ObjectPool* m_objPool;
 	std::vector<Box*> m_vec;
 	std::vector<Obstacle*> m_pObstacles;
 	int m_numSpaces;
+	int PlayerHealth;
 
+	bool GameOver;
 	bool m_playerFacingRight;
 	/*bool m_enemyFacingRight;*/
 
@@ -56,16 +64,18 @@ private:
 
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
-	
 
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
 	int moveSpeed = 10;
-
-	int m_bulletTimer = 0,
-		m_timerMax = 35;
-
+	bool CanFire;
+	float m_bulletTimer = 0,
+		m_timerMax = 100;
+	float x;
+	float y;
+	int cooldown_specialskill =0;
+	int PlayerScore;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

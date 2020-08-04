@@ -92,5 +92,10 @@
     <Image Include="..\Assets\sprites\gamesprite.png" />
     <Image Include="..\Assets\sprites\beam_Right_.png" />
     <Image Include="..\Assets\sprites\enemybullet.png" />
+    <Image Include="..\Assets\sprites\Dobstacles.png" />
+    <Image Include="..\Assets\sprites\alien.png" />
+    <Image Include="..\Assets\sprites\predator.png" />
+    <Image Include="..\Assets\plat\hazard.png" />
+    <Image Include="..\Assets\sprites\Fireball_Sheet.png" />
   </ItemGroup>
 </Project>

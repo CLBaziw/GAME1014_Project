@@ -75,6 +75,7 @@ void LevelSelectScene::start()
 	m_pLevelOneButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelOneButton->setActive(false);
+		TheGame::Instance()->setLevel(0);
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
@@ -97,6 +98,7 @@ void LevelSelectScene::start()
 	m_pLevelTwoButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelTwoButton->setActive(false);
+		TheGame::Instance()->setLevel(1);
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
@@ -135,8 +137,6 @@ void LevelSelectScene::start()
 
 
 	SoundManager::Instance().playMusic("startScreen");
-
-	
 }
 
 

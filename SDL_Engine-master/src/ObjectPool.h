@@ -5,7 +5,9 @@
 #include "GameObject.h"
 #include "GameObjectType.h"
 #include "Obstacle.h"
+#include "Bullet.h"
 #include <vector>
+
 
 class ObjectPool
 {
@@ -15,10 +17,13 @@ public:
 
 	void UpdateActiveSprites();
 	void DrawActiveSprites();
+	void DisplayActiveList();
 	Obstacle* GetObstacle(GameObjectType newObj);
+	Bullet* GetBullet(BulletType bullType);
 private:
-	std::vector<Obstacle*> m_activeObstacles;
 	std::vector<Obstacle*> m_poolObstacles;
+	std::vector<Bullet*> m_poolPlayerBullets;
+	std::vector<Bullet*> m_poolEnemyBullets;
 };
 
 #endif

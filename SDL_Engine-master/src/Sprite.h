@@ -18,6 +18,8 @@ public:
 	virtual void update() = 0;
 	virtual void clean() = 0;
 
+	void DeactivateSprite();
+
 	// getters
 	SpriteSheet* getSpriteSheet();
 	Animation& getAnimation(const std::string& name);
@@ -27,6 +29,7 @@ public:
 	void setAnimation(const Animation& animation);
 
 private:
+
 	// private utility functions
 	bool m_animationExists(const std::string& id);
 

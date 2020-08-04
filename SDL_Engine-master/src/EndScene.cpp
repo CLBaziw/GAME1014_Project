@@ -72,11 +72,11 @@ void EndScene::start()
 
 	// Restart Button
 	m_pRestartButton = new Button("../Assets/Menu Asset/play-again.png", "restartButton", RESTART_BUTTON);
-	m_pRestartButton->getTransform()->position = glm::vec2(576.0f, 400.0f);
+	m_pRestartButton->getTransform()->position = glm::vec2(300.0f, 450.0f);
 	m_pRestartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pRestartButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(LEVELSELECT_SCENE);
 	});
 
 	m_pRestartButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -93,7 +93,7 @@ void EndScene::start()
 
 	//Exit button
 	m_pExitButton = new Button("../Assets/Menu Asset/Exit_BTN.png", "exitButton", EXIT_BUTTON);
-	m_pExitButton->getTransform()->position = glm::vec2(576.0f, 550.0f);
+	m_pExitButton->getTransform()->position = glm::vec2(852.0f, 450.0f);
 	m_pExitButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pExitButton->setActive(false);

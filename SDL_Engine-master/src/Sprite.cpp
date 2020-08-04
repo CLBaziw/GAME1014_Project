@@ -5,7 +5,13 @@ Sprite::Sprite()
 }
 
 Sprite::~Sprite()
-= default;
+       = default;
+
+void Sprite::DeactivateSprite()
+{
+	setActive(false);
+	getTransform()->position = glm::vec2(0, 0);
+}
 
 SpriteSheet* Sprite::getSpriteSheet()
 {

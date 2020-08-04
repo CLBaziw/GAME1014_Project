@@ -24,7 +24,7 @@ public:
 	// setters
 	void setAnimationState(PlayerAnimationState new_state);
 	void setPosition(float x, float y);
-
+	int Playerscore;
 	// Movement
 	void Stop();
 	void StopX();
@@ -53,6 +53,7 @@ private:
 	float m_maxVelX, m_maxVelY, m_drag, m_grav;
 	int maxHp = 300; // set hero hit point
 	int currentHp = 300;
+	
 };
 
 #endif /* defined (__PLAYER__) */
