@@ -333,42 +333,7 @@ void PlayScene::checkCollision()
 		}
 		case PREDATOR:
 		case ENEMY:
-		{
-			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]) && m_pObstacles[i]->getActive()) // Player and enemy collide
-			{
-				std::cout << "Player and enemy collide" << std::endl;
-				if (PlayerHealth > 0)
-				{
-					PlayerHealth -= 100 / 4;
-				}
-				else if (PlayerHealth == 0)
-				{
-					gameOver();
-				}
-			}
-
-			BulletCheck(i, score);
-			break;
-		}
 		case OBSTACLE4:
-		{
-			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]) && m_pObstacles[i]->getActive()) // Player and enemy collide
-			{
-				std::cout << "Player and enemy collide" << std::endl;
-				if (PlayerHealth > 0)
-				{
-					PlayerHealth -= 100 / 4;
-				}
-				else if (PlayerHealth == 0)
-				{
-					gameOver();
-				}
-				//PlayerDeath();
-			}
-
-			BulletCheck(i, score);
-			break;
-		}
 		case OBSTACLE5:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]) && m_pObstacles[i]->getActive()) // Player and enemy collide
@@ -377,19 +342,18 @@ void PlayScene::checkCollision()
 				if (PlayerHealth > 0)
 				{
 					PlayerHealth -= 100 / 4;
-					m_pHealth->setText("Score:" + std::to_string(PlayerHealth));
 				}
 				else if (PlayerHealth == 0)
 				{
 					gameOver();
 				}
-				//PlayerDeath();
 			}
 
 			BulletCheck(i, score);
 			break;
 		}
 		case OBSTACLE6:
+		case OBSTACLE1:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]) && m_pObstacles[i]->getActive()) // Player and enemy collide
 			{
@@ -403,24 +367,6 @@ void PlayScene::checkCollision()
 					gameOver();
 				}
 				//PlayerDeath();
-			}
-
-			BulletCheck(i, score);
-			break;
-		}
-		case OBSTACLE1:
-		{
-			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]))
-			{
-				if (PlayerHealth > 0)
-				{
-					PlayerHealth -= 100 / 4;
-				}
-				else if (PlayerHealth == 0)
-				{
-					gameOver();
-				}
-
 			}
 
 			break;
