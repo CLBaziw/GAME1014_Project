@@ -61,6 +61,8 @@ public:
 
 	void setLevel(int level);
 	int getLevel();
+	void setScore(int score);
+	int getScore();
 
 private:
 	Game();
@@ -83,6 +85,7 @@ private:
 	int m_windowHeight;
 
 	int m_level;
+	int m_score;
 };
 
 typedef Game TheGame;

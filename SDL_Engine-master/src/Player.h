@@ -39,7 +39,7 @@ public:
 	// Shooting
 	bool isShooting();
 	void SetShooting(bool s);
-
+	bool Shoted;
 	void setDst();
 	SDL_FRect& getDst();
 
@@ -53,6 +53,7 @@ private:
 	float m_maxVelX, m_maxVelY, m_drag, m_grav;
 	int maxHp = 300; // set hero hit point
 	int currentHp = 300;
+	
 };
 
 #endif /* defined (__PLAYER__) */
