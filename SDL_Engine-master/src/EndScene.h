@@ -32,8 +32,6 @@ private:
 	Background* m_pBackground;
 
 	ScoreBoard* m_pScoreBoard;
-
-	int PlayerScore;
 };
 
 #endif /* defined (__END_SCENE__) */
