@@ -5,7 +5,11 @@ enum MouseButtons
 {
     LEFT,
     MIDDLE,
-    RIGHT
+    RIGHT,
+    LeftUp,
+    LeftDown,
+    RIGHTUp,
+    RIGHTDown
 };
 
 #endif /* defined (__MOUSE_BUTTONS__) */

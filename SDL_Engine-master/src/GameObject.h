@@ -29,7 +29,7 @@ public:
 	Transform* getTransform();
 	// getters and setters for physics properties
 	RigidBody* getRigidBody();
-	
+
 	// getters and setters for game object properties
 	int getWidth() const;
 	int getHeight() const;
@@ -39,11 +39,11 @@ public:
 	void setType(GameObjectType new_type);
 	bool getActive();
 	void setActive(bool active);
-
+	bool m_bActive;
 private:
 	// transform component
 	Transform m_transform;
-	
+
 	// rigid body component
 	RigidBody m_rigidBody;
 
@@ -53,7 +53,7 @@ private:
 
 	GameObjectType m_type;
 
-	bool m_bActive;
+
 };
 
 #endif /* defined (__GAME_OBJECT__) */
