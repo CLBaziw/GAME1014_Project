@@ -31,9 +31,6 @@ void StartScene::clean()
 	delete m_pStartLabel;
 	m_pStartLabel = nullptr;
 
-	delete m_pInstructionsLabel;
-	m_pInstructionsLabel = nullptr;
-
 	delete m_pShip;
 	m_pShip = nullptr;
 
@@ -51,11 +48,6 @@ void StartScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		TheGame::Instance()->quit();
-	}
-
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
-	{
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	}
 }
 
@@ -77,10 +69,6 @@ void StartScene::start()
 	m_pNameLabel = new Label("ENTITY", "galaxy_1", 150, Metallicgold, glm::vec2(windowWidth / 2, windowHeight / 4));
 	m_pNameLabel->setParent(this);
 	addChild(m_pNameLabel);
-
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Playbill", 60, Metallicgold, glm::vec2(windowWidth/4, windowHeight /2));
-	m_pInstructionsLabel->setParent(this);
-	addChild(m_pInstructionsLabel);
 
 	m_pShip = new Ship();
 	m_pShip->getTransform()->position = glm::vec2(windowWidth /2 , windowHeight /2);
