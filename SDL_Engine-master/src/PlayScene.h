@@ -31,10 +31,11 @@ public:
 
 	void ScrollBgGround();
 	void PlayerShoot(BulletType bulletType);
+	void UpdateScoreBoard();
 	void MakeObstacles();
 	void EnemyShoot();
 	void gameOver();
-	bool Shoted;
+	void BulletCheck(int i, int score);
 	//void moveBackground();
 
 private:
@@ -43,8 +44,8 @@ private:
 	Background* m_pBackground;
 	Background* m_pBackground2;
 	ScoreBoard* m_pScoreBoard;
-	ScoreBoard* Health;
-	ScoreBoard* GameOverText;
+	ScoreBoard* m_pHealth;
+	ScoreBoard* m_pGameOverText;
 	Player* m_pPlayer;
 	ground* m_ground;
 
@@ -57,6 +58,7 @@ private:
 	int PlayerHealth;
 
 	bool GameOver;
+	bool Shoted;
 	bool m_playerFacingRight;
 	/*bool m_enemyFacingRight;*/
 
@@ -75,7 +77,7 @@ private:
 		m_timerMax = 100;
 	float x;
 	float y;
-	int cooldown_specialskill = 0;
+	int cooldown_specialskill =0;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

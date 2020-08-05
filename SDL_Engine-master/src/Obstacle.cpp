@@ -202,17 +202,17 @@ void Obstacle::draw()
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 				x, y, 0.12f, 0, 255, true);
 			break;
+		case ENEMY_RUN_RIGHT:
+			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
+				x, y, 0.12f, 0, 255, true);
+			break;
 		case ENEMY_IDLE_LEFT:
 			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-idle"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
-		case ENEMY_DIE_LEFT:
-			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-death"),
+		case ENEMY_RUN_LEFT:
+			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-run"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
-			break;
-		case ENEMY_DIE_RIGHT:
-			TextureManager::Instance()->playAnimation("alien", getAnimation("enemy-death"),
-				x, y, 0.12f, 0, 255, true);
 			break;
 		}
 		break;
@@ -223,8 +223,16 @@ void Obstacle::draw()
 			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-idle"),
 				x, y, 0.12f, 0, 255, true);
 			break;
+		case PREDATOR_RUN_RIGHT:
+			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-run"),
+				x, y, 0.12f, 0, 255, true);
+			break;
 		case PREDATOR_IDLE_LEFT:
 			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-idle"),
+				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			break;
+		case PREDATOR_RUN_LEFT:
+			TextureManager::Instance()->playAnimation("predator", getAnimation("predator-run"),
 				x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 			break;
 		}
@@ -239,10 +247,12 @@ void Obstacle::update()
 	if (getType() == ENEMY)
 	{
 		// Update enemy
+		setAnimationState(ENEMY_RUN_LEFT);
 	}
 	else if (getType() == PREDATOR)
 	{
 		// Update predator
+		setAnimationState(PREDATOR_RUN_LEFT);
 	}
 }
 

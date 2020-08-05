@@ -34,7 +34,6 @@ void Box::Update()
 	{
 		m_obstacle->getTransform()->position = glm::vec2(m_x, m_y);
 	}
-
 }
 
 void Box::Render()
@@ -53,7 +52,7 @@ Obstacle* Box::GetSprite()
 
 Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 {
-	int randNumber = 1 + (rand() % 7);
+	int randNumber = (rand() % 8) + 1;
 
 	Obstacle* sprite = nullptr;
 
@@ -66,8 +65,6 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		m_y = PLATFORMY;
 		break;
 	case 2:
-		// std::cout << "Get Random Obstacle - Enemy" << std::endl;
-		// sprite = objPool->GetObstacle(ENEMY);
 		std::cout << "Get Random Obstacle - Predator" << std::endl;
 		sprite = objPool->GetObstacle(PREDATOR);
 		sprite->getTransform()->position = glm::vec2(x, y);
@@ -80,27 +77,31 @@ Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
 		m_y = ENEMYY;
 		break;
 	case 4:
+	case 8:
 		std::cout << "Get Random Obstacle - Obstacle1" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE1);
 		sprite->getTransform()->position = glm::vec2(x, y);
-		m_y = 578;
+		m_y = SPIKEY;
 		break;
 	case 5:
 		std::cout << "Get Random Obstacle - Obstacle4" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE4);
 		sprite->getTransform()->position = glm::vec2(x, y);
+		m_y = SPIKEY;
 		break;
 	case 6:
 		std::cout << "Get Random Obstacle - Obstacle5" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE5);
 		sprite->getTransform()->position = glm::vec2(x, y);
+		m_y = SPIKEY;
 		break;
 	case 7:
 		std::cout << "Get Random Obstacle - Obstacle6" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE6);
 		sprite->getTransform()->position = glm::vec2(x, y);
-	
-
+		m_y = SPIKEY;
+		break;
+	}
 	m_obstacle = sprite;
 	return sprite;
 }
