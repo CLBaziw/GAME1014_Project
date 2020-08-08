@@ -98,4 +98,7 @@
     <Image Include="..\Assets\plat\hazard.png" />
     <Image Include="..\Assets\sprites\Fireball_Sheet.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\src\obstacles1.txt" />
+  </ItemGroup>
 </Project>
