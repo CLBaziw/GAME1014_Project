@@ -3,8 +3,6 @@
 #include "Animation.h"
 #include "Game.h"
 
-
-
 Obstacle::Obstacle(GameObjectType obsType)
 {
 	setType(obsType);
