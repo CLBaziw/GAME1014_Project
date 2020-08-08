@@ -3,6 +3,7 @@
 #include"Background.h"
 
 #include <iostream>
+#include <fstream>
 
 #define SCROLLSPD 2.6
 
@@ -50,13 +51,22 @@ Obstacle* Box::GetSprite()
 	return m_obstacle;
 }
 
-Obstacle* Box::GetRandomObstacle(ObjectPool* objPool, int x, int y)
+Obstacle* Box::GetObstacle(ObjectPool* objPool, int x, int y, int level, int obsNum, std::vector<int> obs)
 {
-	int randNumber = (rand() % 8) + 1;
+	int num;
+
+	if (level < 2) // Level 3 is infinite with random spawning obstacles
+	{
+		num = obs[obsNum];
+	}
+	else 
+	{
+		num = (rand() % 6) + 1;
+	}
 
 	Obstacle* sprite = nullptr;
 
-	switch (randNumber)
+	switch (num)
 	{
 	case 1:
 		std::cout << "Get Random Obstacle - Platform" << std::endl;

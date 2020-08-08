@@ -22,6 +22,6 @@ public:
 	int GetX();
 	Obstacle* GetSprite();
 
-	Obstacle* GetRandomObstacle(ObjectPool* objPool, int x, int y);
+	Obstacle* GetObstacle(ObjectPool* objPool, int x, int y, int level, int obsNum, std::vector<int> obs);
 };
 #endif
