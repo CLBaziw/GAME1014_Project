@@ -229,21 +229,18 @@ void PlayScene::start()
 {
 	int windowHeight = TheGame::Instance()->getWindowHeight();
 	m_level = TheGame::Instance()->getLevel();
+	m_pReadObstacles.reserve(30);
 
 	//Differentiate between levels
 	if (m_level == 0)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
-		// ReadObstacleFile();
+		ReadObstacleFile();
 	}
 	else if(m_level == 1)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
-		// ReadObstacleFile();
-	}
-	else if(TheGame::Instance()->getLevel() == 1)
-	{
-		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		ReadObstacleFile();
 	}
 	else
 	{
@@ -655,35 +652,49 @@ void PlayScene::gameOver()
 void PlayScene::ReadObstacleFile()
 {
 	int i = 0;
+	int test;
 	if (m_level == 0)
 	{
-		std::ifstream FileOne("../Assets/obstacles1.txt");
+		std::fstream FileOne("../Assets/obstacles1.txt", std::fstream::in);
 
-		if (!FileOne.is_open())
+		if (!FileOne.good())
 		{
 			std::cout << "Open file has been errored!" << std::endl;
 		}
-
-		while (!FileOne.eof())
+		else
 		{
-			FileOne >> m_pReadObstacles[i];
-			i++;
+			while (!FileOne.eof())
+			{
+				FileOne >> test;
+				m_pReadObstacles.push_back(test);
 
-			std::cout << m_pReadObstacles[i] << std::endl;
+				i++;				
+			}
 		}
+
+		FileOne.close();
 	}
 	else
 	{
 		std::ifstream FileTwo("../Assets/obstacles2.txt");
 
-		while (!FileTwo.eof())
+		if (!FileTwo.good())
 		{
-			FileTwo >> m_pReadObstacles[i];
-			i++;
-
-			std::cout << m_pReadObstacles[i] << std::endl;
+			std::cout << "Open file has been errored!" << std::endl;
 		}
+		else
+		{
+			while (!FileTwo.eof())
+			{
+				FileTwo >> test;
+				m_pReadObstacles.push_back(test);
+
+				i++;
+			}
+		}
+		FileTwo.close();
 	}
+}
 
 	
 void PlayScene::BulletCheck(int i, int score)
