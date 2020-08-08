@@ -20,6 +20,7 @@ public:
 	void setAnimationState(ObstacleAnimationState new_state);
 
 	void setPosition(int x, int y);
+	int Health;
 
 private:
 	void m_buildAnimations();

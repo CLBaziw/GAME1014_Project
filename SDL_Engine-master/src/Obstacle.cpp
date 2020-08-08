@@ -68,7 +68,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setWidth(36);
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
-
+		Health = 30;
 		getTransform()->position = glm::vec2(560.0f, 500.0f);
 		break;
 	case OBSTACLE5:
@@ -79,11 +79,11 @@ Obstacle::Obstacle(GameObjectType obsType)
 		);
 
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Dobstacles"));
-
+		//Health = 30;
 		setWidth(36);
 		setHeight(36);
 		m_currentAnimationState = NOT_ENEMY;
-
+		Health = 30;
 		getTransform()->position = glm::vec2(560.0f, 500.0f);
 		break;
 	case OBSTACLE6:
@@ -91,10 +91,11 @@ Obstacle::Obstacle(GameObjectType obsType)
 			"../Assets/sprites/Dobstacles.txt",
 			"../Assets/sprites/Dobstacles.png",
 			"Dobstacles"
+
 		);
 
 		setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Dobstacles"));
-
+		Health = 30;
 		setWidth(36);
 		setHeight(58);
 		m_currentAnimationState = NOT_ENEMY;
@@ -130,6 +131,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setWidth(128);
 		setHeight(128);
 		m_currentAnimationState = ENEMY_IDLE_LEFT;
+		Health = 0;
 
 		break;
 	case PREDATOR:
@@ -143,6 +145,7 @@ Obstacle::Obstacle(GameObjectType obsType)
 		setWidth(128);
 		setHeight(128);
 		m_currentAnimationState = PREDATOR_IDLE_LEFT;
+		Health = 0;
 		break;
 
 

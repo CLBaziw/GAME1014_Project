@@ -8,11 +8,15 @@ ground::ground(float x, float y)
 	{
 		TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
 	}
-	else
+	else if (TheGame::Instance()->getLevel() == 1)
 	{
 		TextureManager::Instance()->load("../Assets/plat/ground2.png", "ground");
 	}
+	else
+	{
+		TextureManager::Instance()->load("../Assets/plat/ground3.png", "ground");
 
+	}
 	//TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
 
 	auto size = TextureManager::Instance()->getTextureSize("ground");
@@ -55,4 +59,9 @@ void ground::update()
 void ground::clean()
 {
 }
+
+//SDL_FRect& ground::getDst()
+//{
+//	// TODO: insert return statement here
+//}
 

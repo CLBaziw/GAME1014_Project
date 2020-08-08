@@ -36,6 +36,16 @@ public:
 	void EnemyShoot();
 	void gameOver();
 	void BulletCheck(int i, int score);
+
+	// shoot Timer
+	float ShootTimer;
+	void CanShoot();
+	// player jump function;
+	bool playerJumping;
+	void PlayerJump();
+	void playerJumpTimer();
+	float playerjumpTime;
+	float Jumpforce;
 	//void moveBackground();
 
 private:
@@ -77,7 +87,7 @@ private:
 		m_timerMax = 100;
 	float x;
 	float y;
-	int cooldown_specialskill =0;
+	int cooldown_specialskill = 0;
 };
 
 #endif /* defined (__PLAY_SCENE__) */
