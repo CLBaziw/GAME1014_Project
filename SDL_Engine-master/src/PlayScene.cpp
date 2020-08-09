@@ -800,6 +800,7 @@ void PlayScene::BulletCheck(int i, int score)
 		}
 	}
 }
+
 void PlayScene::CanShoot()
 {
 	ShootTimer += .1f;

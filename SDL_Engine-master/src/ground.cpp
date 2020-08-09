@@ -18,6 +18,7 @@ ground::ground(float x, float y)
 	}
 	//TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
 
+
 	auto size = TextureManager::Instance()->getTextureSize("ground");
 	//auto size = TextureManager::Instance()->getTextureSize("ground2");
 	setWidth(size.x);
@@ -58,5 +59,6 @@ void ground::update()
 void ground::clean()
 {
 }
+
 
 
