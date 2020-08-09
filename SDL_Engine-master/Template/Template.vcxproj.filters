@@ -97,6 +97,7 @@
     <Image Include="..\Assets\sprites\predator.png" />
     <Image Include="..\Assets\plat\hazard.png" />
     <Image Include="..\Assets\sprites\Fireball_Sheet.png" />
+    <Image Include="..\Assets\sprites\bolt.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\src\obstacles1.txt" />

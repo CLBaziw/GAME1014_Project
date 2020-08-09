@@ -1,0 +1,5 @@
+black-bolt 0 1 47 47
+red-bolt 47 1 47 47
+green-bolt 94 1 47 47
+blue-bolt 0 47 47 47
+blood-bolt 47 47 47 47

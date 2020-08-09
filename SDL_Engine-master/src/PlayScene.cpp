@@ -484,6 +484,13 @@ void PlayScene::ScrollBgGround()
 	{
 		m_ground->getTransform()->position.x = 0.f;
 	}
+
+	// check left-right edge
+	if(m_pPlayer->getTransform()->position.x < 0 + m_pPlayer->getWidth() * 0.7)
+	{
+		m_pPlayer->setPosition(0 + m_pPlayer->getWidth() * 0.7, m_pPlayer->getTransform()->position.y);
+	}
+
 }
 
 void PlayScene::PlayerShoot(BulletType bulletType)
@@ -541,7 +548,6 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 			m_pPlayerBulletVec[bulletPos]->setType(P2_BULLET);
 			m_pPlayerBulletVec[bulletPos]->setPosition(x, y);
 			m_pPlayerBulletVec[bulletPos]->setAnimationState(bState);
-
 			SoundManager::Instance().playSound("fire");
 		}
 		break;
@@ -624,25 +630,46 @@ void PlayScene::EnemyShoot()
 				{
 					enemyX = m_pObstacles[i]->getTransform()->position.x - 85.0f;
 					enemyY = m_pObstacles[i]->getTransform()->position.y + 10.0f;
-					bulletAnim = E_BULLET_MOVE_LEFT;
+					//bulletAnim = E_BULLET_MOVE_LEFT;
 
 					if (enemyType == PREDATOR)
 					{
 						enemy->setAnimationState(PREDATOR_IDLE_LEFT);
+						bulletAnim = E_BULLET_MOVE_LEFT;
 					}
 					else if (enemyType == ENEMY)
 					{
 						enemy->setAnimationState(ENEMY_IDLE_LEFT);
+						bulletAnim = E2_BULLET_MOVE_LEFT;
 					}
 
 					if (m_bulletTimer++ == m_timerMax)
 					{
 						//m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
 
-						m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+						if (enemyType == PREDATOR)
+						{
+							m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+						}
+						else if (enemyType == ENEMY)
+						{
+							m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET2));
+						}
+						
+			
 
 						int bulletPos = m_pEnemyBulletVec.size() - 1;
-						m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						
+						if (enemyType == PREDATOR)
+						{
+							m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						}
+						else if (enemyType == ENEMY)
+						{
+							m_pEnemyBulletVec[bulletPos]->setType(E2_BULLET);
+						}
+						
+						//m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
 						m_pEnemyBulletVec[bulletPos]->setPosition(enemyX, enemyY);
 						m_pEnemyBulletVec[bulletPos]->setAnimationState(bulletAnim);
 						//addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
@@ -653,25 +680,44 @@ void PlayScene::EnemyShoot()
 				{
 					enemyX = m_pObstacles[i]->getTransform()->position.x + 85.0f;
 					enemyY = m_pObstacles[i]->getTransform()->position.y + 10.0f;
-					bulletAnim = E_BULLET_MOVE_RIGHT;
+					//bulletAnim = E_BULLET_MOVE_RIGHT;
 
 					if (enemyType == PREDATOR)
 					{
 						enemy->setAnimationState(PREDATOR_IDLE_RIGHT);
+						bulletAnim = E_BULLET_MOVE_RIGHT;
 					}
 					else if (enemyType == ENEMY)
 					{
 						enemy->setAnimationState(ENEMY_IDLE_RIGHT);
+						bulletAnim = E2_BULLET_MOVE_RIGHT;
 					}
 
 					if (m_bulletTimer++ == m_timerMax)
 					{
 						//m_pEnemyBulletVec.push_back(new Bullet(enemyX, enemyY, /*false*/ ENEMY_BULLET, bulletAnim));
 
-						m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+						if (enemyType == PREDATOR)
+						{
+							m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET));
+						}
+						else if (enemyType == ENEMY)
+						{
+							m_pEnemyBulletVec.push_back(m_objPool->GetBullet(ENEMY_BULLET2));
+						}
 
 						int bulletPos = m_pEnemyBulletVec.size() - 1;
-						m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+
+						if (enemyType == PREDATOR)
+						{
+							m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
+						}
+						else if (enemyType == ENEMY)
+						{
+							m_pEnemyBulletVec[bulletPos]->setType(E2_BULLET);
+						}
+						
+						//m_pEnemyBulletVec[bulletPos]->setType(E_BULLET);
 						m_pEnemyBulletVec[bulletPos]->setPosition(enemyX, enemyY);
 						m_pEnemyBulletVec[bulletPos]->setAnimationState(bulletAnim);
 						//addChild(m_pEnemyBulletVec[m_pEnemyBulletVec.size() - 1]);
@@ -778,9 +824,6 @@ void PlayScene::BulletCheck(int i, int score)
 			}
 			else if (m_pPlayerBulletVec[j]->getType() == P2_BULLET)
 			{
-
-
-
 				m_pObstacles[i]->DeactivateSprite();
 				m_pObstacles[i] = nullptr;
 				m_pObstacles.erase(m_pObstacles.begin() + i);
@@ -789,14 +832,7 @@ void PlayScene::BulletCheck(int i, int score)
 				m_pPlayerBulletVec[j]->DeactivateSprite();
 				m_pPlayerBulletVec[j] = nullptr;
 				m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
-
-
-
 			}
-
-			// Remove enemy
-
-
 		}
 	}
 }

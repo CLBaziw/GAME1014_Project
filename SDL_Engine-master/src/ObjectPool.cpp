@@ -48,6 +48,7 @@ ObjectPool::ObjectPool()
 		}
 
 		m_poolEnemyBullets.push_back(new Bullet(0, 0, ENEMY_BULLET, E_BULLET_MOVE_RIGHT));
+		m_poolEnemyBullets.push_back(new Bullet(0, 0, ENEMY_BULLET2, E2_BULLET_MOVE_RIGHT));
 	}
 }
 
@@ -110,6 +111,7 @@ void ObjectPool::DisplayActiveList()
 	int bulletP = 0;
 	int bulletP2 = 0;
 	int bulletE = 0;
+	int bulletE2 = 0;
 
 	for (int i = 0; i < m_poolObstacles.size(); i++)
 	{
@@ -167,7 +169,15 @@ void ObjectPool::DisplayActiveList()
 	{
 		if (m_poolEnemyBullets[i]->getActive())
 		{
-			bulletE++;
+			if (m_poolEnemyBullets[i]->getType() == E_BULLET)
+			{
+				bulletE++;
+			}
+			
+			if (m_poolEnemyBullets[i]->getType() == E2_BULLET)
+			{
+				bulletE2++;
+			}
 		}
 	}
 
@@ -178,6 +188,7 @@ void ObjectPool::DisplayActiveList()
 	std::cout << "Player Bullet 1: " << bulletP << std::endl;
 	std::cout << "Player Bullet 2: " << bulletP2 << std::endl;
 	std::cout << "Enemy Bullet: " << bulletE << std::endl;
+	std::cout << "Enemy Bullet: " << bulletE2 << std::endl;
 }
 
 Obstacle* ObjectPool::GetObstacle(GameObjectType newObj)
@@ -221,9 +232,18 @@ Bullet* ObjectPool::GetBullet(BulletType bullType)
 				return temp;
 			}
 		}
-		else if (bullType == ENEMY_BULLET)
+		else if (bullType == ENEMY_BULLET )
 		{
-			if (!m_poolEnemyBullets[i]->getActive())
+			if (!m_poolEnemyBullets[i]->getActive() && m_poolEnemyBullets[i]->getType() == E_BULLET)
+			{
+				temp = m_poolEnemyBullets[i];
+				temp->setActive(true);
+				return temp;
+			}
+		}
+		else if (bullType == ENEMY_BULLET2)
+		{
+			if (!m_poolEnemyBullets[i]->getActive() && m_poolEnemyBullets[i]->getType() == E2_BULLET)
 			{
 				temp = m_poolEnemyBullets[i];
 				temp->setActive(true);
