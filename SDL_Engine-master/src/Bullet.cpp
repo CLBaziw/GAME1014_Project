@@ -91,6 +91,34 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 			}
 			break;
 		}
+		case ENEMY_BULLET2://else
+		{
+			// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
+			std::cout << "Enemy bullet created " << std::endl;
+			TextureManager::Instance()->loadSpriteSheet(
+				"../Assets/sprites/bolt.txt",
+				"../Assets/sprites/bolt.png",
+				"enemy-bullet-sprite_2"
+			);
+
+			setSpriteSheet(TextureManager::Instance()->getSpriteSheet("enemy-bullet-sprite_2"));
+			setType(E2_BULLET);
+
+			setWidth(70);
+			setHeight(41);
+
+
+			setAnimationState(bulletState);
+			if (m_currentAnimationState == E2_BULLET_MOVE_RIGHT)
+			{
+				m_speed = EBULLETSPEED;
+			}
+			else if (m_currentAnimationState == E2_BULLET_MOVE_LEFT)
+			{
+				m_speed = -EBULLETSPEED;
+			}
+			break;
+		}
 		default:
 			break;
 	}
@@ -178,6 +206,26 @@ void Bullet::draw()
 			}
 			break;		
 		}
+		case ENEMY_BULLET2:
+		{
+			switch (m_currentAnimationState)
+			{
+				case E2_BULLET_MOVE_RIGHT:
+				{
+					TextureManager::Instance()->playAnimation("enemy-bullet-sprite_2", getAnimation("e2_bullet-moving"),
+						x, y, 0.12f, 0, 200, true);
+					break;
+
+				}
+				case E2_BULLET_MOVE_LEFT:
+				{
+					TextureManager::Instance()->playAnimation("enemy-bullet-sprite_2", getAnimation("e2_bullet-moving"),
+						x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+					break;
+				}
+			}
+			break;		
+		}
 		default:
 			break;
 	}
@@ -189,7 +237,7 @@ void Bullet::draw()
 void Bullet::update()
 {
 	if (m_currentAnimationState == P_BULLET_MOVE_RIGHT || m_currentAnimationState == E_BULLET_MOVE_RIGHT
-		|| m_currentAnimationState == P2_BULLET_MOVE_RIGHT)
+		|| m_currentAnimationState == P2_BULLET_MOVE_RIGHT || m_currentAnimationState == E2_BULLET_MOVE_RIGHT)
 	{
 		getTransform()->position.x += m_speed;
 	}
@@ -255,14 +303,34 @@ void Bullet::m_buildAnimations()
 				bMovingAnimation.name = "e_bullet-moving";
 				bMovingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-moving-0"));
 
+				
 				setAnimation(bMovingAnimation);
 
 				Animation bCollidingAnimation = Animation();
 
 				bCollidingAnimation.name = "e_bullet-colliding";
 				bCollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("bullet-colliding-0"));
+	
 
 				setAnimation(bCollidingAnimation);
+				break;
+			}
+
+		case ENEMY_BULLET2:
+			{
+				Animation b2MovingAnimation = Animation();
+
+				b2MovingAnimation.name = "e2_bullet-moving";
+				b2MovingAnimation.frames.push_back(getSpriteSheet()->getFrame("green-bolt"));
+
+				setAnimation(b2MovingAnimation);
+
+				Animation b2CollidingAnimation = Animation();
+
+				b2CollidingAnimation.name = "e2_bullet-colliding";
+				b2CollidingAnimation.frames.push_back(getSpriteSheet()->getFrame("green-bolt"));
+
+				setAnimation(b2CollidingAnimation);
 				break;
 			}
 		}

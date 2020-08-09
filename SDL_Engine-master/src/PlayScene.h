@@ -83,6 +83,8 @@ private:
 		m_timerMax = 100;
 	float x;
 	float y;
+
+	// special skill
 	int cooldown_specialskill =0;
 };
 
