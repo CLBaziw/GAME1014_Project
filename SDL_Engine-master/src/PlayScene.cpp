@@ -5,6 +5,9 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 
+#include <iostream>
+#include <fstream>
+#include <string>
 
 #define ENEMYSIGHT 320
 #define FPS 60
@@ -167,9 +170,14 @@ void PlayScene::handleEvents()
 
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_SPACE) && m_pPlayer->isJumping())
 		{
-			m_pPlayer->SetAccelY(-JUMPFORCE);
-			m_pPlayer->SetJumping(false);
-			SoundManager::Instance().playSound("jump");
+			//m_pPlayer->SetAccelY(-JUMPFORCE);
+			if (playerJumping == false)
+			{
+
+				playerJumping = true;
+				SoundManager::Instance().playSound("jump");
+			}
+
 		}
 
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_X) && !m_pPlayer->isShooting())
@@ -211,27 +219,46 @@ void PlayScene::handleEvents()
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_F))
 	{
-		PlayerShoot(PLAYER_BULLET);
-		Shoted = true;
+		if (!Shoted)
+		{
+			PlayerShoot(PLAYER_BULLET);
+			Shoted = true;
+		}
+
+	}
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_G))
+	{
+		if (!Shoted)
+		{
+			PlayerShoot(PLAYER_BULLET2);
+			Shoted = true;
+		}
+	}
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_G))
+	{
+		//Shoted = false;
 	}
 	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_F))
 	{
 
-		Shoted = false;
+		//Shoted = false;
 	}
 
 }
 
 void PlayScene::start()
 {
+
 	//Differentiate between levels
-	if (TheGame::Instance()->getLevel() == 0)
+	if (m_level == 0)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		ReadObstacleFile();
 	}
-	else if(TheGame::Instance()->getLevel() == 1)
+	else if (m_level == 1)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		ReadObstacleFile();
 	}
 	else
 	{
@@ -239,9 +266,10 @@ void PlayScene::start()
 	}
 
 	int windowHeight = TheGame::Instance()->getWindowHeight();
+
 	// Background 
 	addChild(m_pBackground);
-
+	
 	// Object Pool
 	m_objPool = new ObjectPool();
 
@@ -253,7 +281,7 @@ void PlayScene::start()
 
 	//Score Board
 	const SDL_Color yellow = { 255, 255, 0, 255 };
-	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0) , "Playbill", 60, yellow, glm::vec2(TheGame::Instance()->getWindowWidth() - 100, 80.0f));;
+	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0), "Playbill", 60, yellow, glm::vec2(TheGame::Instance()->getWindowWidth() - 100, 80.0f));;
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
 
@@ -286,6 +314,14 @@ void PlayScene::start()
 
 void PlayScene::checkCollision()
 {
+	if (Shoted)
+	{
+		CanShoot();
+	}
+	if (playerJumping)
+	{
+		PlayerJump();
+	}
 	int score = TheGame::Instance()->getScore();
 
 	int playerX = m_pPlayer->getTransform()->position.x;
@@ -300,10 +336,12 @@ void PlayScene::checkCollision()
 		m_pPlayer->SetJumping(true);
 		m_pPlayer->StopY();
 		m_pPlayer->setPosition(playerX, groundY - halfPlayerHeight - 15);
+		//std::cout << playerY << std::endl;
+
 	}
 #pragma endregion
 
-	#pragma region // Obstacles check
+#pragma region // Obstacles check
 	for (int i = 0; i < m_pObstacles.size(); i++)
 	{
 		switch (m_pObstacles[i]->getType())
@@ -353,6 +391,21 @@ void PlayScene::checkCollision()
 			break;
 		}
 		case OBSTACLE6:
+			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]) && m_pObstacles[i]->getActive()) // Player and enemy collide
+			{
+				std::cout << "Player and enemy collide" << std::endl;
+				if (PlayerHealth > 0)
+				{
+					PlayerHealth -= 100 / 4;
+				}
+				else if (PlayerHealth == 0)
+				{
+					gameOver();
+				}
+			}
+
+			BulletCheck(i, score);
+			break;
 		case OBSTACLE1:
 		{
 			if (COMA::squaredRadiusCheck(m_pPlayer, m_pObstacles[i]) && m_pObstacles[i]->getActive()) // Player and enemy collide
@@ -423,7 +476,7 @@ void PlayScene::ScrollBgGround()
 	{
 		m_pBackground->getTransform()->position.x = 0;
 	}
-	
+
 
 	m_ground->getTransform()->position.x = m_ground->getTransform()->position.x - .5f;
 
@@ -517,7 +570,8 @@ void PlayScene::MakeObstacles()
 		{
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 
-			m_pObstacles.push_back(m_vec.back()->GetRandomObstacle(m_objPool, m_vec.back()->GetX(), 536));
+			m_pObstacles.push_back(m_vec.back()->GetObstacle(m_objPool, m_vec.back()->GetX(), 536, m_level, m_numObstacles, m_pReadObstacles));
+			m_numObstacles++;
 
 			if (m_pObstacles.size() > 4 && m_pObstacles[0] != nullptr)
 			{
@@ -642,6 +696,54 @@ void PlayScene::gameOver()
 	TheGame::Instance()->changeSceneState(END_SCENE);
 }
 
+void PlayScene::ReadObstacleFile()
+{
+	int i = 0;
+	int test;
+	if (m_level == 0)
+	{
+		std::fstream FileOne("../Assets/obstacles1.txt", std::fstream::in);
+
+		if (!FileOne.good())
+		{
+			std::cout << "Open file has been errored!" << std::endl;
+		}
+		else
+		{
+			while (!FileOne.eof())
+			{
+				FileOne >> test;
+				m_pReadObstacles.push_back(test);
+
+				i++;				
+			}
+		}
+
+		FileOne.close();
+	}
+	else
+	{
+		std::ifstream FileTwo("../Assets/obstacles2.txt");
+
+		if (!FileTwo.good())
+		{
+			std::cout << "Open file has been errored!" << std::endl;
+		}
+		else
+		{
+			while (!FileTwo.eof())
+			{
+				FileTwo >> test;
+				m_pReadObstacles.push_back(test);
+
+				i++;
+			}
+		}
+		FileTwo.close();
+	}
+}
+
+	
 void PlayScene::BulletCheck(int i, int score)
 {
 	// Check for bullet with enemy
@@ -652,17 +754,80 @@ void PlayScene::BulletCheck(int i, int score)
 		{
 			// Score
 			TheGame::Instance()->setScore(score + KILLENEMYSCORE);
+			if (m_pPlayerBulletVec[j]->getType() == P_BULLET)
+			{
+				if (m_pObstacles[i]->Health < 1)
+				{
+					m_pObstacles[i]->DeactivateSprite();
+					m_pObstacles[i] = nullptr;
+					m_pObstacles.erase(m_pObstacles.begin() + i);
+
+					// Remove bullet
+					m_pPlayerBulletVec[j]->DeactivateSprite();
+					m_pPlayerBulletVec[j] = nullptr;
+					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
+
+				}
+
+				else
+				{
+					m_pObstacles[i]->Health -= 15;
+					m_pPlayerBulletVec[j]->DeactivateSprite();
+					m_pPlayerBulletVec[j] = nullptr;
+					m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
+				}
+			}
+			else if (m_pPlayerBulletVec[j]->getType() == P2_BULLET)
+			{
+
+
+
+				m_pObstacles[i]->DeactivateSprite();
+				m_pObstacles[i] = nullptr;
+				m_pObstacles.erase(m_pObstacles.begin() + i);
+
+				// Remove bullet
+				m_pPlayerBulletVec[j]->DeactivateSprite();
+				m_pPlayerBulletVec[j] = nullptr;
+				m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
+
+
+
+			}
 
 			// Remove enemy
-			m_pObstacles[i]->DeactivateSprite();
-			m_pObstacles[i] = nullptr;
-			m_pObstacles.erase(m_pObstacles.begin() + i);
 
-			// Remove bullet
-			m_pPlayerBulletVec[j]->DeactivateSprite();
-			m_pPlayerBulletVec[j] = nullptr;
-			m_pPlayerBulletVec.erase(m_pPlayerBulletVec.begin() + j);
 
 		}
+	}
+}
+
+void PlayScene::CanShoot()
+{
+	ShootTimer += .1f;
+	if (ShootTimer > 5.f)
+	{
+		Shoted = false;
+		ShootTimer = 0;
+	}
+}
+
+void PlayScene::PlayerJump()
+{
+	playerJumpTimer();
+	//m_pPlayer->SetAccelY(Jumpforce);
+	float y = m_pPlayer->getTransform()->position.y;
+	m_pPlayer->SetY(y - Jumpforce);
+
+}
+
+void PlayScene::playerJumpTimer()
+{
+	Jumpforce += 1.f;
+	if (Jumpforce > 28.f)
+	{
+		playerJumping = false;
+		Jumpforce = 0;
+		m_pPlayer->SetJumping(false);
 	}
 }

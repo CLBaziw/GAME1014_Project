@@ -35,7 +35,18 @@ public:
 	void MakeObstacles();
 	void EnemyShoot();
 	void gameOver();
+	void ReadObstacleFile();
 	void BulletCheck(int i, int score);
+
+	// shoot Timer
+	float ShootTimer;
+	void CanShoot();
+	// player jump function;
+	bool playerJumping;
+	void PlayerJump();
+	void playerJumpTimer();
+	float playerjumpTime;
+	float Jumpforce;
 	//void moveBackground();
 
 private:
@@ -55,6 +66,9 @@ private:
 	std::vector<Box*> m_vec;
 	std::vector<Obstacle*> m_pObstacles;
 	int m_numSpaces;
+	std::vector<int> m_pReadObstacles;
+	int m_numObstacles;
+
 	int PlayerHealth;
 
 	bool GameOver;
@@ -68,6 +82,8 @@ private:
 	Button* m_pPauseButton;
 	Button* m_pContinueButton;
 
+	int m_level;
+
 	// movement for character
 	int moveX = 0;
 	int moveY = 0;
@@ -77,7 +93,7 @@ private:
 		m_timerMax = 100;
 	float x;
 	float y;
-	int cooldown_specialskill =0;
+	int cooldown_specialskill = 0;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

@@ -8,12 +8,16 @@ ground::ground(float x, float y)
 	{
 		TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
 	}
-	else
+	else if (TheGame::Instance()->getLevel() == 1)
 	{
 		TextureManager::Instance()->load("../Assets/plat/ground2.png", "ground");
 	}
-
+	else
+	{
+		TextureManager::Instance()->load("../Assets/plat/ground3.png", "ground");
+	}
 	//TextureManager::Instance()->load("../Assets/plat/ground.png", "ground");
+
 
 	auto size = TextureManager::Instance()->getTextureSize("ground");
 	//auto size = TextureManager::Instance()->getTextureSize("ground2");
@@ -38,10 +42,10 @@ ground::~ground()
 
 void ground::draw()
 {
-	
+
 	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;	
-	
+	const auto y = getTransform()->position.y;
+
 	//const auto x = getTransform()->m_dst.x;
 	//const auto y = getTransform()->m_dst.y;
 
@@ -55,4 +59,6 @@ void ground::update()
 void ground::clean()
 {
 }
+
+
 
