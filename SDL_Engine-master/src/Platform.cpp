@@ -16,6 +16,7 @@ Platform::Platform(float x, float y)
 	setWidth(128);
 	setHeight(128);
 
+
 	getTransform()->position = glm::vec2(x, y);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
