@@ -248,6 +248,7 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	TheGame::Instance()->setWin(false);
 
 	//Differentiate between levels
 	if (m_level == 0)
@@ -578,9 +579,18 @@ void PlayScene::MakeObstacles()
 		if (m_numSpaces >= 4) // Add new sprite if there has been enough spaces.
 		{
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
-
-			m_pObstacles.push_back(m_vec.back()->GetObstacle(m_objPool, m_vec.back()->GetX(), 536, m_level, m_numObstacles, m_pReadObstacles));
-			m_numObstacles++;
+			
+			if ((TheGame::Instance()->getLevel() < 2 && m_numObstacles < m_pReadObstacles.size()) || TheGame::Instance()->getLevel() = 2)
+			{
+				m_pObstacles.push_back(m_vec.back()->GetObstacle(m_objPool, m_vec.back()->GetX(), 536, m_level, m_numObstacles, m_pReadObstacles));
+				m_numObstacles++;
+			}
+			else
+			{
+				TheGame::Instance()->setWin(false);
+				TheGame::Instance()->changeSceneState(END_SCENE);
+			}
+			
 
 			if (m_pObstacles.size() > 4 && m_pObstacles[0] != nullptr)
 			{

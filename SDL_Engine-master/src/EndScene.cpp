@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "glm/gtx/string_cast.hpp"
 #include "EventManager.h"
+#include <string>
 
 
 EndScene::EndScene()
@@ -63,7 +64,18 @@ void EndScene::start()
 	int windowHeight = TheGame::Instance()->getWindowHeight();
 
 	const SDL_Color Metallicgold = { 212,175, 55, 0 };
-	m_label = new Label("END SCENE", "galaxy_1", 100, Metallicgold, glm::vec2(windowWidth / 2, windowHeight / 6));
+	std::string winLose;
+
+	if (TheGame::Instance()->getWin())
+	{
+		winLose = "You Win!";
+	}
+	else
+	{
+		winLose = "You lose.";
+	}
+
+	m_label = new Label(winLose, "galaxy_1", 100, Metallicgold, glm::vec2(windowWidth / 2, windowHeight / 6));
 	m_label->setParent(this);
 	addChild(m_label);
 

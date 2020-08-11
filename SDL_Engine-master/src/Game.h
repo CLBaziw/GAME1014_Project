@@ -63,6 +63,8 @@ public:
 	int getLevel();
 	void setScore(int score);
 	int getScore();
+	void setWin(bool win);
+	bool getWin();
 
 private:
 	Game();
@@ -86,6 +88,8 @@ private:
 
 	int m_level;
 	int m_score;
+
+	bool m_win;
 };
 
 typedef Game TheGame;

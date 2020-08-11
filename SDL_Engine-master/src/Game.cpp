@@ -245,3 +245,13 @@ int Game::getScore()
 {
 	return m_score;
 }
+
+void Game::setWin(bool win)
+{
+	m_win = win;
+}
+
+bool Game::getWin()
+{
+	return m_win;
+}
