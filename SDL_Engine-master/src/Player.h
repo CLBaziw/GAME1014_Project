@@ -36,6 +36,9 @@ public:
 	void SetX(float x);
 	void SetY(float y);
 
+	//Death
+	bool PlayerDead;
+
 	// Shooting
 	bool isShooting();
 	void SetShooting(bool s);

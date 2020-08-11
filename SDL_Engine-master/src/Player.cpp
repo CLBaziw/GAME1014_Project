@@ -72,6 +72,10 @@ void Player::draw()
 		TextureManager::Instance()->playAnimation("resources", getAnimation("run"),
 			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
+	case PLAYER_DEATH:
+		TextureManager::Instance()->playAnimation("resources", getAnimation("death"),
+			x, y, 0.25f, 0, 255, true);
+	
 	default:
 		break;
 	}
@@ -193,4 +197,14 @@ void Player::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-run-3"));
 
 	setAnimation(runAnimation);
+
+	Animation DeathAnimation = Animation();
+
+	idleAnimation.name = "death";
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-death-0"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-death-1"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-death-2"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("astro-death-3"));
+
+	setAnimation(DeathAnimation);
 }

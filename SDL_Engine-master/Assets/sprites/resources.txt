@@ -10,6 +10,10 @@ astro-idle-0 0 256 128 128
 astro-idle-1 0 256 256 128 
 astro-idle-2 0 256 384 128 
 astro-idle-3 0 256 512 128 
+astro-death-0 0 384 128 128
+astro-death-0 0 384 256 128
+astro-death-0 0 384 384 128
+astro-death-0 0 384 512 128
 alien-0 1 292 45 75
 alien-1 75 292 55 75
 alien-2 152 292 64 75

@@ -253,16 +253,19 @@ void PlayScene::start()
 	if (m_level == 0)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		SoundManager::Instance().playMusic("playScreen");
 		ReadObstacleFile();
 	}
 	else if (m_level == 1)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		SoundManager::Instance().playMusic("playScreen");
 		ReadObstacleFile();
 	}
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		SoundManager::Instance().playMusic("playScreen");
 	}
 
 	int windowHeight = TheGame::Instance()->getWindowHeight();
@@ -733,6 +736,7 @@ void PlayScene::EnemyShoot()
 
 void PlayScene::gameOver()
 {
+	m_pPlayer->setAnimationState(PLAYER_DEATH);
 	const SDL_Color yellow1 = { 255, 255, 0, 255 };
 	m_pGameOverText = new ScoreBoard("Game Over", "Playbill", 90, yellow1, glm::vec2(500.0f, 300.0f));;
 	addChild(m_pGameOverText);
