@@ -8,7 +8,7 @@
 
 #define SCROLLSPD 2.6
 
-#define PLATFORMY 600
+#define PLATFORMY 500
 #define ENEMYY 715
 #define SPIKEY 725
 
@@ -22,11 +22,6 @@ Box::Box(float x, float y)
 
 Box::~Box()
 {
-	//if (m_obstacle != nullptr)
-	//{
-	//	m_obstacle->DeactivateSprite();
-	//	m_obstacle = nullptr;
-	//}
 }
 
 void Box::Update()
@@ -35,7 +30,15 @@ void Box::Update()
 	int windowHeight = TheGame::Instance()->getWindowHeight();
 	if (m_obstacle != nullptr)
 	{
-		m_obstacle->getTransform()->position = glm::vec2(m_x, windowHeight / 2 + 208);
+		if (m_obstacle->getType() != PLATFORM)
+		{
+			m_obstacle->getTransform()->position = glm::vec2(m_x, windowHeight / 2 + 204);
+		}
+		else
+		{
+			m_obstacle->getTransform()->position = glm::vec2(m_x, windowHeight / 2 + 100);
+		}
+		
 	}
 }
 
@@ -63,7 +66,7 @@ Obstacle* Box::GetObstacle(ObjectPool* objPool, int x, int y, int level, int obs
 	}
 	else 
 	{
-		num = (rand() % 6) + 1;
+		num = (rand() % 8) + 1;
 	}
 
 	Obstacle* sprite = nullptr;
@@ -73,45 +76,45 @@ Obstacle* Box::GetObstacle(ObjectPool* objPool, int x, int y, int level, int obs
 	case 1:
 		std::cout << "Get Random Obstacle - Platform" << std::endl;
 		sprite = objPool->GetObstacle(PLATFORM);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = PLATFORMY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	case 2:
 		std::cout << "Get Random Obstacle - Predator" << std::endl;
 		sprite = objPool->GetObstacle(PREDATOR);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = ENEMYY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	case 3:
 		std::cout << "Get Random Obstacle - Alien" << std::endl;
 		sprite = objPool->GetObstacle(ENEMY);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = ENEMYY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	case 4:
 	case 8:
 		std::cout << "Get Random Obstacle - Obstacle1" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE1);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = SPIKEY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	case 5:
 		std::cout << "Get Random Obstacle - Obstacle4" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE4);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = SPIKEY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	case 6:
 		std::cout << "Get Random Obstacle - Obstacle5" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE5);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = SPIKEY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	case 7:
 		std::cout << "Get Random Obstacle - Obstacle6" << std::endl;
 		sprite = objPool->GetObstacle(OBSTACLE6);
-		sprite->getTransform()->position = glm::vec2(x, y);
 		m_y = SPIKEY;
+		sprite->getTransform()->position = glm::vec2(x, m_y);
 		break;
 	}
 	m_obstacle = sprite;

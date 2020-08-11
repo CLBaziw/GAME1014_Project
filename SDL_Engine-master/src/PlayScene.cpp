@@ -602,7 +602,7 @@ void PlayScene::MakeObstacles()
 			}
 			else
 			{
-				TheGame::Instance()->setWin(false);
+				TheGame::Instance()->setWin(true);
 				TheGame::Instance()->changeSceneState(END_SCENE);
 			}
 			
