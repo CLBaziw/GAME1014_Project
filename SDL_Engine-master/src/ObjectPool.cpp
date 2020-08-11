@@ -1,10 +1,10 @@
 #include "ObjectPool.h"
 #include <iostream>
 #define MAXPLATFORM 4
-#define MAXOBSTACLE 4
+#define MAXOBSTACLE 9
 #define MAXENEMY 3
 #define MAXPREDATOR 3
-#define MAXBULLETS 30
+#define MAXBULLETS 100
 
 
 ObjectPool::ObjectPool()
@@ -14,11 +14,15 @@ ObjectPool::ObjectPool()
 		m_poolObstacles.push_back(new Obstacle(PLATFORM));
 	}
 
-	for (int i = 0; i < MAXOBSTACLE; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(OBSTACLE1));
 		//m_poolObstacles.push_back(new Obstacle(OBSTACLE2));
 		//m_poolObstacles.push_back(new Obstacle(OBSTACLE3));
+		m_poolObstacles.push_back(new Obstacle(OBSTACLE4));
+		m_poolObstacles.push_back(new Obstacle(OBSTACLE5));
+		m_poolObstacles.push_back(new Obstacle(OBSTACLE6));
+
 	}
 
 	for (int i = 0; i < MAXENEMY; i++)
@@ -26,7 +30,7 @@ ObjectPool::ObjectPool()
 		m_poolObstacles.push_back(new Obstacle(ENEMY));
 	}
 
-	
+
 	for (int i = 0; i < MAXPREDATOR; i++)
 	{
 		m_poolObstacles.push_back(new Obstacle(PREDATOR));
@@ -59,7 +63,7 @@ void ObjectPool::UpdateActiveSprites()
 		}
 	}
 
-	for (int i = 0; i < MAXBULLETS; i++) 
+	for (int i = 0; i < MAXBULLETS; i++)
 	{
 		if (m_poolPlayerBullets[i]->getActive())
 		{
@@ -117,6 +121,21 @@ void ObjectPool::DisplayActiveList()
 				plat++;
 				break;
 			case OBSTACLE1:
+				obs++;
+				break;
+			case OBSTACLE2:
+				obs++;
+				break;
+			case OBSTACLE3:
+				obs++;
+				break;
+			case OBSTACLE4:
+				obs++;
+				break;
+			case OBSTACLE5:
+				obs++;
+				break;
+			case OBSTACLE6:
 				obs++;
 				break;
 			case ENEMY:

@@ -235,3 +235,13 @@ int Game::getLevel()
 {
 	return m_level;
 }
+
+void Game::setScore(int score)
+{
+	m_score = score;
+}
+
+int Game::getScore()
+{
+	return m_score;
+}

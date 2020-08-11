@@ -64,14 +64,17 @@ void LevelSelectScene::start()
 
 	const SDL_Color LightBlue = { 0,255, 255, 0 };
 
-	m_pLevelSelectLabel = new Label("Please select level", "galaxy_1", 60, LightBlue, glm::vec2(576.0f, 120.0f));
+	int windowWidth = TheGame::Instance()->getWindowWidth();
+	int windowHeight = TheGame::Instance()->getWindowHeight();
+
+	m_pLevelSelectLabel = new Label("Please select level", "galaxy_1", 60, LightBlue, glm::vec2(windowWidth / 2, windowHeight / 6));
 	m_pLevelSelectLabel->setParent(this);
 	addChild(m_pLevelSelectLabel);
 
 
 	// Level 1 Button
 	m_pLevelOneButton = new Button("../Assets/Menu Asset/level-1.png", "LevelOneButton", LEVEL1_BUTTON);
-	m_pLevelOneButton->getTransform()->position = glm::vec2(576.0f, 300.0f);
+	m_pLevelOneButton->getTransform()->position = glm::vec2(windowWidth / 2, windowHeight / 6 + 150);
 	m_pLevelOneButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelOneButton->setActive(false);
@@ -94,7 +97,7 @@ void LevelSelectScene::start()
 
 	// Level 2 Button
 	m_pLevelTwoButton = new Button("../Assets/Menu Asset/level-2.png", "LevelTwoButton", LEVEL2_BUTTON);
-	m_pLevelTwoButton->getTransform()->position = glm::vec2(576.0f, 440.0f);
+	m_pLevelTwoButton->getTransform()->position = glm::vec2(windowWidth / 2, windowHeight / 6 + 300);
 	m_pLevelTwoButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelTwoButton->setActive(false);
@@ -116,10 +119,11 @@ void LevelSelectScene::start()
 
 	// Level 3 Button
 	m_pLevelThreeButton = new Button("../Assets/Menu Asset/level-3.png", "LevelThreeButton", LEVEL3_BUTTON);
-	m_pLevelThreeButton->getTransform()->position = glm::vec2(576.0f, 580.0f);
+	m_pLevelThreeButton->getTransform()->position = glm::vec2(windowWidth / 2, windowHeight / 6 + 450);
 	m_pLevelThreeButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pLevelThreeButton->setActive(false);
+		TheGame::Instance()->setLevel(2);
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 
