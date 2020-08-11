@@ -253,16 +253,19 @@ void PlayScene::start()
 	if (m_level == 0)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		SoundManager::Instance().playMusic("playScreen");
 		ReadObstacleFile();
 	}
 	else if (m_level == 1)
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		SoundManager::Instance().playMusic("playScreen");
 		ReadObstacleFile();
 	}
 	else
 	{
 		m_pBackground = new Background("../Assets/backgrounds/playscene2.png", "playscene-background", BACKGROUND, glm::vec2(0, y), false);
+		SoundManager::Instance().playMusic("playScreen");
 	}
 
 	int windowHeight = TheGame::Instance()->getWindowHeight();
