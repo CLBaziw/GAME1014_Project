@@ -19,7 +19,7 @@ int main(int argc, char * args[])
 	freopen("CON", "w", stdout);
 
 
-	TheGame::Instance()->init("M.E.T. Entity", 100, 100, 1280, 768, false);
+	TheGame::Instance()->init("M.E.T. Entity", 100, 100, 1280, 896, false);
 
 	while (TheGame::Instance()->isRunning())
 	{

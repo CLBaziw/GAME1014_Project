@@ -1,7 +1,6 @@
 #include "Box.h"
 #include "Obstacle.h"
 #include"Background.h"
-#include "Game.h"
 
 #include <iostream>
 
@@ -13,7 +12,6 @@
 
 Box::Box(float x, float y)
 {
-	
 	m_x = x;
 	m_y = y;
 	m_obstacle = nullptr;
@@ -31,10 +29,10 @@ Box::~Box()
 void Box::Update()
 {
 	m_x -= SCROLLSPD;
-	int windowHeight = TheGame::Instance()->getWindowHeight();
+
 	if (m_obstacle != nullptr)
 	{
-		m_obstacle->getTransform()->position = glm::vec2(m_x, windowHeight / 2 + 208);
+		m_obstacle->getTransform()->position = glm::vec2(m_x, m_y);
 	}
 }
 
