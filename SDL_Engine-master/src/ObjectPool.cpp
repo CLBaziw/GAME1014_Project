@@ -188,7 +188,7 @@ void ObjectPool::DisplayActiveList()
 	std::cout << "Player Bullet 1: " << bulletP << std::endl;
 	std::cout << "Player Bullet 2: " << bulletP2 << std::endl;
 	std::cout << "Enemy Bullet: " << bulletE << std::endl;
-	std::cout << "Enemy Bullet: " << bulletE2 << std::endl;
+	std::cout << "Enemy Bullet 2: " << bulletE2 << std::endl;
 }
 
 Obstacle* ObjectPool::GetObstacle(GameObjectType newObj)

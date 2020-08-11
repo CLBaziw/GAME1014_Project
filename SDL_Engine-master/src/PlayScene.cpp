@@ -248,6 +248,8 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	m_level = TheGame::Instance()->getLevel();
+	std::cout << "Level: " << m_level << std::endl;
 	TheGame::Instance()->setWin(false);
 
 	//Differentiate between levels
@@ -270,6 +272,7 @@ void PlayScene::start()
 	}
 
 	int windowHeight = TheGame::Instance()->getWindowHeight();
+	int windowWidth = TheGame::Instance()->getWindowWidth();
 
 	// Background 
 	addChild(m_pBackground);
@@ -284,10 +287,15 @@ void PlayScene::start()
 	addChild(m_pHealth);
 
 	//Score Board
-	const SDL_Color yellow = { 255, 255, 0, 255 };
-	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0), "Playbill", 60, yellow, glm::vec2(TheGame::Instance()->getWindowWidth() - 100, 80.0f));;
+	m_pScoreBoard = new ScoreBoard("Score:" + std::to_string(0), "Playbill", 60, yellow1, glm::vec2(windowWidth - 100, 80.0f));;
 	m_pScoreBoard->setParent(this);
 	addChild(m_pScoreBoard);
+
+	//High Score
+	GetHighscore();
+	m_pHighscore = new ScoreBoard("High Score:" + std::to_string(m_highscore), "Playbill", 60, yellow1, glm::vec2(windowWidth / 2, 80.0f));;
+	m_pHighscore->setParent(this);
+	addChild(m_pHighscore);
 
 	// Player Sprite
 	m_pPlayer = new Player();
@@ -564,8 +572,15 @@ void PlayScene::PlayerShoot(BulletType bulletType)
 
 void PlayScene::UpdateScoreBoard()
 {
+	int score = TheGame::Instance()->getScore();
 	m_pHealth->setText("Health:" + std::to_string(PlayerHealth));
-	m_pScoreBoard->setText("Score:" + std::to_string(TheGame::Instance()->getScore()));
+	m_pScoreBoard->setText("Score:" + std::to_string(score));
+
+	if (score > m_highscore)
+	{
+		SetHighscore(score);
+		m_pHighscore->setText("High Score:" + std::to_string(m_highscore));
+	}
 }
 
 void PlayScene::MakeObstacles()
@@ -580,7 +595,7 @@ void PlayScene::MakeObstacles()
 		{
 			m_vec.push_back(new Box(128 * (m_vec.size() + 1), 536));
 			
-			if ((TheGame::Instance()->getLevel() < 2 && m_numObstacles < m_pReadObstacles.size()) || TheGame::Instance()->getLevel() = 2)
+			if ((TheGame::Instance()->getLevel() < 2 && m_numObstacles < m_pReadObstacles.size()) || TheGame::Instance()->getLevel() == 2)
 			{
 				m_pObstacles.push_back(m_vec.back()->GetObstacle(m_objPool, m_vec.back()->GetX(), 536, m_level, m_numObstacles, m_pReadObstacles));
 				m_numObstacles++;
@@ -849,6 +864,36 @@ void PlayScene::BulletCheck(int i, int score)
 			}
 		}
 	}
+}
+
+void PlayScene::GetHighscore()
+{
+	std::fstream Highscore("../Assets/highscore.txt", std::fstream::in);
+
+	if (!Highscore.good())
+	{
+		std::cout << "Open file has been errored!" << std::endl;
+	}
+	else
+	{
+		Highscore >> m_highscore;
+	}
+
+	std::cout << m_highscore << std::endl;
+
+	Highscore.close();
+}
+
+void PlayScene::SetHighscore(int score)
+{
+	std::ofstream NewHighScore("../Assets/highscore.txt.");
+
+	m_highscore = score;
+	NewHighScore << m_highscore;
+
+	std::cout << m_highscore << std::endl;
+
+	NewHighScore.close();
 }
 
 void PlayScene::CanShoot()

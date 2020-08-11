@@ -38,6 +38,9 @@ public:
 	void ReadObstacleFile();
 	void BulletCheck(int i, int score);
 
+	void GetHighscore();
+	void SetHighscore(int score);
+
 	// shoot Timer
 	float ShootTimer;
 	void CanShoot();
@@ -56,6 +59,7 @@ private:
 	Background* m_pBackground2;
 	ScoreBoard* m_pScoreBoard;
 	ScoreBoard* m_pHealth;
+	ScoreBoard* m_pHighscore;
 	ScoreBoard* m_pGameOverText;
 	Player* m_pPlayer;
 	ground* m_ground;
@@ -83,6 +87,7 @@ private:
 	Button* m_pContinueButton;
 
 	int m_level;
+	int m_highscore;
 
 	// movement for character
 	int moveX = 0;

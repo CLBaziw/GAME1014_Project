@@ -12,7 +12,6 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 	{
 	case PLAYER_BULLET:
 	{
-		std::cout << "Player shoot laser" << std::endl;
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/beams.txt",
 			"../Assets/sprites/beams.png",
@@ -38,7 +37,6 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 	}
 	case PLAYER_BULLET2:
 	{
-		std::cout << "Player shoot fire" << std::endl;
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/Fireball.txt",
 			"../Assets/sprites/Fireball.png",
@@ -66,7 +64,6 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 	case ENEMY_BULLET://else
 	{
 		// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
-		std::cout << "Enemy bullet created " << std::endl;
 		TextureManager::Instance()->loadSpriteSheet(
 			"../Assets/sprites/enemybullet.txt",
 			"../Assets/sprites/enemybullet.png",
@@ -91,12 +88,9 @@ Bullet::Bullet(float xPos, float yPos, /*bool bulletType*/BulletType bulletType,
 		}
 		break;
 	}
-	default:
-		break;
 		case ENEMY_BULLET2://else
 		{
 			// Don't have enemy bullet sprite made yet but this would be same code as above but for enemy bullet sprite
-			std::cout << "Enemy bullet created " << std::endl;
 			TextureManager::Instance()->loadSpriteSheet(
 				"../Assets/sprites/bolt.txt",
 				"../Assets/sprites/bolt.png",
